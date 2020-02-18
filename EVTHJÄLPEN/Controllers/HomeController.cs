@@ -5,13 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Eventhjälpen.Models;
-using Microsoft.AspNetCore.Authorization;
-namespace Eventhjälpen.Controllers
+using EVTHJÄLPEN.Models;
+
+namespace EVTHJÄLPEN.Controllers
 {
     public class HomeController : Controller
     {
-        DbAccess dba = new DbAccess();
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -24,34 +23,8 @@ namespace Eventhjälpen.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public IActionResult Privacy()
         {
-            return View();
-        }
-        
-        
-        [HttpGet]
-        public IActionResult RegisterUser()
-        {
-            return View();
-        }
-        
-        [HttpPost]
-        public IActionResult RegisterUser([Bind] Users users)
-        {
-            
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    string resp = dba.AddUserRecord(users);
-                    TempData["msg"] = resp;
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["msg"] = ex.Message;
-            }
             return View();
         }
 

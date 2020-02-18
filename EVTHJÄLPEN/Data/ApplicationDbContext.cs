@@ -1,21 +1,18 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Text;
+using Eventhjälpen.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Eventhjälpen.Models
+namespace EVTHJÄLPEN.Data
 {
-    public partial class TranbarDBOContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        public TranbarDBOContext()
-        {
-        }
-
-        public TranbarDBOContext(DbContextOptions<TranbarDBOContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<EventDetails> EventDetails { get; set; }
         public virtual DbSet<Events> Events { get; set; }
@@ -38,6 +35,7 @@ namespace Eventhjälpen.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -194,10 +192,7 @@ namespace Eventhjälpen.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
             });
-
-            OnModelCreatingPartial(modelBuilder);
+            
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
