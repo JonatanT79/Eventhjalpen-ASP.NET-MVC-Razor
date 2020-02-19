@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Recept";
+}
+    <div class="text-center">
+        <h1 class="display-4">Våra Recepts</h1>
+        <p>__________________________________________________________________________________________________</p>
+
+    </div>
+
+
+@foreach (var item in Model)
+{
+<div class="text-center">
+    <p><a asp-controller="Recipe" asp-action="ViewRecipe">@item.RecipeName </a> @item.EstimatedTime Minuter</p>
+    <p>______________________________________________________________</p>
+
+</div>
+}
