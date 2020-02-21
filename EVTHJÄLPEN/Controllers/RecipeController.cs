@@ -16,7 +16,7 @@ namespace EVTHJÄLPEN.Controllers
             using (SqlConnection con = new SqlConnection("Server = (localdb)\\MSSQLLocalDB; Database = TranbarDB; Trusted_Connection = True;"))
             {
                 con.Open();
-                string SQL = @"select r.ID, Recipename, EstimatedTime,rt.RecipeTypeName from recipe r
+                string SQL = @"Select r.ID, Recipename, EstimatedTime,rt.RecipeTypeName from recipe r
                                inner join RecipeType rt on r.RecipeTypeID = rt.ID";
                 SqlCommand cmd = new SqlCommand(SQL, con);
 
