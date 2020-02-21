@@ -1,8 +1,30 @@
 ﻿@{
     ViewData["Title"] = "ReceptInformation";
 }
+
+@if (Model.Id == 1)
+{
     <div class="text-center">
-        <h1 class="display-4">ReceptInfo</h1>
+        <h1 class="display-10">Kladdkaka</h1>
     </div>
+}
+else if (Model.Id == 2)
+{
+    <div class="text-center">
+        <h1 class="display-10">Limpa</h1>
+    </div>
+}
+else if (Model.Id == 3)
+{
+    <div class="text-center">
+        <h1 class="display-10">Pannacota</h1>
+    </div>
+}
+else if (Model.Id == 4)
+{
+    <div class="text-center">
+        <h1 class="display-10">Laxsnitt</h1>
+    </div>
+}
 
-
+<a asp-controller="Recipe" asp-action="RecipeIndex">Tillbaka</a>
