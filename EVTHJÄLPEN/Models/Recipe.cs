@@ -10,7 +10,6 @@ namespace Eventhjälpen.Models
             EventDetails = new HashSet<EventDetails>();
             RecipeDetails = new HashSet<RecipeDetails>();
         }
-
         public int Id { get; set; }
         public int? RecipeTypeId { get; set; }
         public string RecipeName { get; set; }

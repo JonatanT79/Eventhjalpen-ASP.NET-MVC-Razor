@@ -9,7 +9,6 @@ namespace Eventhjälpen.Models
         {
             Recipe = new HashSet<Recipe>();
         }
-
         public int Id { get; set; }
         public string RecipeTypeName { get; set; }
 
