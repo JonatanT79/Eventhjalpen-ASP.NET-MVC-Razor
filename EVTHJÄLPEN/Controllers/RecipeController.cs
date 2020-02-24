@@ -24,7 +24,7 @@ namespace EVTHJÄLPEN.Controllers
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 
-                while(rdr.Read())
+                while (rdr.Read())
                 {
                     RecipeViewModel r = new RecipeViewModel();
                     r.RecipeId = rdr.GetInt32(0);
@@ -36,7 +36,7 @@ namespace EVTHJÄLPEN.Controllers
                 }
                 con.Close();
             }
-                return View(recipes);
+            return View(recipes);
         }
 
         public IActionResult ViewRecipe(int ID)
