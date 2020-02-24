@@ -5,24 +5,30 @@
 
     <div class="jumbotron">
         <h1 class="display-4">@Model.RecipeName</h1>
-        <p class="lead">Tillagningstid: @Model.EstimatedTime</p>
+        <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
         <hr class="my-4">
-        <img src="//placehold.it/500x400" class="mx-auto d-block p-5" />
-        <ul class="list-group">
-            <li class="list-group-item">
-                <label><input type="checkbox" checked="checked"> Ingrediens</label>
-            </li>
-            <li class="list-group-item">
-                <label><input type="checkbox" checked="checked"> Ingrediens</label>
-            </li>
-            <li class="list-group-item">
-                <label><input type="checkbox" checked="checked"> Ingrediens</label>
-            </li>
-        </ul>
-
-        <p class="text-black-50">Hur många ska äta?</p>
+        <nav aria-label="...">
+            <ul class="pagination pagination-sm">
+                <li class="page-item"><a class="page-link" href="#">Ingredienser</a></li>
+                <li class="page-item"><a class="page-link" href="#">Instruktioner</a></li>
+            </ul>
+        </nav>
+        <div class="d-flex flex-row">
+            <img src="//placehold.it/500x400" class="p-2" />
+            <ul class="list-group w-100">
+                <li class="list-group-item">
+                    <label><input type="checkbox" checked="checked"> Ingrediens 1</label>
+                </li>
+                <li class="list-group-item">
+                    <label><input type="checkbox" checked="checked"> Ingrediens 2</label>
+                </li>
+                <li class="list-group-item">
+                    <label><input type="checkbox" checked="checked"> Ingrediens 3</label>
+                </li>
+            </ul>
+        </div><p class="text-black-50">Hur många ska äta?</p>
         <button type="button" class="btn btn-success">+</button><button type="button" class="btn btn-danger">-</button>
 
     </div>
 
-<a asp-controller="Recipe" asp-action="RecipeIndex">Tillbaka</a>
+<a asp-controller="Recipe" asp-action="Recipes">Tillbaka</a>

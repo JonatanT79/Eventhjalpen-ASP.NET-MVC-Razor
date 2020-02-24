@@ -13,7 +13,8 @@ namespace EVTHJÄLPEN.Controllers
     public class RecipeController : Controller
     {
         [HttpGet]
-        public IActionResult RecipeIndex()
+        [Route("/[controller]/[action]")]
+        public IActionResult Recipes()
         {
             List<Recipe> recepies = new List<Recipe>();
             try
@@ -32,14 +33,15 @@ namespace EVTHJÄLPEN.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult ViewRecipe(int ID)
+        [HttpGet("{id}")]
+        [Route("/[controller]/[action]")]
+        public IActionResult ViewRecipe(int id)
         {
             try
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    Recipe loadedRecipe = ctx.Recipe.FirstOrDefault(x => x.Id == ID);
+                    Recipe loadedRecipe = ctx.Recipe.FirstOrDefault(x => x.Id == id);
                     return View(loadedRecipe);
                 }
             }

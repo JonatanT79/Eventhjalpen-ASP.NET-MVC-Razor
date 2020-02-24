@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-EVTHJÄLPEN-9208EDD4-DE62-4068-8A88-2E891C4A06F8</UserSecretsId>
+    <AssemblyName>EVTHJÄLPEN</AssemblyName>
+    <RootNamespace>EVTHJÄLPEN</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

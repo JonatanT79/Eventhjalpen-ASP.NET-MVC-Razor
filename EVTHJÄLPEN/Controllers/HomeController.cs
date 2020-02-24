@@ -23,11 +23,15 @@ namespace EVTHJÄLPEN.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            Random rng = new Random();
+            int recRecepie = 1;
+
             try
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    Recipe loadedRecipe = ctx.Recipe.FirstOrDefault(x => x.Id == 2);
+                    List<Recipe> recipeList = ctx.Recipe.ToList();
+                    Recipe loadedRecipe = recipeList.FirstOrDefault(x => x.Id == recRecepie);
                     return View(loadedRecipe);
                 }
             } catch (Exception e)
