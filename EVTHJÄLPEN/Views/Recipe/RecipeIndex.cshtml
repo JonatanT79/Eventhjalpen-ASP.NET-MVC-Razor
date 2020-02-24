@@ -1,19 +1,23 @@
-﻿@model List<RecipeViewModel>
+﻿@model List<Eventhjälpen.Models.Recipe>
 @{
     ViewData["Title"] = "Recept";
 }
-    <div class="text-center">
-        <h2 class="display-4">Alla recept</h2>
-        <p>__________________________________________________________________________________________________</p>
-
-    </div>
-
-
-@foreach (var item in Model)
-{
 <div class="text-center">
-    <p><a asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id ="@item.RecipeId">@item.RecipeName</a> 
-    <br /> @item.EstimatedTime Minuter @item.RecipeTypeName</p>
-    <p>______________________________________________________________</p>
+    <h2 class="display-4">Alla recept</h2>
+    <p>__________________________________________________________________________________________________</p>
+
 </div>
-}
+
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+        <div class="card p-3">
+            <img class="card-img-top img-fluid" src="//placehold.it/500x300" alt="Card image cap">
+            <div class="card-block">
+                <h4 class="card-title">@item.RecipeName</h4>
+                <p class="card-text">@item.RecipeType</p>
+                <a asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id="@item.Id">Gå till recept</a>
+            </div>
+        </div>
+    }
+</div>

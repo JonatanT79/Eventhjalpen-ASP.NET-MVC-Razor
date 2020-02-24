@@ -1,29 +1,28 @@
-﻿@{
+﻿@model Eventhjälpen.Models.Recipe
+@{
     ViewData["Title"] = "ReceptInformation";
 }
 
-@if (Model.Id == 1)
-{
-    <div class="text-center">
-        <h1 class="display-10">Kladdkaka</h1>
+    <div class="jumbotron">
+        <h1 class="display-4">@Model.RecipeName</h1>
+        <p class="lead">Tillagningstid: @Model.EstimatedTime</p>
+        <hr class="my-4">
+        <img src="//placehold.it/500x400" class="mx-auto d-block p-5" />
+        <ul class="list-group">
+            <li class="list-group-item">
+                <label><input type="checkbox" checked="checked"> Ingrediens</label>
+            </li>
+            <li class="list-group-item">
+                <label><input type="checkbox" checked="checked"> Ingrediens</label>
+            </li>
+            <li class="list-group-item">
+                <label><input type="checkbox" checked="checked"> Ingrediens</label>
+            </li>
+        </ul>
+
+        <p class="text-black-50">Hur många ska äta?</p>
+        <button type="button" class="btn btn-success">+</button><button type="button" class="btn btn-danger">-</button>
+
     </div>
-}
-else if (Model.Id == 2)
-{
-    <div class="text-center">
-        <h1 class="display-10">Limpa</h1>
-    </div>
-}
-else if (Model.Id == 3)
-{
-    <div class="text-center">
-        <h1 class="display-10">Pannacota</h1>
-    </div>
-}
-else if(Model.Id == 4)
-{
-    <div class="text-center">
-        <h1 class="display-10">Laxsnitt</h1>
-    </div>
-}
+
 <a asp-controller="Recipe" asp-action="RecipeIndex">Tillbaka</a>
