@@ -30,7 +30,7 @@ namespace EVTHJÄLPEN.Data.Migrations
                     ProductName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
                     Description = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
                     Quantity = table.Column<string>(nullable: true),
-                    Price = table.Column<int>(nullable: true)
+                    Price = table.Column<decimal>(nullable: true)
                 },
                 constraints: table =>
                 {
