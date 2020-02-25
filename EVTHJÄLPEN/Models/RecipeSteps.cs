@@ -11,6 +11,7 @@ namespace EVTHJÄLPEN.Models
         public int ID { get; set; }
         public int Stepnumber { get; set; }
         public string Instructions { get; set; }
+        public int RecipeID { get; set; }
         public virtual Recipe Recipe { get; set; }
     }
 }
