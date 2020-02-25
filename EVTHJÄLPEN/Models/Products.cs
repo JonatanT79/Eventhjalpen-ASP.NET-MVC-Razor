@@ -14,6 +14,7 @@ namespace Eventhjälpen.Models
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string Quantity { get; set; }
+        public int Price { get; set; }
         public virtual ICollection<Orderdetails> Orderdetails { get; set; }
         public virtual ICollection<RecipeDetails> RecipeDetails { get; set; }
     }
