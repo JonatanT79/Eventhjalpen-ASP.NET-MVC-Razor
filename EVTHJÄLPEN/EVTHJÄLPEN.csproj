@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.cs" />
+    <Compile Remove="Data\Migrations\20200218135301_Identityaddedclasses.cs" />
+    <Compile Remove="Data\Migrations\20200218135301_Identityaddedclasses.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

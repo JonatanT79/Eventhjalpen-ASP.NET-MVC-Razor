@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EVTHJÄLPEN.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200218135301_Identityaddedclasses")]
-    partial class Identityaddedclasses
+    [Migration("20200225080903_CreateTranbarDB")]
+    partial class CreateTranbarDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,22 +21,48 @@ namespace EVTHJÄLPEN.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Eventhjälpen.Models.Category", b =>
+            modelBuilder.Entity("EVTHJÄLPEN.Models.RecipeSteps", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("varchar(255)")
-                        .HasMaxLength(255)
-                        .IsUnicode(false);
+                    b.Property<string>("Instructions")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Category");
+                    b.Property<int>("Stepnumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("RecipeSteps");
+                });
+
+            modelBuilder.Entity("EVTHJÄLPEN.Models.UserAdress", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("UserAdress");
                 });
 
             modelBuilder.Entity("Eventhjälpen.Models.EventDetails", b =>
@@ -145,10 +171,6 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnName("CategoryID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("varchar(255)")
                         .HasMaxLength(255)
@@ -159,9 +181,10 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false);
 
-                    b.HasKey("Id");
+                    b.Property<string>("Quantity")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
                 });
@@ -268,7 +291,12 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false);
 
+                    b.Property<int?>("UsersAdressID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsersAdressID");
 
                     b.ToTable("Users");
                 });
@@ -473,6 +501,13 @@ namespace EVTHJÄLPEN.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("EVTHJÄLPEN.Models.RecipeSteps", b =>
+                {
+                    b.HasOne("Eventhjälpen.Models.Recipe", "Recipe")
+                        .WithMany("RecipeSteps")
+                        .HasForeignKey("RecipeId");
+                });
+
             modelBuilder.Entity("Eventhjälpen.Models.EventDetails", b =>
                 {
                     b.HasOne("Eventhjälpen.Models.Events", "Event")
@@ -507,14 +542,6 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasConstraintName("FK__Orders__UserID__25869641");
                 });
 
-            modelBuilder.Entity("Eventhjälpen.Models.Products", b =>
-                {
-                    b.HasOne("Eventhjälpen.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK__Products__Catego__2A4B4B5E");
-                });
-
             modelBuilder.Entity("Eventhjälpen.Models.Recipe", b =>
                 {
                     b.HasOne("Eventhjälpen.Models.RecipeType", "RecipeType")
@@ -534,6 +561,13 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .WithMany("RecipeDetails")
                         .HasForeignKey("RecipeId")
                         .HasConstraintName("FK__RecipeDet__Recip__35BCFE0A");
+                });
+
+            modelBuilder.Entity("Eventhjälpen.Models.Users", b =>
+                {
+                    b.HasOne("EVTHJÄLPEN.Models.UserAdress", "UsersAdress")
+                        .WithMany("Users")
+                        .HasForeignKey("UsersAdressID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

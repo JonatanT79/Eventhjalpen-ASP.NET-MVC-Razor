@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\flixa\\Desktop\\ITHS Eventhjälpen\\EventhjalpenITHS\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj": {}
+    "C:\\Users\\jonat\\source\\repos\\EventhjalpenITHS4\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj": {}
   },
   "projects": {
-    "C:\\Users\\flixa\\Desktop\\ITHS Eventhjälpen\\EventhjalpenITHS\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj": {
+    "C:\\Users\\jonat\\source\\repos\\EventhjalpenITHS4\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\flixa\\Desktop\\ITHS Eventhjälpen\\EventhjalpenITHS\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj",
+        "projectUniqueName": "C:\\Users\\jonat\\source\\repos\\EventhjalpenITHS4\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj",
         "projectName": "EVTHJÄLPEN",
-        "projectPath": "C:\\Users\\flixa\\Desktop\\ITHS Eventhjälpen\\EventhjalpenITHS\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj",
-        "packagesPath": "C:\\Users\\flixa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\flixa\\Desktop\\ITHS Eventhjälpen\\EventhjalpenITHS\\EVTHJÄLPEN\\obj\\",
+        "projectPath": "C:\\Users\\jonat\\source\\repos\\EventhjalpenITHS4\\EVTHJÄLPEN\\EVTHJÄLPEN.csproj",
+        "packagesPath": "C:\\Users\\jonat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jonat\\source\\repos\\EventhjalpenITHS4\\EVTHJÄLPEN\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\flixa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\jonat\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

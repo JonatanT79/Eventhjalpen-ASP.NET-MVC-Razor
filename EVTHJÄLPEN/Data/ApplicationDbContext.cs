@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Eventhjälpen.Models;
+using EVTHJÄLPEN.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,16 +18,18 @@ namespace EVTHJÄLPEN.Data
             : base(options)
         {
         }
-        public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<EventDetails> EventDetails { get; set; }
         public virtual DbSet<Events> Events { get; set; }
         public virtual DbSet<Orderdetails> Orderdetails { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<Recipe> Recipe { get; set; }
+        public virtual DbSet<RecipeSteps> RecipeSteps { get; set; }
         public virtual DbSet<RecipeDetails> RecipeDetails { get; set; }
         public virtual DbSet<RecipeType> RecipeType { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<UserAdress> UserAdress { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,14 +42,6 @@ namespace EVTHJÄLPEN.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Category>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.CategoryName)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-            });
 
             modelBuilder.Entity<EventDetails>(entity =>
             {
@@ -115,8 +110,6 @@ namespace EVTHJÄLPEN.Data
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-
                 entity.Property(e => e.Description)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -124,11 +117,6 @@ namespace EVTHJÄLPEN.Data
                 entity.Property(e => e.ProductName)
                     .HasMaxLength(255)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.Products)
-                    .HasForeignKey(d => d.CategoryId)
-                    .HasConstraintName("FK__Products__Catego__2A4B4B5E");
             });
 
             modelBuilder.Entity<Recipe>(entity =>

@@ -3,23 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EVTHJÄLPEN.Data.Migrations
 {
-    public partial class Identityaddedclasses : Migration
+    public partial class CreateTranbarDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Category",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(unicode: false, maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Category", x => x.ID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
@@ -32,6 +19,21 @@ namespace EVTHJÄLPEN.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
+                    Description = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
+                    Quantity = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,40 +50,18 @@ namespace EVTHJÄLPEN.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "UserAdress",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Firstname = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
-                    Lastname = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
-                    Email = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
-                    Phonenumber = table.Column<string>(unicode: false, maxLength: 255, nullable: false)
+                    Adress = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
-                    Description = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
-                    CategoryID = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK__Products__Catego__2A4B4B5E",
-                        column: x => x.CategoryID,
-                        principalTable: "Category",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_UserAdress", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,22 +86,24 @@ namespace EVTHJÄLPEN.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Users",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(nullable: true),
-                    SumToPay = table.Column<int>(nullable: true),
-                    CurrentDate = table.Column<DateTime>(nullable: true)
+                    Firstname = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
+                    Lastname = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
+                    Email = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
+                    Phonenumber = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
+                    UsersAdressID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.ID);
                     table.ForeignKey(
-                        name: "FK__Orders__UserID__25869641",
-                        column: x => x.UserID,
-                        principalTable: "Users",
+                        name: "FK_Users_UserAdress_UsersAdressID",
+                        column: x => x.UsersAdressID,
+                        principalTable: "UserAdress",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -179,6 +161,48 @@ namespace EVTHJÄLPEN.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RecipeSteps",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Stepnumber = table.Column<int>(nullable: false),
+                    Instructions = table.Column<string>(nullable: true),
+                    RecipeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeSteps", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_RecipeSteps_Recipe_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipe",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(nullable: true),
+                    SumToPay = table.Column<int>(nullable: true),
+                    CurrentDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK__Orders__UserID__25869641",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orderdetails",
                 columns: table => new
                 {
@@ -230,11 +254,6 @@ namespace EVTHJÄLPEN.Data.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryID",
-                table: "Products",
-                column: "CategoryID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Recipe_RecipeTypeID",
                 table: "Recipe",
                 column: "RecipeTypeID");
@@ -248,6 +267,16 @@ namespace EVTHJÄLPEN.Data.Migrations
                 name: "IX_RecipeDetails_RecipeID",
                 table: "RecipeDetails",
                 column: "RecipeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeSteps_RecipeId",
+                table: "RecipeSteps",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UsersAdressID",
+                table: "Users",
+                column: "UsersAdressID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -260,6 +289,9 @@ namespace EVTHJÄLPEN.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "RecipeDetails");
+
+            migrationBuilder.DropTable(
+                name: "RecipeSteps");
 
             migrationBuilder.DropTable(
                 name: "Events");
@@ -277,10 +309,10 @@ namespace EVTHJÄLPEN.Data.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "RecipeType");
 
             migrationBuilder.DropTable(
-                name: "RecipeType");
+                name: "UserAdress");
         }
     }
 }
