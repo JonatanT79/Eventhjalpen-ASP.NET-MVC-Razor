@@ -13,7 +13,6 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EventName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
                     EventType = table.Column<string>(unicode: false, maxLength: 255, nullable: true)
                 },
                 constraints: table =>
@@ -84,9 +83,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecipeTypeID = table.Column<int>(nullable: true),
                     RecipeName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
-                    EstimatedTime = table.Column<int>(nullable: true)
+                    EstimatedTime = table.Column<int>(nullable: true),
+                    RecipeTypeID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,9 +153,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductQuantity = table.Column<decimal>(nullable: false),
                     RecipeID = table.Column<int>(nullable: true),
                     ProductID = table.Column<int>(nullable: true),
-                    ProductQuantity = table.Column<decimal>(nullable: false),
                     MeasurementUnitID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -209,9 +208,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(nullable: true),
                     SumToPay = table.Column<int>(nullable: true),
-                    CurrentDate = table.Column<DateTime>(nullable: true)
+                    CurrentDate = table.Column<DateTime>(nullable: true),
+                    UserID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

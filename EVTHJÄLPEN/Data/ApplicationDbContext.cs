@@ -71,9 +71,6 @@ namespace EVTHJÄLPEN.Data
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.EventType)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Orderdetails>(entity =>

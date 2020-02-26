@@ -12,8 +12,6 @@ namespace Eventhjälpen.Models
 
         public int Id { get; set; }
         public string EventName { get; set; }
-        public string EventType { get; set; }
-
         public virtual ICollection<EventDetails> EventDetails { get; set; }
     }
 }
