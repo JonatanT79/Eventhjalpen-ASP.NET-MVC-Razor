@@ -1,0 +1,30 @@
+﻿@page
+@model EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage.AdressModel
+@{
+    ViewData["Title"] = "Lägg till adress";
+}
+
+<h4>@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-6">
+        <form id="change-password-form" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label>Gatuadress</label>
+                <input class="form-control" value="T.ex Årstaängsvägen 9"/>
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Postnummer</label>
+                <input class="form-control" />
+                <span  class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Stad</label>
+                <input class="form-control" />
+                <span  class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-secondary">Spara</button>
+        </form>
+    </div>
+</div>
