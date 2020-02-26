@@ -3,50 +3,50 @@ use TranbarDB
 insert into UserAdress(Adress,ZipCode,City) 
 values
 ('Hornsgatan 92', '118 21','Stockholm'),
-('Vallgatan 21', '411 16','Göteborg'),
-('Ymersgata 3', '215 36','Malmö'),
-('Lekgatan 7', '724 62','Västerås')
+('Vallgatan 21', '411 16','GÃ¶teborg'),
+('Ymersgata 3', '215 36','MalmÃ¶'),
+('Lekgatan 7', '724 62','VÃ¤sterÃ¥s')
 
 Insert into Users(Firstname, Lastname, Email, Phonenumber, UserAdressID)
 Values 
 ('Sven', 'Svensson', 'Sven.Svensson@gmail.com', '070876568',3),
 ('Anders', 'Borg', 'Anders.Borg@gmail.com','0707604923',1),
-('Göran', 'Andersson', 'golle@gmail.com', '071212345',2),
+('GÃ¶ran', 'Andersson', 'golle@gmail.com', '071212345',2),
 ('Eva','Lindgren', 'Eva.Lindgren@gmail.com', '070976557',4),
 ('Kalle', 'Berg', 'kalle121@gmail.com', '0702350455',1)
 
 Insert into Products(ProductName, Description,Quantity,Price)
 Values 
-('Smör', 'Svenskt','500 g',49.90), --1
-('Ägg','','6 Pack', 17.90), --2
-('Strösocker', '','1 Kg', 15.90), --3
+('SmÃ¶r', 'Svenskt','500 g',49.90), --1
+('Ã„gg','','6 Pack', 17.90), --2
+('StrÃ¶socker', '','1 Kg', 15.90), --3
 ('Kakao','','200 g', 30.90), --4
 ('Florsocker','','500 g', 17.90), --5
-('Vispgrädde','40%','3 dl', 18.90), --6
-('Vetemjöl','','2 kg', 14.90), --7
+('VispgrÃ¤dde','40%','3 dl', 18.90), --6
+('VetemjÃ¶l','','2 kg', 14.90), --7
 ('Florsocker','','500 g', 17.90), --8
-('Potatismjöl','','500 g', 12.90), --9
+('PotatismjÃ¶l','','500 g', 12.90), --9
 ('Bakpulver','','225 g', 14.90), --10
 
 ('Vaniljsocker','','170 g', 17.90), --11
-('Jordgubbssaft','Drickfärdig','50 cl', 41.90), --12
+('Jordgubbssaft','DrickfÃ¤rdig','50 cl', 41.90), --12
 ('Jordgubbssylt','Ekologisk','400 g', 28.90), --13
 ('Jordgubbar','','400 g', 39.90), --14
-('Kokosgrädde','','400 ml', 25.90), --15
+('KokosgrÃ¤dde','','400 ml', 25.90), --15
 ('Salt','','150 g', 8.90), --16
 ('Svartpeppar','Grovmalen','41 g', 24.90), --17
 ('Curry','','34 g', 27.90),  --18
-('Kycklingfilé','Frysta','1 g', 90.90),  --19
+('KycklingfilÃ©','Frysta','1 g', 90.90),  --19
 ('Matolja','','500 ml', 25.90), --20
 
 ('Rotselleri','','450 g', 9.90),  --21
-('Vitvinsvinäger','','50 cl', 35.50),  --22
+('VitvinsvinÃ¤ger','','50 cl', 35.50),  --22
 ('Olivolja','','750 ml', 61.00), --23
-('Vitlök','3 Pack','100 g', 17.90), --24
-('Schalottenlök','','250 g', 18.90),  --25
-('Ryggbiff','Färsk',' 180 g', 72.90), --26
-('Ströbröd', '', '400 g', 15.90), --27
-('Majsstärkelse','', '400 g', 18.90), --28
+('VitlÃ¶k','3 Pack','100 g', 17.90), --24
+('SchalottenlÃ¶k','','250 g', 18.90),  --25
+('Ryggbiff','FÃ¤rsk',' 180 g', 72.90), --26
+('StrÃ¶brÃ¶d', '', '400 g', 15.90), --27
+('MajsstÃ¤rkelse','', '400 g', 18.90), --28
 ('Grillspett', 'Bambu', '100 st', 12.90), --29
 ('Koriander', 'Fryst', '40 g', 11.50), --30
 ('Kalvfond', 'Koncentrerad', '180 ml', 34.90), --31
@@ -55,17 +55,17 @@ Values
 Insert into RecipeType(RecipeTypeName)
 Values 
 ('Bakverk'), --1
-('Förrätt'), --2
+('FÃ¶rrÃ¤tt'), --2
 ('Middag'), --3
 ('Vegetarisk') --4
 
----Ändrade recipeTypeID
+---Ã„ndrade recipeTypeID
 Insert into Recipe(RecipeTypeID, RecipeName, EstimatedTime)
 Values 
 (1,'Kladdkaka', 40), --1 
-(1,'Jordgubbstårta',50), --2
-(4,'Kycklingspett', 70), --3
-(4,'Ryggbiff med rotselleripuré och vitlökssky', 60) --4
+(1,'JordgubbstÃ¥rta',50), --2
+(3,'Kycklingspett', 70), --3
+(3,'Ryggbiff med rotselleripurÃ© och vitlÃ¶kssky', 60) --4
 
 insert into MeasurementUnit(Measurement) 
 values
@@ -78,7 +78,7 @@ values
 ('ml'), --7
 ('msk'), --8
 ('tsk'), --9
-('kryddmått'), --10
+('kryddmÃ¥tt'), --10
 ('st'), --11
 ('Klyftor'), --12
 ('Skivor') --13
@@ -95,23 +95,23 @@ Values
 (1, 8, 0, 11),
 (1, 7, 2, 5),
 
---Jordgubbstårta
+--JordgubbstÃ¥rta
 (2, 7, 1, 5),
 (2, 9, 1, 9),
-(2, 2, 4, 11), -- ÄGG
-(2, 3, 2, 5), -- STRÖSOCKER
+(2, 2, 4, 11), -- Ã„GG
+(2, 3, 2, 5), -- STRÃ–SOCKER
 (2, 1, 0.5, 8),
 (2, 27, 1.5, 8),
-(2, 6, 1.5, 5), --GRÄDDE
-(2, 2, 1, 11), -- OBS DETTA ÄR ETT ÄGG TILL!! --
-(2, 3, 2, 9), -- OBS DETTA ÄR MER STRÖSOCKER --
+(2, 6, 1.5, 5), --GRÃ„DDE
+(2, 2, 1, 11), -- OBS DETTA Ã„R ETT Ã„GG TILL!! --
+(2, 3, 2, 9), -- OBS DETTA Ã„R MER STRÃ–SOCKER --
 (2, 28, 1, 8),
 (2, 11, 2, 9),
-(2, 6, 1, 5), -- OBS DETTA ÄR MER GRÄDDE, MEN DENNA GÅNG VISPAD! --
+(2, 6, 1, 5), -- OBS DETTA Ã„R MER GRÃ„DDE, MEN DENNA GÃ…NG VISPAD! --
 (2, 12, 1, 5),
 (2, 13, 2, 5),
-(2, 6, 4, 5), -- GRÄDDE IGEN--
-(2, 14, 0, 0), --JORDUBBAR, OKLAR MÄNGD
+(2, 6, 4, 5), -- GRÃ„DDE IGEN--
+(2, 14, 400, 2), --JORDUBBAR, OKLAR MÃ„NGD
 
 --Kycklingspett
 (3, 15, 2, 5),
@@ -120,15 +120,15 @@ Values
 (3, 18, 2, 8),
 (3, 19, 600, 2),
 (3, 20, 0.5, 5),
-(3, 29, 1, 11), -- DETTA ÄR PRODUKTEN GRILLSPETT AV TRÄ (INTE MAT ALLTSÅ)
+(3, 29, 1, 11), -- DETTA Ã„R PRODUKTEN GRILLSPETT AV TRÃ„ (INTE MAT ALLTSÃ…)
 (3, 30, 3, 8), 
 
 --Ryggbiff
 (4, 21, 1, 1),
 (4, 22, 2, 8 ),
 (4, 23, 0.5, 5),
-(4, 32, 0, 11), --OKLAR MÄNGD VATTEN
-(4, 24, 3, 12), -- VITLÖKSKLYFTOR, HUR RÄKNA?
+(4, 32, 0, 11), --OKLAR MÃ„NGD VATTEN
+(4, 24, 3, 12), -- VITLÃ–KSKLYFTOR, HUR RÃ„KNA?
 (4, 25, 1.5, 11),
 (4, 1, 37.5, 2),
 (4, 22, 0.75, 8),
@@ -159,7 +159,7 @@ Insert into [Events](EventType)
 Values 
 ('Fest'),
 ('Kalas'),
-('Bröllop'),
+('BrÃ¶llop'),
 ('Studentfest')
 
 Insert into EventDetails(RecipeID, EventID)
@@ -172,32 +172,32 @@ Values
 Insert into RecipeSteps(RecipeID, Stepnumber,Instructions)
 Values 
 -- Kladdkaka
-(1, 1, 'Sätt ugnen på 175 grader'),
-(1, 2, 'Smält smöret i en kastrull. Lyft av kastrullen från plattan'),
-(1, 3, 'Rör ner socker och ägg, blanda väl. Rör ner övriga ingredienser så att det blir väl blandat'),
-(1, 4, 'Häll smeten i en smord och bröad form med löstagbar kant.'),
-(1, 5, 'Grädda mitt i ugnen i cirka 15 min. Kakan blir låg med ganska hård yta och lite kladdig i mitten'),
-(1, 6, 'Låt kakan kallna, Pudra över florsocker. Servera med grädde eller glass och frukt'),
+(1, 1, 'SÃ¤tt ugnen pÃ¥ 175 grader'),
+(1, 2, 'SmÃ¤lt smÃ¶ret i en kastrull. Lyft av kastrullen frÃ¥n plattan'),
+(1, 3, 'RÃ¶r ner socker och Ã¤gg, blanda vÃ¤l. RÃ¶r ner Ã¶vriga ingredienser sÃ¥ att det blir vÃ¤l blandat'),
+(1, 4, 'HÃ¤ll smeten i en smord och brÃ¶ad form med lÃ¶stagbar kant.'),
+(1, 5, 'GrÃ¤dda mitt i ugnen i cirka 15 min. Kakan blir lÃ¥g med ganska hÃ¥rd yta och lite kladdig i mitten'),
+(1, 6, 'LÃ¥t kakan kallna, Pudra Ã¶ver florsocker. Servera med grÃ¤dde eller glass och frukt'),
 
---Jordgubbstårta
-(2, 1, 'Sätt ugnen på 175 grader. Smörj och bröa formen. Blanda vetemjöl, potatismjöl och bakpulver i en skål. Vispa ägg och socker så att blandningen blir ljus och pösig. Sockret ska ha löst sig helt. Sikta ner mjölblandningen i äggsmeten och blanda.'),
-(2, 2, 'Häll upp i formen. Grädda mitt i ugnen ca 35 min.'),
-(2, 3, 'Vaniljkräm: Blanda grädde, äggula, socker och majsstärkelse i en kastrull. Sjud under omrörning tills krämen tjocknar. Ta från värmen. Blanda i vaniljsockret. Låt kallna.'),
-(2, 4, 'Vänd ner vispad grädde när det är dags att lägga ihop tårtan.'),
-(2, 5, 'Ihopläggning: Skär tårtbottnen i tre delar. Pensla bottnarna med saft. Skär jordgubbarna i små bitar och blanda med vaniljkrämen.'),
-(2, 6, 'Bred jordgubbssylt och därefter vaniljkräm på de två understa bottnarna. Lägg på den översta bottnen. Plasta in tårtan noga och låt den safta till sig i kylen, gärna några timmar.'),
-(2, 7, 'Garnera med grädde och jordgubbar.'),
+--JordgubbstÃ¥rta
+(2, 1, 'SÃ¤tt ugnen pÃ¥ 175 grader. SmÃ¶rj och brÃ¶a formen. Blanda vetemjÃ¶l, potatismjÃ¶l och bakpulver i en skÃ¥l. Vispa Ã¤gg och socker sÃ¥ att blandningen blir ljus och pÃ¶sig. Sockret ska ha lÃ¶st sig helt. Sikta ner mjÃ¶lblandningen i Ã¤ggsmeten och blanda.'),
+(2, 2, 'HÃ¤ll upp i formen. GrÃ¤dda mitt i ugnen ca 35 min.'),
+(2, 3, 'VaniljkrÃ¤m: Blanda grÃ¤dde, Ã¤ggula, socker och majsstÃ¤rkelse i en kastrull. Sjud under omrÃ¶rning tills krÃ¤men tjocknar. Ta frÃ¥n vÃ¤rmen. Blanda i vaniljsockret. LÃ¥t kallna.'),
+(2, 4, 'VÃ¤nd ner vispad grÃ¤dde nÃ¤r det Ã¤r dags att lÃ¤gga ihop tÃ¥rtan.'),
+(2, 5, 'IhoplÃ¤ggning: SkÃ¤r tÃ¥rtbottnen i tre delar. Pensla bottnarna med saft. SkÃ¤r jordgubbarna i smÃ¥ bitar och blanda med vaniljkrÃ¤men.'),
+(2, 6, 'Bred jordgubbssylt och dÃ¤refter vaniljkrÃ¤m pÃ¥ de tvÃ¥ understa bottnarna. LÃ¤gg pÃ¥ den Ã¶versta bottnen. Plasta in tÃ¥rtan noga och lÃ¥t den safta till sig i kylen, gÃ¤rna nÃ¥gra timmar.'),
+(2, 7, 'Garnera med grÃ¤dde och jordgubbar.'),
 
 --Kycklingspett
-(3, 1, 'Rör ihop kokosgrädde, socker, salt och curry. Skär kycklingen i små bitar och blanda ner. Låt marinera i kylen ca 20 minuter.'),
-(3, 2, 'Trä kycklingbitarna på spett. Stek spetten i 3–4 msk olja i en het stekpanna ca 5 minuter. Pensla med resten av oljan under stekningen så kycklingen håller sig saftig. Toppa spetten med koriander'),
+(3, 1, 'RÃ¶r ihop kokosgrÃ¤dde, socker, salt och curry. SkÃ¤r kycklingen i smÃ¥ bitar och blanda ner. LÃ¥t marinera i kylen ca 20 minuter.'),
+(3, 2, 'TrÃ¤ kycklingbitarna pÃ¥ spett. Stek spetten i 3â€“4 msk olja i en het stekpanna ca 5 minuter. Pensla med resten av oljan under stekningen sÃ¥ kycklingen hÃ¥ller sig saftig. Toppa spetten med koriander'),
 
 
 --Ryggbiff
-(4, 1, 'Sätt ugnen på 175°C.'),
-(4, 2, 'Rotselleripuré: Skala och skär rotsellerin i mindre bitar och lägg i en ugnsform. Lägg vitlöksklyftorna (med skal) till vitlöksskyn i en ugnsform. Rosta rotsellerin och vitlöken i ugnen ca 30 minuter tills rotsellerin är mjuk.'),
-(4, 3, 'Mixa rotsellerin i en blender med vinäger och olivolja. Späd med vatten till lagom konsistens. Smaka av med salt.'),
-(4, 4, 'Vitlökssky: Skala och skiva löken. Skala de rostade vitlöksklyftorna. Fräs schalottenlöken i 2 msk av smöret (för 8 port) i en kastrull ca 5 minuter. Tillsätt vinäger och den rostade vitlöken. Låt koka upp och tillsätt fond och vatten, låt koka 2–3 minuter. Tillsätt resten av smöret lite i taget och mixa till en slät sås vid servering. Sila genom en finmaskig sil och smaka av med salt och peppar.'),
-(4, 5, 'Sätt ugnen på 100°C.'),
-(4, 6, 'Ryggbiff: Krydda köttet med salt och peppar. Stek i omgångar i het panna i olja och smör, 1–2 minuter per sida. Lägg köttet på ett ugnsgaller med plåt under. Sätt in i ugnen, se Innertemperatur för blodigt, medium och välstekt. Låt köttet vila ca 2 minuter innan servering.'),
-(4, 7, 'Skiva köttet och servera med rotselleripurén, vitlöksskyn och toppa med svartkålen.')
+(4, 1, 'SÃ¤tt ugnen pÃ¥ 175Â°C.'),
+(4, 2, 'RotselleripurÃ©: Skala och skÃ¤r rotsellerin i mindre bitar och lÃ¤gg i en ugnsform. LÃ¤gg vitlÃ¶ksklyftorna (med skal) till vitlÃ¶ksskyn i en ugnsform. Rosta rotsellerin och vitlÃ¶ken i ugnen ca 30 minuter tills rotsellerin Ã¤r mjuk.'),
+(4, 3, 'Mixa rotsellerin i en blender med vinÃ¤ger och olivolja. SpÃ¤d med vatten till lagom konsistens. Smaka av med salt.'),
+(4, 4, 'VitlÃ¶kssky: Skala och skiva lÃ¶ken. Skala de rostade vitlÃ¶ksklyftorna. FrÃ¤s schalottenlÃ¶ken i 2 msk av smÃ¶ret (fÃ¶r 8 port) i en kastrull ca 5 minuter. TillsÃ¤tt vinÃ¤ger och den rostade vitlÃ¶ken. LÃ¥t koka upp och tillsÃ¤tt fond och vatten, lÃ¥t koka 2â€“3 minuter. TillsÃ¤tt resten av smÃ¶ret lite i taget och mixa till en slÃ¤t sÃ¥s vid servering. Sila genom en finmaskig sil och smaka av med salt och peppar.'),
+(4, 5, 'SÃ¤tt ugnen pÃ¥ 100Â°C.'),
+(4, 6, 'Ryggbiff: Krydda kÃ¶ttet med salt och peppar. Stek i omgÃ¥ngar i het panna i olja och smÃ¶r, 1â€“2 minuter per sida. LÃ¤gg kÃ¶ttet pÃ¥ ett ugnsgaller med plÃ¥t under. SÃ¤tt in i ugnen, se Innertemperatur fÃ¶r blodigt, medium och vÃ¤lstekt. LÃ¥t kÃ¶ttet vila ca 2 minuter innan servering.'),
+(4, 7, 'Skiva kÃ¶ttet och servera med rotselleripurÃ©n, vitlÃ¶ksskyn och toppa med svartkÃ¥len.')
