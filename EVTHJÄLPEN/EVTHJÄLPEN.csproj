@@ -3,10 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-EVTHJÄLPEN-9208EDD4-DE62-4068-8A88-2E891C4A06F8</UserSecretsId>
+    <AssemblyName>EVTHJÄLPEN</AssemblyName>
+    <RootNamespace>EVTHJÄLPEN</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.cs" />
+    <Compile Remove="Data\Migrations\20200218135301_Identityaddedclasses.cs" />
+    <Compile Remove="Data\Migrations\20200218135301_Identityaddedclasses.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200225080903_CreateTranbarDB.cs" />
+    <Compile Remove="Data\Migrations\20200225080903_CreateTranbarDB.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200225130403_CreateTranbarDB.cs" />
+    <Compile Remove="Data\Migrations\20200225130403_CreateTranbarDB.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,13 +23,14 @@
 
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0-preview1.19506.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0-preview1-19509-03" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
 

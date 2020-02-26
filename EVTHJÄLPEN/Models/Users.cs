@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EVTHJÄLPEN.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,7 +23,8 @@ namespace Eventhjälpen.Models
         public string Email { get; set; }
         [Required]
         public string Phonenumber { get; set; }
-
+        public int UserAdressID { get; set; }
+        public virtual UserAdress UsersAdress { get; set; }
         public virtual ICollection<Orders> Orders { get; set; }
     }
 }

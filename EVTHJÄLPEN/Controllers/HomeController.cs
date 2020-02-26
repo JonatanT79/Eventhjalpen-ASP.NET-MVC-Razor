@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EVTHJÄLPEN.Models;
+using Eventhjälpen.Models;
+using EVTHJÄLPEN.Data;
 
 namespace EVTHJÄLPEN.Controllers
 {
@@ -18,9 +20,24 @@ namespace EVTHJÄLPEN.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            Random rng = new Random();
+            int recRecepie = 1;
+
+            try
+            {
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                {
+                    List<Recipe> recipeList = ctx.Recipe.ToList();
+                    Recipe loadedRecipe = recipeList.FirstOrDefault(x => x.Id == recRecepie);
+                    return View(loadedRecipe);
+                }
+            } catch (Exception e)
+            {
+                return View();
+            }
         }
 
         public IActionResult Privacy()

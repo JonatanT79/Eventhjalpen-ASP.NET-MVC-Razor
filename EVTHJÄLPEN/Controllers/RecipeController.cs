@@ -12,38 +12,43 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class RecipeController : Controller
     {
-        public IActionResult RecipeIndex()
+        [HttpGet]
+        [Route("/[controller]/[action]")]
+        public IActionResult Recipes()
         {
-            List<RecipeViewModel> recipes = new List<RecipeViewModel>();
-            using (SqlConnection con = new SqlConnection("Server = (localdb)\\MSSQLLocalDB; Database = TranbarDB; Trusted_Connection = True;"))
+            List<Recipe> recepies = new List<Recipe>();
+            try
             {
-                con.Open();
-                string SQL = @"Select r.ID, Recipename, EstimatedTime,rt.RecipeTypeName from recipe r
-                               inner join RecipeType rt on r.RecipeTypeID = rt.ID";
-                SqlCommand cmd = new SqlCommand(SQL, con);
-
-                SqlDataReader rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    RecipeViewModel r = new RecipeViewModel();
-                    r.RecipeId = rdr.GetInt32(0);
-                    r.RecipeName = rdr.GetString(1);
-                    r.EstimatedTime = rdr.GetInt32(2);
-                    r.RecipeTypeName = rdr.GetString(3);
-
-                    recipes.Add(r);
+                    recepies = ctx.Recipe
+                        .ToList();
                 }
-                con.Close();
+
+                return View(recepies);
             }
-            return View(recipes);
+            catch (Exception e)
+            {
+                return Content("Failed loading recepies: " + e);
+            }
         }
 
-        public IActionResult ViewRecipe(int ID)
+        [HttpGet("{id}")]
+        [Route("/[controller]/[action]")]
+        public IActionResult ViewRecipe(int id)
         {
-            Recipe r = new Recipe();
-            r.Id = ID;
-            return View(r);
+            try
+            {
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                {
+                    Recipe loadedRecipe = ctx.Recipe.FirstOrDefault(x => x.Id == id);
+                    return View(loadedRecipe);
+                }
+            }
+            catch (Exception e)
+            {
+                return Content("Failed loading recipe: " + e);
+            }
         }
     }
 }
