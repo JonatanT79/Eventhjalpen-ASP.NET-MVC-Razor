@@ -11,7 +11,6 @@ namespace Eventhjälpen.Models
         }
         public int Id { get; set; }
         public string RecipeTypeName { get; set; }
-
         public virtual ICollection<Recipe> Recipe { get; set; }
     }
 }
