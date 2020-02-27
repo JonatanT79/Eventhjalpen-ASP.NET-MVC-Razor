@@ -1,11 +1,11 @@
-﻿@model List<ViewProducts>
+﻿@model ViewProducts 
 @{
     ViewData["Title"] = "ReceptInformation";
 }
 
 <div class="jumbotron">
-    @*<h1 class="display-4">@Model.RecipeName</h1>
-    <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>*@
+    <h1 class="display-4">@Model.RecipeName</h1>
+    <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
     <hr class="my-4">
     <nav aria-label="...">
         <ul class="pagination pagination-sm">
@@ -14,9 +14,11 @@
         </ul>
     </nav>
     <div class="d-flex flex-row">
-        <img src="//placehold.it/500x400" class="p-2" />
+        @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
+        <img src="@s" class="p-2"/>
         <ul class="list-group w-100">
-            @foreach (var item in Model)
+
+            @foreach (var item in Model.Productslist)
             {
                 <li class="list-group-item">
                     <label><input type="checkbox" checked="checked">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>

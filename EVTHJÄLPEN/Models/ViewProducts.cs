@@ -7,8 +7,10 @@ namespace EVTHJÄLPEN.Models
 {
     public class ViewProducts
     {
-        public string ProductName { get; set; }
-        public decimal ProductQuantity { get; set; }
-        public string Measurement { get; set; }
+        public int RecipeID { get; set; }
+        public string RecipeName { get; set; }
+        public int EstimatedTime { get; set; }
+
+        public List<ShowIngrediens> Productslist = new List<ShowIngrediens>();
     }
 }

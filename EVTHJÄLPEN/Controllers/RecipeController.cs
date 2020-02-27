@@ -37,11 +37,11 @@ namespace EVTHJÄLPEN.Controllers
         [Route("/[controller]/[action]")]
         public IActionResult ViewRecipe(int id)
         {
-            List<ViewProducts> Productslist = new List<ViewProducts>();
+            ViewProducts vp = new ViewProducts();
             using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
             {
                 con.Open();
-                String SQL = @"select ProductName, Quantity, ProductQuantity,Measurement, RecipeName
+                string SQL = @"select Recipename,EstimatedTime, ProductName, ProductQuantity,Measurement,RE.Id
                                 from Products PR 
                                 INNER JOIN RecipeDetails RD ON PR.ID = RD.ProductID 
                                 INNER JOIN MeasurementUnit MU ON RD.MeasurementUnitID = MU.Id 
@@ -55,15 +55,18 @@ namespace EVTHJÄLPEN.Controllers
 
                 while (rdr.Read())
                 {
-                    ViewProducts vp = new ViewProducts();
-                    vp.ProductName = rdr.GetString(0);
-                    vp.ProductQuantity = rdr.GetDecimal(2);
-                    vp.Measurement = rdr.GetString(3);
-                    Productslist.Add(vp);
+                    ShowIngrediens SI = new ShowIngrediens();
+                    vp.RecipeID = rdr.GetInt32(5);
+                    vp.RecipeName = rdr.GetString(0);
+                    vp.EstimatedTime = rdr.GetInt32(1);
+                    SI.ProductName = rdr.GetString(2);
+                    SI.ProductQuantity = rdr.GetDecimal(3);
+                    SI.Measurement = rdr.GetString(4);
+                    vp.Productslist.Add(SI);
                 }
                 con.Close();
             }
-            return View(Productslist);
+            return View(vp);
 
             //try
             //{
