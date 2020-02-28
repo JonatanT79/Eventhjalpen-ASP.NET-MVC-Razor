@@ -31,11 +31,11 @@
         <p class="display-10">@step.Stepnumber: @step.Instructions</p>
     }
     @*Fixa designen och förkorta ner text-inputet*@
-    <p class="text-black-50">Portioner:</p>
+    <p class="text-black-50" style="text-align:right;">Portioner:</p>
 
-    <button type="button" class="btn btn-success" style="text-align:right; float: right">+</button>
-    <input  type="text" value ="4" style="text-align: right; float:right" />
-    <button type="button" class="btn btn-danger" style=" text-align: right; float: right">-</button>
+    <button type="button" class="btn btn-success" style="text-align:right; float: right;">+</button>
+    <input  type="text" value ="4" style="text-align: center; float:right; width:3%;" />
+    <button type="button" class="btn btn-danger" style=" text-align: right; float: right;">-</button>
 
     <a asp-controller="Recipe" asp-action="Recipes" style=" text-align: left; float: left">Tillbaka</a>
 </div>
