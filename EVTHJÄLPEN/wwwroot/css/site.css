@@ -69,8 +69,27 @@ body {
   margin-bottom: 10px;
 }
 
+main {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    border-right: 1px;
+    border-left: 1px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-style: solid;
+    border-color: #b2b2b2;
+    padding: 1em;
+    min-height: 100vh;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
