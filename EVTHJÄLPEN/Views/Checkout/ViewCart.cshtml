@@ -1,0 +1,19 @@
+﻿@model EVTHJÄLPEN.Models.CartVM
+@{
+    ViewData["Title"] = "Varukorg";
+}
+
+<h1>Varukorg</h1>
+
+
+@foreach (var item in Model.ProductsInCart)
+{
+    <li class="list-group-item">
+        <label><input type="checkbox" checked="checked">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>
+    </li>
+
+}
+
+<a class="btn btn-primary" href="#" role="button">Fortsätt handla</a>
+<p class="text-lowercase"></p>
+<a class="btn btn-primary" href="#" role="button">Checka ut</a>

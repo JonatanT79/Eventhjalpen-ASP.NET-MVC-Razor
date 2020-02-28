@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace EVTHJÄLPEN.Models
 {
-    public class ShowIngrediens
+    public class IngredientToCart
     {
         public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public decimal ProductQuantity { get; set; }
-        public string Measurement { get; set; }
+        public bool Selected { get; set; }
     }
 }
