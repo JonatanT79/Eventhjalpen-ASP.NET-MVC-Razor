@@ -13,9 +13,9 @@
             <li class="page-item"><a class="page-link" href="#">Instruktioner</a></li>
         </ul>
     </nav>
-    <div class="d-flex flex-row">
+    <div class="card">
         @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
-        <img src="@s" class="p-2"/>
+        <img src="@s" class="p-2" style="width: 100%; height: 50%"/>
         <ul class="list-group w-100">
 
             @foreach (var item in Model.Productslist)
