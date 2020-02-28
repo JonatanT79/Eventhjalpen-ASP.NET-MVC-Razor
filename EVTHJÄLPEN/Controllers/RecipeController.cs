@@ -70,6 +70,27 @@ namespace EVTHJÄLPEN.Controllers
                     
                 }
                 con.Close();
+
+                // Andra queryn -- Hämtar Stegnr och instruktioner
+
+                con.Open();
+                string SQL2 = @"select Stepnumber, Instructions from Recipe r
+                                inner join RecipeSteps rs on rs.RecipeID = r.ID
+                                where r.ID = @ID2";
+
+                SqlCommand command = new SqlCommand(SQL2, con);
+                command.Parameters.AddWithValue("@ID2", id);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    RecipeSteps RS = new RecipeSteps();
+                    RS.Stepnumber = reader.GetInt32(0);
+                    RS.Instructions = reader.GetString(1);
+                    vp.StepList.Add(RS);
+                }
+                con.Close();
             }
             return View(vp);    
         }
