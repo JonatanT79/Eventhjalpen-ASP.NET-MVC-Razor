@@ -3,32 +3,40 @@
     ViewData["Title"] = "ReceptInformation";
 }
 
-<div class="jumbotron">
-    <h1 class="display-4">@Model.RecipeName</h1>
-    <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
-    <hr class="my-4">
-    <nav aria-label="...">
-        <ul class="pagination pagination-sm">
-            <li class="page-item"><a class="page-link" href="#">Ingredienser</a></li>
-            <li class="page-item"><a class="page-link" href="#">Instruktioner</a></li>
-        </ul>
-    </nav>
-    <div class="d-flex flex-row">
-        @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
-        <img src="@s" class="p-2"/>
-        <ul class="list-group w-100">
+    <div class="jumbotron">
+        <h1 class="display-4">@Model.RecipeName</h1>
+        <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
+        <hr class="my-4">
+        <nav aria-label="...">
+            <ul class="pagination pagination-sm">
+                <li class="page-item"><a class="page-link" href="#">Ingredienser</a></li>
+                <li class="page-item"><a class="page-link" href="#">Instruktioner</a></li>
+            </ul>
+        </nav>
+        <div class="d-flex flex-row">
+            @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
+            <img src="@s" class="p-2" />
+            <form>
+                <ul class="list-group w-100">
+                    @foreach (var item in Model.Productslist)
+                    {
+                        <li class="list-group-item">
+                            <label><input type="checkbox" checked="checked" name="Product" value="">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>
+                        </li>
+                    }
 
-            @foreach (var item in Model.Productslist)
-            {
-                <li class="list-group-item">
-                    <label><input type="checkbox" checked="checked">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>
-                </li>
-            }
+                </ul>
+            </form>
 
-        </ul>
-    </div><p class="text-black-50">Hur många ska äta?</p>
-    <button type="button" class="btn btn-success">+</button><button type="button" class="btn btn-danger">-</button>
+        </div>
 
-</div>
+        <form asp-controller="Recipe" asp-action="SendToCart" method="POST">
+s            <button type="submit" class="btn btn-success"></button>
+        </form>
+
+        <p class="text-black-50">Hur många ska äta?</p>
+        <button type="button" class="btn btn-success">+</button><button type="button" class="btn btn-danger">-</button>
+
+    </div>
 
 <a asp-controller="Recipe" asp-action="Recipes">Tillbaka</a>

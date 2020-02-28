@@ -12,6 +12,8 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class RecipeController : Controller
     {
+        List<Products> prods = new List<Products>();
+
         [HttpGet]
         [Route("/[controller]/[action]")]
         public IActionResult Recipes()
@@ -38,10 +40,11 @@ namespace EVTHJÄLPEN.Controllers
         public IActionResult ViewRecipe(int id)
         {
             ViewProducts vp = new ViewProducts();
+
             using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
             {
                 con.Open();
-                string SQL = @"select Recipename,EstimatedTime, ProductName, ProductQuantity,Measurement,RE.Id
+                string SQL = @"select Recipename,EstimatedTime, ProductName, ProductQuantity,Measurement,RE.Id, PR.Id
                                 from Products PR 
                                 INNER JOIN RecipeDetails RD ON PR.ID = RD.ProductID 
                                 INNER JOIN MeasurementUnit MU ON RD.MeasurementUnitID = MU.Id 
@@ -59,27 +62,25 @@ namespace EVTHJÄLPEN.Controllers
                     vp.RecipeID = rdr.GetInt32(5);
                     vp.RecipeName = rdr.GetString(0);
                     vp.EstimatedTime = rdr.GetInt32(1);
+                    SI.ProductID = rdr.GetInt32(6);
                     SI.ProductName = rdr.GetString(2);
                     SI.ProductQuantity = rdr.GetDecimal(3);
                     SI.Measurement = rdr.GetString(4);
                     vp.Productslist.Add(SI);
+                    
                 }
                 con.Close();
             }
-            return View(vp);
+            return View(vp);    
+        }
 
-            //try
-            //{
-            //    using (ApplicationDbContext ctx = new ApplicationDbContext())
-            //    {
-            //        Recipe loadedRecipe = ctx.Recipe.FirstOrDefault(x => x.Id == id);
-            //        return View(loadedRecipe);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    return Content("Failed loading recipe: " + e);
-            //}
+        [HttpPost]
+        [Route("/[controller]/[action]")]
+        public IActionResult OnPost([Bind("Product")] List<IngredientToCart> ic)
+        {
+            
+
+            return RedirectToAction("ViewCart", "Checkout");
         }
     }
 }
