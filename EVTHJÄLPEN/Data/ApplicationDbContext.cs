@@ -29,7 +29,7 @@ namespace EVTHJÄLPEN.Data
         public virtual DbSet<RecipeType> RecipeType { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserAdress> UserAdress { get; set; }
-
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
