@@ -12,5 +12,7 @@ namespace EVTHJÄLPEN.Models
         public int EstimatedTime { get; set; }
 
         public List<ShowIngrediens> Productslist = new List<ShowIngrediens>();
+
+        public List<RecipeSteps> StepList = new List<RecipeSteps>();
     }
 }

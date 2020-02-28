@@ -1,4 +1,4 @@
-﻿@model ViewProducts 
+﻿@model ViewProducts
 @{
     ViewData["Title"] = "ReceptInformation";
 }
@@ -7,15 +7,11 @@
     <h1 class="display-4">@Model.RecipeName</h1>
     <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
     <hr class="my-4">
-    <nav aria-label="...">
-        <ul class="pagination pagination-sm">
-            <li class="page-item"><a class="page-link" href="#">Ingredienser</a></li>
-            <li class="page-item"><a class="page-link" href="#">Instruktioner</a></li>
-        </ul>
-    </nav>
+
     <div class="d-flex flex-row">
         @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
-        <img src="@s" class="p-2"/>
+        <img src="@s" class="p-2" />
+
         <ul class="list-group w-100">
 
             @foreach (var item in Model.Productslist)
@@ -26,9 +22,21 @@
             }
 
         </ul>
-    </div><p class="text-black-50">Hur många ska äta?</p>
-    <button type="button" class="btn btn-success">+</button><button type="button" class="btn btn-danger">-</button>
+    </div>
 
+    <h1>Gör så här:</h1>
+
+    @foreach (var step in Model.StepList)
+    {
+        <p class="display-10">@step.Stepnumber: @step.Instructions</p>
+    }
+    @*Fixa designen och förkorta ner text-inputet*@
+    <p class="text-black-50">Portioner:</p>
+
+    <button type="button" class="btn btn-success" style="text-align:right; float: right">+</button>
+    <input  type="text" value ="4" style="text-align: right; float:right" />
+    <button type="button" class="btn btn-danger" style=" text-align: right; float: right">-</button>
+
+    <a asp-controller="Recipe" asp-action="Recipes" style=" text-align: left; float: left">Tillbaka</a>
 </div>
 
-<a asp-controller="Recipe" asp-action="Recipes">Tillbaka</a>
