@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
 using EVTHJÄLPEN.Models;
+using Eventhjälpen.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -12,20 +13,53 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class RecipeController : Controller
     {
-        [HttpGet]
+
+        [HttpGet("{id}")]
         [Route("/[controller]/[action]")]
-        public IActionResult Recipes()
+        public IActionResult Recipes(int id)
         {
-            List<Recipe> recepies = new List<Recipe>();
+            List<Recipe> _recepies = new List<Recipe>();
+            List<RecipeType> _recipeTypes = new List<RecipeType>();
+            RecipeVM vm = new RecipeVM();
+
+            if (id <= 0)
+            {
+                try
+                {
+                    using (ApplicationDbContext ctx = new ApplicationDbContext())
+                    {
+                        _recepies = ctx.Recipe
+                            .ToList();
+                        _recipeTypes = ctx.RecipeType
+                            .ToList();
+                    }
+
+
+                    vm.recipes = _recepies;
+                    vm.recipeTypes = _recipeTypes;
+
+                    return View(vm);
+                }
+                catch (Exception e)
+                {
+                    return Content("Failed loading recepies: " + e);
+                }
+            }
+
             try
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    recepies = ctx.Recipe
+                    _recipeTypes = ctx.RecipeType
+                        .ToList();
+                    _recepies = ctx.Recipe.Where(x => x.RecipeTypeId == id)
                         .ToList();
                 }
 
-                return View(recepies);
+                vm.recipes = _recepies;
+                vm.recipeTypes = _recipeTypes;
+
+                return View(vm);
             }
             catch (Exception e)
             {
@@ -38,10 +72,11 @@ namespace EVTHJÄLPEN.Controllers
         public IActionResult ViewRecipe(int id)
         {
             ViewProducts vp = new ViewProducts();
+
             using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
             {
                 con.Open();
-                string SQL = @"select Recipename,EstimatedTime, ProductName, ProductQuantity,Measurement,RE.Id
+                string SQL = @"select Recipename,EstimatedTime, ProductName, ProductQuantity,Measurement,RE.Id, PR.Id
                                 from Products PR 
                                 INNER JOIN RecipeDetails RD ON PR.ID = RD.ProductID 
                                 INNER JOIN MeasurementUnit MU ON RD.MeasurementUnitID = MU.Id 
@@ -59,10 +94,12 @@ namespace EVTHJÄLPEN.Controllers
                     vp.RecipeID = rdr.GetInt32(5);
                     vp.RecipeName = rdr.GetString(0);
                     vp.EstimatedTime = rdr.GetInt32(1);
+                    SI.ProductID = rdr.GetInt32(6);
                     SI.ProductName = rdr.GetString(2);
                     SI.ProductQuantity = rdr.GetDecimal(3);
                     SI.Measurement = rdr.GetString(4);
                     vp.Productslist.Add(SI);
+                    
                 }
                 con.Close();
 
@@ -87,7 +124,16 @@ namespace EVTHJÄLPEN.Controllers
                 }
                 con.Close();
             }
-            return View(vp);
+            return View(vp);    
+        }
+
+        [HttpPost]
+        [Route("/[controller]/[action]")]
+        public IActionResult OnPost([Bind("Product")] List<IngredientToCart> ic)
+        {
+            
+
+            return RedirectToAction("ViewCart", "Checkout");
 
         }
     }

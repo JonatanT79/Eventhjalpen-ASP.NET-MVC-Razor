@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace EVTHJÄLPEN.Models
 {
-    public class ShowIngrediens
+    public class ViewProductVM
     {
-        public int ProductID { get; set; }
+        public List<ViewProducts> vp { get; set;}
         public string ProductName { get; set; }
-        public decimal ProductQuantity { get; set; }
-        public string Measurement { get; set; }
+        public string ProductType { get; set; }
+        public int? EstimatedTime { get; set; }
     }
 }
