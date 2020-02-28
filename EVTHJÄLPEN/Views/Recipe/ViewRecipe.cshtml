@@ -2,41 +2,57 @@
 @{
     ViewData["Title"] = "ReceptInformation";
 }
-
-<div class="jumbotron">
+<br />
+<div class="container">
     <h1 class="display-4">@Model.RecipeName</h1>
     <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
     <hr class="my-4">
 
-    <div class="card">
+    <div class="card" style="padding: 15px;">
         @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
         <img src="@s" class="p-2" style="width: 100%; height: 50%;" />
+        <br />
+        <br />
 
-        <ul class="list-group w-100">
+        <div class="row" style="padding:15px;">
+            <div class="col-md-6">
+                <h4>Ingredienser:</h4>
+                <br />
+                <ul class="list-group w-100">
 
-            @foreach (var item in Model.Productslist)
-            {
-                <li class="list-group-item">
-                    <label><input type="checkbox" checked="checked">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>
-                </li>
-            }
+                    @foreach (var item in Model.Productslist)
+                    {
+                        <li class="list-group-item">
+                            <label><input type="checkbox" checked="checked">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>
+                        </li>
+                    }
 
-        </ul>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Gör så här:</h4>
+                <br />
+                @foreach (var step in Model.StepList)
+                {
+                    <p class="display-10">@step.Stepnumber: @step.Instructions</p>
+                }
+            </div>
+        </div>
+        <div class="table">
+            <p class="text-black-50" style="text-align:right; padding: 10px;">Portioner:</p>
+
+            <button type="button" class="btn btn-success" style="text-align:right; float: right;">+</button>
+            <input type="text" value="4" style="text-align: center; float:right; width:3%;" />
+            <button type="button" class="btn btn-danger" style=" text-align: right; float: right;">-</button>
+
+            <a asp-controller="Recipe" asp-action="Recipes" style=" text-align: left; float: left;  padding:10px;">Tillbaka</a>
+            <br />
+            <br />
+            <br />
+        </div>
     </div>
-
-    <h1>Gör så här:</h1>
-
-    @foreach (var step in Model.StepList)
-    {
-        <p class="display-10">@step.Stepnumber: @step.Instructions</p>
-    }
-    @*Fixa designen och förkorta ner text-inputet*@
-    <p class="text-black-50" style="text-align:right;">Portioner:</p>
-
-    <button type="button" class="btn btn-success" style="text-align:right; float: right;">+</button>
-    <input  type="text" value ="4" style="text-align: center; float:right; width:3%;" />
-    <button type="button" class="btn btn-danger" style=" text-align: right; float: right;">-</button>
-
-    <a asp-controller="Recipe" asp-action="Recipes" style=" text-align: left; float: left">Tillbaka</a>
+    <br />
+    <br />
 </div>
+
 
