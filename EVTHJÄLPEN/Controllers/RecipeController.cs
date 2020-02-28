@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
 using EVTHJÄLPEN.Models;
+using Eventhjälpen.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -12,22 +13,53 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class RecipeController : Controller
     {
-        List<Products> prods = new List<Products>();
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [Route("/[controller]/[action]")]
-        public IActionResult Recipes()
+        public IActionResult Recipes(int id)
         {
-            List<Recipe> recepies = new List<Recipe>();
+            List<Recipe> _recepies = new List<Recipe>();
+            List<RecipeType> _recipeTypes = new List<RecipeType>();
+            RecipeVM vm = new RecipeVM();
+
+            if (id <= 0)
+            {
+                try
+                {
+                    using (ApplicationDbContext ctx = new ApplicationDbContext())
+                    {
+                        _recepies = ctx.Recipe
+                            .ToList();
+                        _recipeTypes = ctx.RecipeType
+                            .ToList();
+                    }
+
+
+                    vm.recipes = _recepies;
+                    vm.recipeTypes = _recipeTypes;
+
+                    return View(vm);
+                }
+                catch (Exception e)
+                {
+                    return Content("Failed loading recepies: " + e);
+                }
+            }
+
             try
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    recepies = ctx.Recipe
+                    _recipeTypes = ctx.RecipeType
+                        .ToList();
+                    _recepies = ctx.Recipe.Where(x => x.RecipeTypeId == id)
                         .ToList();
                 }
 
-                return View(recepies);
+                vm.recipes = _recepies;
+                vm.recipeTypes = _recipeTypes;
+
+                return View(vm);
             }
             catch (Exception e)
             {
@@ -102,6 +134,7 @@ namespace EVTHJÄLPEN.Controllers
             
 
             return RedirectToAction("ViewCart", "Checkout");
+
         }
     }
 }
