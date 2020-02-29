@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EVTHJÄLPEN.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200225080903_CreateTranbarDB")]
+    [Migration("20200225130627_CreateTranbarDB")]
     partial class CreateTranbarDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,21 @@ namespace EVTHJÄLPEN.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("EVTHJÄLPEN.Models.MeasurementUnit", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Measurement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("MeasurementUnit");
+                });
 
             modelBuilder.Entity("EVTHJÄLPEN.Models.RecipeSteps", b =>
                 {
@@ -31,7 +46,7 @@ namespace EVTHJÄLPEN.Data.Migrations
                     b.Property<string>("Instructions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RecipeId")
+                    b.Property<int>("RecipeID")
                         .HasColumnType("int");
 
                     b.Property<int>("Stepnumber")
@@ -39,7 +54,7 @@ namespace EVTHJÄLPEN.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RecipeId");
+                    b.HasIndex("RecipeID");
 
                     b.ToTable("RecipeSteps");
                 });
@@ -176,6 +191,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false);
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ProductName")
                         .HasColumnType("varchar(255)")
                         .HasMaxLength(255)
@@ -224,15 +242,23 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("MeasurementUnitID")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ProductId")
                         .HasColumnName("ProductID")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("ProductQuantity")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("RecipeId")
                         .HasColumnName("RecipeID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MeasurementUnitID");
 
                     b.HasIndex("ProductId");
 
@@ -291,12 +317,12 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false);
 
-                    b.Property<int?>("UsersAdressID")
+                    b.Property<int>("UserAdressID")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersAdressID");
+                    b.HasIndex("UserAdressID");
 
                     b.ToTable("Users");
                 });
@@ -505,7 +531,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     b.HasOne("Eventhjälpen.Models.Recipe", "Recipe")
                         .WithMany("RecipeSteps")
-                        .HasForeignKey("RecipeId");
+                        .HasForeignKey("RecipeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Eventhjälpen.Models.EventDetails", b =>
@@ -552,6 +580,12 @@ namespace EVTHJÄLPEN.Data.Migrations
 
             modelBuilder.Entity("Eventhjälpen.Models.RecipeDetails", b =>
                 {
+                    b.HasOne("EVTHJÄLPEN.Models.MeasurementUnit", "MeasurementUnit")
+                        .WithMany("RecipeDetails")
+                        .HasForeignKey("MeasurementUnitID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Eventhjälpen.Models.Products", "Product")
                         .WithMany("RecipeDetails")
                         .HasForeignKey("ProductId")
@@ -567,7 +601,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     b.HasOne("EVTHJÄLPEN.Models.UserAdress", "UsersAdress")
                         .WithMany("Users")
-                        .HasForeignKey("UsersAdressID");
+                        .HasForeignKey("UserAdressID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -13,12 +13,24 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EventName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
                     EventType = table.Column<string>(unicode: false, maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MeasurementUnit",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Measurement = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeasurementUnit", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -30,7 +42,7 @@ namespace EVTHJÄLPEN.Data.Migrations
                     ProductName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
                     Description = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
                     Quantity = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: true)
+                    Price = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,9 +83,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecipeTypeID = table.Column<int>(nullable: true),
                     RecipeName = table.Column<string>(unicode: false, maxLength: 255, nullable: true),
-                    EstimatedTime = table.Column<int>(nullable: true)
+                    EstimatedTime = table.Column<int>(nullable: true),
+                    RecipeTypeID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,17 +108,17 @@ namespace EVTHJÄLPEN.Data.Migrations
                     Lastname = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
                     Email = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
                     Phonenumber = table.Column<string>(unicode: false, maxLength: 255, nullable: false),
-                    UsersAdressID = table.Column<int>(nullable: true)
+                    UserAdressID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Users_UserAdress_UsersAdressID",
-                        column: x => x.UsersAdressID,
+                        name: "FK_Users_UserAdress_UserAdressID",
+                        column: x => x.UserAdressID,
                         principalTable: "UserAdress",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,12 +153,20 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductQuantity = table.Column<decimal>(nullable: false),
                     RecipeID = table.Column<int>(nullable: true),
-                    ProductID = table.Column<int>(nullable: true)
+                    ProductID = table.Column<int>(nullable: true),
+                    MeasurementUnitID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RecipeDetails", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_RecipeDetails_MeasurementUnit_MeasurementUnitID",
+                        column: x => x.MeasurementUnitID,
+                        principalTable: "MeasurementUnit",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK__RecipeDet__Produ__36B12243",
                         column: x => x.ProductID,
@@ -169,17 +189,17 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Stepnumber = table.Column<int>(nullable: false),
                     Instructions = table.Column<string>(nullable: true),
-                    RecipeId = table.Column<int>(nullable: true)
+                    RecipeID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RecipeSteps", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_RecipeSteps_Recipe_RecipeId",
-                        column: x => x.RecipeId,
+                        name: "FK_RecipeSteps_Recipe_RecipeID",
+                        column: x => x.RecipeID,
                         principalTable: "Recipe",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,9 +208,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(nullable: true),
                     SumToPay = table.Column<int>(nullable: true),
-                    CurrentDate = table.Column<DateTime>(nullable: true)
+                    CurrentDate = table.Column<DateTime>(nullable: true),
+                    UserID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -260,6 +280,11 @@ namespace EVTHJÄLPEN.Data.Migrations
                 column: "RecipeTypeID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RecipeDetails_MeasurementUnitID",
+                table: "RecipeDetails",
+                column: "MeasurementUnitID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RecipeDetails_ProductID",
                 table: "RecipeDetails",
                 column: "ProductID");
@@ -270,14 +295,14 @@ namespace EVTHJÄLPEN.Data.Migrations
                 column: "RecipeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeSteps_RecipeId",
+                name: "IX_RecipeSteps_RecipeID",
                 table: "RecipeSteps",
-                column: "RecipeId");
+                column: "RecipeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_UsersAdressID",
+                name: "IX_Users_UserAdressID",
                 table: "Users",
-                column: "UsersAdressID");
+                column: "UserAdressID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -299,6 +324,9 @@ namespace EVTHJÄLPEN.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "MeasurementUnit");
 
             migrationBuilder.DropTable(
                 name: "Products");

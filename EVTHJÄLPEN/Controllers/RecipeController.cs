@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
 using EVTHJÄLPEN.Models;
+using Eventhjälpen.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -12,20 +13,53 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class RecipeController : Controller
     {
-        [HttpGet]
+
+        [HttpGet("{id}")]
         [Route("/[controller]/[action]")]
-        public IActionResult Recipes()
+        public IActionResult Recipes(int id)
         {
-            List<Recipe> recepies = new List<Recipe>();
+            List<Recipe> _recepies = new List<Recipe>();
+            List<RecipeType> _recipeTypes = new List<RecipeType>();
+            RecipeVM vm = new RecipeVM();
+
+            if (id <= 0)
+            {
+                try
+                {
+                    using (ApplicationDbContext ctx = new ApplicationDbContext())
+                    {
+                        _recepies = ctx.Recipe
+                            .ToList();
+                        _recipeTypes = ctx.RecipeType
+                            .ToList();
+                    }
+
+
+                    vm.recipes = _recepies;
+                    vm.recipeTypes = _recipeTypes;
+
+                    return View(vm);
+                }
+                catch (Exception e)
+                {
+                    return Content("Failed loading recepies: " + e);
+                }
+            }
+
             try
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    recepies = ctx.Recipe
+                    _recipeTypes = ctx.RecipeType
+                        .ToList();
+                    _recepies = ctx.Recipe.Where(x => x.RecipeTypeId == id)
                         .ToList();
                 }
 
-                return View(recepies);
+                vm.recipes = _recepies;
+                vm.recipeTypes = _recipeTypes;
+
+                return View(vm);
             }
             catch (Exception e)
             {
@@ -37,18 +71,70 @@ namespace EVTHJÄLPEN.Controllers
         [Route("/[controller]/[action]")]
         public IActionResult ViewRecipe(int id)
         {
-            try
+            ViewProducts vp = new ViewProducts();
+
+            using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
             {
-                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                con.Open();
+                string SQL = @"select Recipename,EstimatedTime, ProductName, ProductQuantity,Measurement,RE.Id, PR.Id
+                                from Products PR 
+                                INNER JOIN RecipeDetails RD ON PR.ID = RD.ProductID 
+                                INNER JOIN MeasurementUnit MU ON RD.MeasurementUnitID = MU.Id 
+                                INNER JOIN Recipe RE ON RD.RecipeID = RE.ID  
+                                where RE.Id = @ID";
+
+                SqlCommand cmd = new SqlCommand(SQL, con);
+                cmd.Parameters.AddWithValue("@ID", id);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
                 {
-                    Recipe loadedRecipe = ctx.Recipe.FirstOrDefault(x => x.Id == id);
-                    return View(loadedRecipe);
+                    ShowIngrediens SI = new ShowIngrediens();
+                    vp.RecipeID = rdr.GetInt32(5);
+                    vp.RecipeName = rdr.GetString(0);
+                    vp.EstimatedTime = rdr.GetInt32(1);
+                    SI.ProductID = rdr.GetInt32(6);
+                    SI.ProductName = rdr.GetString(2);
+                    SI.ProductQuantity = rdr.GetDecimal(3);
+                    SI.Measurement = rdr.GetString(4);
+                    vp.Productslist.Add(SI);
+                    
                 }
+                con.Close();
+
+                // Andra queryn -- Hämtar Stegnr och instruktioner
+
+                con.Open();
+                string SQL2 = @"select Stepnumber, Instructions from Recipe r
+                                inner join RecipeSteps rs on rs.RecipeID = r.ID
+                                where r.ID = @ID2";
+
+                SqlCommand command = new SqlCommand(SQL2, con);
+                command.Parameters.AddWithValue("@ID2", id);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    RecipeSteps RS = new RecipeSteps();
+                    RS.Stepnumber = reader.GetInt32(0);
+                    RS.Instructions = reader.GetString(1);
+                    vp.StepList.Add(RS);
+                }
+                con.Close();
             }
-            catch (Exception e)
-            {
-                return Content("Failed loading recipe: " + e);
-            }
+            return View(vp);    
+        }
+
+        [HttpPost]
+        [Route("/[controller]/[action]")]
+        public IActionResult OnPost([Bind("Product")] List<IngredientToCart> ic)
+        {
+            
+
+            return RedirectToAction("ViewCart", "Checkout");
+
         }
     }
 }

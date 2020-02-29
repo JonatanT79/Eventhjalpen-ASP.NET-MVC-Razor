@@ -29,7 +29,8 @@ namespace EVTHJÄLPEN.Data
         public virtual DbSet<RecipeType> RecipeType { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserAdress> UserAdress { get; set; }
-        
+        public virtual DbSet<MeasurementUnit> MeasurementUnit { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,9 +71,6 @@ namespace EVTHJÄLPEN.Data
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.EventType)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Orderdetails>(entity =>
