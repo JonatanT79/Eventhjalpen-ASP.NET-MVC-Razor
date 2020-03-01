@@ -69,8 +69,9 @@ namespace EVTHJÄLPEN.Controllers
 
         [HttpGet("{id}")]
         [Route("/[controller]/[action]")]
-        public IActionResult ViewRecipe(int id)
+        public IActionResult ViewRecipe(int id, int portion = 1)
         {
+            if (portion < 1) portion = 1; 
             ViewProducts vp = new ViewProducts();
 
             using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
@@ -124,6 +125,15 @@ namespace EVTHJÄLPEN.Controllers
                 }
                 con.Close();
             }
+            vp.Portion = portion; 
+            if(portion > 1)
+            {
+                vp.Productslist.ForEach(pl =>
+                  {
+
+                      pl.ProductQuantity = portion * pl.ProductQuantity;
+                  });
+            }; 
             return View(vp);    
         }
 

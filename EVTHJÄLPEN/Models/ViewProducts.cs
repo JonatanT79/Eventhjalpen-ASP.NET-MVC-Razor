@@ -10,6 +10,7 @@ namespace EVTHJÄLPEN.Models
         public int RecipeID { get; set; }
         public string RecipeName { get; set; }
         public int EstimatedTime { get; set; }
+        public int Portion { get; set; }
 
         public List<ShowIngrediens> Productslist = new List<ShowIngrediens>();
 
