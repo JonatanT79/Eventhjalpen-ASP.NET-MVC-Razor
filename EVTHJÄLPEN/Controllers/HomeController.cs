@@ -34,7 +34,8 @@ namespace EVTHJÄLPEN.Controllers
                     Recipe loadedRecipe = recipeList.FirstOrDefault(x => x.Id == recRecepie);
                     return View(loadedRecipe);
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return View();
             }
