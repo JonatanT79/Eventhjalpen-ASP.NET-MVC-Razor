@@ -4,16 +4,17 @@
 }
 
         <br />
-        <center><img src="~/Images/logo.jpg" alt="Bilden kunde inte visas" title="Logo" style="width:50%" /></center>
+        <center><img src="~/Images/logotype.png" alt="Bilden kunde inte visas" title="Logo" style="width:30%" /></center>
 
         <br />
         <br />
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <center>
                         <h5><b>Dagens recept:</b></h5>
-                        <p class="lead">@Model.RecipeName</p>
+
                         <img src="~/Images/kladdkaka.jpg" alt="Bilden kunde inte visas" title="Kladdkaka" style="width:80%" class="m-3 rounded" />
+                        <p class="lead">@Model.RecipeName</p>
                         <a class="btn btn-primary" asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id="@Model.Id">Gå till recept</a>
                     </center>
                 </div>

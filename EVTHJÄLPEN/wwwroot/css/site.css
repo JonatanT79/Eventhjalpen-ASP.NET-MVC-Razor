@@ -1,37 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #747474;
-  
-}
-    a:hover {
-        color: black;
-    }
-
-
-.btn-primary {
-  color: #fff;
-  background-color: #747474;
-  border-color: #000000;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #747474;
-  border-color: #000000;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   font-size: 14px;
 }
@@ -57,7 +26,7 @@ button.accept-policy {
   line-height: inherit;
 }
 
-/* Sticky footer styles
+/* LAYOUT
 -------------------------------------------------- */
 html {
   position: relative;
@@ -65,7 +34,6 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
   margin-bottom: 10px;
 }
 
@@ -88,10 +56,50 @@ header {
     top: 0;
     z-index: 10;
 }
+
+
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    background-color: #d6abb5;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
 }
+
+#footer-text {
+    
+}
+
+/*a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+  text-decoration-color: #000000;
+}
+
+a.nav-link {
+    text-decoration-color: #000;
+}*/
+
+/* Provide sufficient contrast against white background 
+/*a {
+  color: #747474;
+  
+}
+    a:hover {
+        color: black;
+    }
+
+
+.btn-primary {
+  color: #fff;
+  background-color: #747474;
+  border-color: #000000;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #747474;
+  border-color: #000000;
+}*/
