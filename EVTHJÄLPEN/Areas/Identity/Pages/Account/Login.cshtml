@@ -38,10 +38,10 @@
                 </div>
                 <div class="form-group">
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Glömt ditt lösenord?</a>
+                        <a class="nav-link text-dark" id="forgot-password" asp-page="./ForgotPassword">Glömt ditt lösenord?</a>
                     </p>
                     <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera nytt konto</a>
+                        <a class="nav-link text-dark" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera nytt konto</a>
                     </p>
                     @*<p>
                         <button type="submit" asp-page-handler="SendVerificationEmail" class="btn-link" style="padding:0px;margin:0px;border:0px">Fick du ingen verifiering? Klicka här</button>
