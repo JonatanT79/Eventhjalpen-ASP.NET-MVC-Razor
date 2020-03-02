@@ -3,10 +3,10 @@
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
     <ul class="nav nav-pills flex-column nav-nav">
-        <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profil</a></li>
-        <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">E-postadress</a></li>
-        <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Lösenord</a></li>
-        <li class="nav-item"><a class="nav-link @ManageNavPages.AdressNavClass(ViewContext)" id="Adress" asp-page="./Adress">Adress</a></li>
+        <li class="nav-item"><a class="nav-link text-dark @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profil</a></li>
+        <li class="nav-item"><a class="nav-link text-dark @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">E-postadress</a></li>
+        <li class="nav-item"><a class="nav-link text-dark @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Lösenord</a></li>
+        <li class="nav-item"><a class="nav-link text-dark @ManageNavPages.AdressNavClass(ViewContext)" id="Adress" asp-page="./Adress">Adress</a></li>
 
         @*@if (hasExternalLogins)
         {

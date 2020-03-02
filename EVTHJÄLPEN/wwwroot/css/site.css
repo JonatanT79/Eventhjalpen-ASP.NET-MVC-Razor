@@ -59,7 +59,7 @@ header {
 
 
 .footer {
-    background-color: #d6abb5;
+    background-color: #abadd6;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -71,7 +71,7 @@ header {
     
 }
 
-/*a.navbar-brand {
+a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
@@ -80,10 +80,10 @@ header {
 
 a.nav-link {
     text-decoration-color: #000;
-}*/
+}
 
-/* Provide sufficient contrast against white background 
-/*a {
+ Provide sufficient contrast against white background 
+a {
   color: #747474;
   
 }
@@ -93,13 +93,15 @@ a.nav-link {
 
 
 .btn-primary {
-  color: #fff;
-  background-color: #747474;
+  color: #000;
+  background-color: #fff;
   border-color: #000000;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #747474;
-  border-color: #000000;
-}*/
+    color: #fff;
+    background-color: #abadd6;
+    border-color: #000000;
+    border: solid;
+    border-width: thin;
+}
