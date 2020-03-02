@@ -69,7 +69,7 @@ namespace EVTHJÄLPEN.Controllers
 
         [HttpGet("{id}")]
         [Route("/[controller]/[action]")]
-        public IActionResult ViewRecipe(int id, int portion = 1)
+        public IActionResult ViewRecipe(int id, int portion = 4)
         {
             if (portion < 1) portion = 1; 
             ViewProducts vp = new ViewProducts();
@@ -131,7 +131,7 @@ namespace EVTHJÄLPEN.Controllers
                 vp.Productslist.ForEach(pl =>
                   {
 
-                      pl.ProductQuantity = portion * pl.ProductQuantity;
+                      pl.ProductQuantity = portion * pl.ProductQuantity*1/4;
                   });
             }; 
             return View(vp);    
