@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using EVTHJÄLPEN.Models;
 using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
+using System.Data.SqlClient;
+using System.Data.Entity;
 
 namespace EVTHJÄLPEN.Controllers
 {
@@ -46,10 +48,36 @@ namespace EVTHJÄLPEN.Controllers
         {
             return View();
         }
-
-        public IActionResult Varukorg()
+        public IActionResult Varukorg(int ID)
         {
-            return View();
+            var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
+            ViewProducts vp = new ViewProducts();
+            using (ApplicationDbContext ctx = new ApplicationDbContext())
+            {
+
+                var recipeProductsIds = from e in ctx.RecipeDetails
+                          where e.RecipeId == ID
+                          select e.ProductId;
+
+                var cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
+                var productIds = cookieString.Split(",").Select(c => int.Parse(c));
+
+                var products = from e in ctx.Products
+                            where productIds.Contains(e.Id)
+                            select e;
+
+
+                foreach (var item in products)
+                {
+                    ShowIngrediens si = new ShowIngrediens();
+                    si.ProductName = item.ProductName;
+                    si.Quantity = item.Quantity;
+                    si.Price = item.Price;
+                    vp.Productslist.Add(si);
+                }
+                Response.Cookies.Append("Varukorg", cookieString);
+            }
+            return View(vp);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

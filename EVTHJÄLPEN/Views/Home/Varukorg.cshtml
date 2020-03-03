@@ -1,5 +1,10 @@
-﻿@model Eventhjälpen.Models.Recipe
+﻿@model ViewProducts 
 @{
     ViewData["Title"] = "Varukorg";
 }
     <h1>@ViewData["Title"]</h1>
+
+@foreach (var item in Model.Productslist)
+{
+    <p>@item.ProductName  @item.Quantity @item.Price Kr</p>
+}
