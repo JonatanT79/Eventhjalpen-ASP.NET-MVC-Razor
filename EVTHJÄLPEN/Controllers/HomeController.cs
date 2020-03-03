@@ -24,7 +24,7 @@ namespace EVTHJÄLPEN.Controllers
         public IActionResult Index()
         {
             Recipe r = new Recipe();
-            Random rng = new Random(DateTime.Now.Minute);
+            Random rng = new Random(DateTime.Now.Day);
             int recRecepie = rng.Next(1, 7);
 
             using (ApplicationDbContext ctx = new ApplicationDbContext())
