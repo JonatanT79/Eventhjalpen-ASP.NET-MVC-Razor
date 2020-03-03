@@ -1,10 +1,26 @@
-﻿@model ViewProducts 
+﻿@model ViewProducts
 @{
     ViewData["Title"] = "Varukorg";
 }
-    <h1>@ViewData["Title"]</h1>
+<h1>@ViewData["Title"]</h1>
+<a class="btn btn-primary" href="#" role="button">Fortsätt handla </a>
 
-@foreach (var item in Model.Productslist)
-{
-    <p>@item.ProductName  @item.Quantity @item.Price Kr</p>
-}
+<div class="col-md-6 " (style="border-left-width:)">
+
+
+    @foreach (var item in Model.Productslist)
+    {<ul class="align-content-lg-stretch">
+            <li class="list-group-item">
+
+                @item.ProductName  @item.Quantity @item.Price Kr
+            </li>
+        </ul>}
+</div>
+
+
+<button class="btn btn-primary" type="submit">Checka ut</button>
+<input class="btn btn-primary" type="button" value="Befräfta order">
+
+
+
+
