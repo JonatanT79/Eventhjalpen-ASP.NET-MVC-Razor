@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
 using EVTHJÄLPEN.Models;
-using Eventhjälpen.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -126,7 +126,7 @@ namespace EVTHJÄLPEN.Controllers
                 con.Close();
             }
             vp.Portion = portion; 
-            if(portion > 1)
+            if(portion >= 1)
             {
                 vp.Productslist.ForEach(pl =>
                   {
