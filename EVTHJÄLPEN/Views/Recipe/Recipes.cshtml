@@ -11,19 +11,24 @@
 
 <div class="container">
     <div class="row">
-    <br />
-    <br />
-    @foreach (var item in Model.recipeTypes)
-    {
-        <div class="col-sm" style="text-align: center">
-            @*<li class="list-group-item">*@
-            <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="@item.Id">@item.RecipeTypeName</a>
-            @*<a asp-controller="Recipe" asp-action="Recipes" asp-route-id="@item.Id"><label>@item.RecipeTypeName</label></a>*@
-            @*</li>*@
-        </div>
-    }
+        <br />
+        <br />
 
-</div>
+        <div class="col-sm" style="text-align:center">
+            <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="0">Alla recept</a>
+        </div>
+
+        @foreach (var item in Model.recipeTypes)
+        {
+            <div class="col-sm" style="text-align: center">
+                @*<li class="list-group-item">*@
+                <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="@item.Id">@item.RecipeTypeName</a>
+                @*<a asp-controller="Recipe" asp-action="Recipes" asp-route-id="@item.Id"><label>@item.RecipeTypeName</label></a>*@
+                @*</li>*@
+            </div>
+        }
+
+    </div>
 
     <br />
     <br />
@@ -34,15 +39,15 @@
             <div class="col mb-4">
                 <div class="card h-100">
                     @*<div class="card">*@
-                        @{string s = "/Images/" + @item2.RecipeName + ".jpg";}
-                        <img src="@s" class="p-1" style="width: 100%; height: 60%;" />
-                        @*<div class="card-body">*@
-                            <center>
-                                <h4 class="card-title">@item2.RecipeName</h4>
-                                @*<p class="card-text">@item2.RecipeType.RecipeTypeName</p>*@
-                                <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id="@item2.Id">Gå till recept</a>
-                            </center>
-                        @*</div>*@
+                    @{string s = "/Images/" + @item2.RecipeName + ".jpg";}
+                    <img src="@s" class="p-1" style="width: 100%; height: 60%;" />
+                    @*<div class="card-body">*@
+                    <center>
+                        <h4 class="card-title">@item2.RecipeName</h4>
+                        @*<p class="card-text">@item2.RecipeType.RecipeTypeName</p>*@
+                        <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id="@item2.Id">Gå till recept</a>
+                    </center>
+                    @*</div>*@
                     @*</div>*@
 
                 </div>

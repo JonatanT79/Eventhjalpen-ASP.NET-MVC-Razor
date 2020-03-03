@@ -23,20 +23,22 @@ namespace EVTHJÄLPEN.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            Random rng = new Random();
-            int recRecepie = 1;
+            Recipe r = new Recipe();
+            Random rng = new Random(DateTime.Now.Minute);
+            int recRecepie = rng.Next(1, 7);
 
-            try
+            using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
-                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                var query = from e in ctx.Recipe
+                            where e.Id == recRecepie
+                            select e;
+                foreach (var item in query)
                 {
-                    List<Recipe> recipeList = ctx.Recipe.ToList();
-                    Recipe loadedRecipe = recipeList.FirstOrDefault(x => x.Id == recRecepie);
-                    return View(loadedRecipe);
+                    r.Id = item.Id;
+                    r.RecipeName = item.RecipeName;
                 }
-            } catch (Exception e)
-            {
-                return View();
+
+                return View(r);
             }
         }
 

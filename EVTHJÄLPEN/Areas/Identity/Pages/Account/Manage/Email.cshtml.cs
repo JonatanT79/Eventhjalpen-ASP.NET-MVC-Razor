@@ -102,7 +102,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Bekräfta din e-postadress",
-                    $"Bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"Bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här.</a>.");
 
                 StatusMessage = "Bekräftelselänk har skickats till din e-postadress.";
                 return RedirectToPage();
