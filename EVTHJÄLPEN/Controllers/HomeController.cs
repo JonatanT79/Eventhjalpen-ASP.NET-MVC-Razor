@@ -59,13 +59,15 @@ namespace EVTHJÄLPEN.Controllers
                           where e.RecipeId == ID
                           select e.ProductId;
 
-                var cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
+                string cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
                 var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
                 var products = from e in ctx.Products
                             where productIds.Contains(e.Id)
                             select e;
 
+                if(!cookieString.Equals(""))
+                {
 
                 foreach (var item in products)
                 {
@@ -74,6 +76,8 @@ namespace EVTHJÄLPEN.Controllers
                     si.Quantity = item.Quantity;
                     si.Price = item.Price;
                     vp.Productslist.Add(si);
+                }
+
                 }
                 Response.Cookies.Append("Varukorg", cookieString);
             }
