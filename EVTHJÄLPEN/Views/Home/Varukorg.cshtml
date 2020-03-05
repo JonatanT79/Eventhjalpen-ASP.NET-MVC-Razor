@@ -3,29 +3,72 @@
     ViewData["Title"] = "Varukorg";
 }
 <h1>@ViewData["Title"]</h1>
+<br />
 
-<div class="col-md-6 " (style="border-left-width:)">
+@if (Model.Productslist.Count == 0)
+{
+    <p>Varukorgen är tom</p>
+}
+else
+{
+    @*<div class="col-md-3">*@
+    <h4>Produkter:</h4>
+    @*<ul class="list-group w-100">*@
 
-    @if(Model.Productslist.Count == 0)
-    {
-        <p>Varukorgen är tom</p>
-    }
     @foreach (var item in Model.Productslist)
-    {<ul class="align-content-lg-stretch">
-            <li class="list-group-item">
+    {
 
-                @item.ProductName @item.Quantity @item.Price Kr
-            </li>
-        </ul>
+        @*<div class="col-md-4">
+                <li class="list-group-item">
+                    @item.ProductName @item.Price Kr<br />
+                    @item.Quantity <br />
+
+                </li>
+            </div>*@
+
+        <div class="row" style="padding:15px;">
+            <div class="col-md-6">
+                <ul class="list-group w-100">
+                    @*<li class="list-group-item">*@
+                    @item.ProductName
+                    <i>@item.Quantity</i>
+                    @*</li>*@
+
+                </ul>
+               
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group w-100" style="text-align: right">
+                    @*<li class="list-group-item">*@
+                    @item.Price Kr
+                    @*</li>*@
+
+                </ul>
+                <input class="btn btn-outline-danger" type="button" value="Ta bort" style="float:right; padding-top:2px;">
+
+            </div>
+        </div>
+        @*</div>*@
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;">
+
+        </p>
+
     }
-    <p>TotalSumma: @Math.Round(@Model.TotalSum, 2) Kr</p>
-</div>
+    @*</ul>*@
+    @*</div>*@
+    <br />
+    <input class="btn btn-outline-danger" type="button" value="Töm varukorg">
+    <br />
+    <br />
+}
+<p><b>TotalSumma:</b> @Math.Round(@Model.TotalSum, 2) Kr</p>
+
+<br />
 
 
-<a class="btn btn-primary" asp-controller="Recipe" asp-action="Recipes" asp-route-id="default" role="button">Fortsätt handla</a>
-<button class="btn btn-primary" type="submit">Checka ut</button>
-<input class="btn btn-primary" type="button" value="Bekräfta order">
-<input class="btn btn-primary" type="button" value="Töm varukorg">
+<a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="default" role="button">Fortsätt handla</a>
+<a class="btn btn-outline-success" asp-controller="Checkout" asp-action="ViewCart" role="button">Bekräfta order</a>
+
 
 
 
