@@ -1,0 +1,28 @@
+﻿@model ViewProducts
+@{
+    ViewData["Title"] = "Din order";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div class="col-md-6 " (style="border-left-width:)">
+
+    @if(Model.Productslist.Count == 0)
+    {
+        <p>Varukorgen är tom</p>
+    }
+    @foreach (var item in Model.Productslist)
+    {<ul class="align-content-lg-stretch">
+            <li class="list-group-item">
+
+                @item.ProductName @item.Quantity @item.Price Kr
+            </li>
+        </ul>
+    }
+    <p>TotalSumma: @Math.Round(@Model.TotalSum, 2) Kr</p>
+</div>
+
+<input class="btn btn-primary" type="button" value="Bekräfta order">
+
+
+
+
