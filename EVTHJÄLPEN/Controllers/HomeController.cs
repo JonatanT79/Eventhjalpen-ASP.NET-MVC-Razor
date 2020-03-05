@@ -76,7 +76,7 @@ namespace EVTHJÄLPEN.Controllers
                     si.Quantity = item.Quantity;
                     si.Price = item.Price;
                     si.Amount = 1;
-                    vp.TotalSum += decimal.ToDouble(si.Price) * si.Amount;
+                    vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                     vp.Productslist.Add(si);
                 }
 
