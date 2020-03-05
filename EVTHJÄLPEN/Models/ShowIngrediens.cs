@@ -13,6 +13,6 @@ namespace EVTHJÄLPEN.Models
         public string Measurement { get; set; }
         public string Quantity { get; set; }
         public Decimal Price { get; set; }
-
+        public int Amount { get; set; }
     }
 }

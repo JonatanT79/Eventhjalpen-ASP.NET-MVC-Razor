@@ -11,6 +11,7 @@ namespace EVTHJÄLPEN.Models
         public string RecipeName { get; set; }
         public int EstimatedTime { get; set; }
         public int Portion { get; set; }
+        public double TotalSum { get; set; }
 
         public List<ShowIngrediens> Productslist = new List<ShowIngrediens>();
 

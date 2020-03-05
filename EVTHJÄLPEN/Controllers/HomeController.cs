@@ -63,8 +63,8 @@ namespace EVTHJÄLPEN.Controllers
                 var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
                 var products = from e in ctx.Products
-                            where productIds.Contains(e.Id)
-                            select e;
+                               where productIds.Contains(e.Id)
+                               select e;
 
                 if(!cookieString.Equals(""))
                 {
@@ -75,6 +75,8 @@ namespace EVTHJÄLPEN.Controllers
                     si.ProductName = item.ProductName;
                     si.Quantity = item.Quantity;
                     si.Price = item.Price;
+                    si.Amount = 1;
+                    vp.TotalSum += decimal.ToDouble(si.Price) * si.Amount;
                     vp.Productslist.Add(si);
                 }
 
