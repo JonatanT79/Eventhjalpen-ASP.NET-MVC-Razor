@@ -50,14 +50,19 @@ namespace EVTHJÄLPEN.Controllers
         }
         public IActionResult Varukorg(int ID)
         {
+
+
             var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
+
+
             ViewProducts vp = new ViewProducts();
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
 
+
                 var recipeProductsIds = from e in ctx.RecipeDetails
-                          where e.RecipeId == ID
-                          select e.ProductId;
+                                        where e.RecipeId == ID
+                                        select e.ProductId;
 
                 string cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
                 var productIds = cookieString.Split(",").Select(c => int.Parse(c));
@@ -66,22 +71,22 @@ namespace EVTHJÄLPEN.Controllers
                                where productIds.Contains(e.Id)
                                select e;
 
-                if(!cookieString.Equals(""))
+                if (!cookieString.Equals(""))
                 {
 
-                foreach (var item in products)
-                {
-                    ShowIngrediens si = new ShowIngrediens();
-                    si.ProductName = item.ProductName;
-                    si.Quantity = item.Quantity;
-                    si.Price = item.Price;
-                    si.Amount = 1;
-                    vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
-                    vp.Productslist.Add(si);
-                }
+                    foreach (var item in products)
+                    {
+                        ShowIngrediens si = new ShowIngrediens();
+                        si.ProductName = item.ProductName;
+                        si.Quantity = item.Quantity;
+                        si.Price = item.Price;
+                        si.Amount = 1;
+                        vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
+                        vp.Productslist.Add(si);
+                    }
 
                 }
-                Response.Cookies.Append("Varukorg", cookieString);
+                Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
             }
             return View(vp);
         }
