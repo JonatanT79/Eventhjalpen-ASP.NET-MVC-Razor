@@ -23,7 +23,7 @@ else
                     <i>@item.Quantity</i>
 
                 </ul>
-               
+
             </div>
             <div class="col-md-6">
                 <ul class="list-group w-100" style="text-align: right">
@@ -41,7 +41,7 @@ else
     }
 
     <br />
-    <input class="btn btn-outline-danger" type="button" value="Töm varukorg">
+    <a asp-controller="Home" asp-action="Varukorg" asp-route-Empty="Remove"> <input class="btn btn-outline-danger" type="button" value="Töm varukorg"> </a>
     <br />
     <br />
 }

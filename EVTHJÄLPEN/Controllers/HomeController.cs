@@ -48,7 +48,7 @@ namespace EVTHJÄLPEN.Controllers
         {
             return View();
         }
-        public IActionResult Varukorg(int ID)
+        public IActionResult Varukorg(int ID, string Empty)
         {
 
 
@@ -86,7 +86,18 @@ namespace EVTHJÄLPEN.Controllers
                     }
 
                 }
-                Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
+                if (Empty == "Remove")
+                {
+                    Response.Cookies.Delete("Varukorg");
+                    vp.Productslist.Clear();
+                    vp.TotalSum = 0;
+                    return View(vp);
+                }
+                else
+                {
+                    Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
+                }
+
             }
             return View(vp);
         }
