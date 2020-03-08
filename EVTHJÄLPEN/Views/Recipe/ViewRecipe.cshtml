@@ -24,7 +24,7 @@
                     @foreach (var item in Model.Productslist)
                     {
                         <li class="list-group-item">
-                            <label><input type="checkbox" checked="checked">@item.ProductName  @item.ProductQuantity  @item.Measurement </label>
+                            <label><input type="checkbox" checked="checked"> @item.ProductName  @item.ProductQuantity  @item.Measurement </label>
                         </li>
                     }
 
@@ -35,7 +35,7 @@
                 <br />
                 @foreach (var step in Model.StepList)
                 {
-                    <p class="display-10">@step.Stepnumber: @step.Instructions</p>
+                    <p class="display-10"> @step.Stepnumber: @step.Instructions</p>
                 }
             </div>
         </div>

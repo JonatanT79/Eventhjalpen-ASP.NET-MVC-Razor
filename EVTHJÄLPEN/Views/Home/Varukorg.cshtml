@@ -19,9 +19,12 @@ else
         <div class="row" style="padding:15px;">
             <div class="col-md-6">
                 <ul class="list-group w-100">
-                    @item.ProductName
-                    <i>@item.Quantity</i>
-
+                    <p>
+                        @item.ProductName
+                        @item.Quantity
+                        @item.Price
+                        @item.Amount
+                    </p>
                 </ul>
 
             </div>
@@ -30,7 +33,7 @@ else
                     @item.Price Kr
 
                 </ul>
-                <input class="btn btn-outline-danger" type="button" value="Ta bort" style="float:right; padding-top:2px;">
+                <a asp-controller="Home" asp-action="Varukorg" asp-route-RemoveID ="@item.ProductID"> <input class="btn btn-outline-danger" type="button" value="Ta bort" style="float:right; padding-top:2px;"></a>
 
             </div>
         </div>
@@ -41,7 +44,7 @@ else
     }
 
     <br />
-    <a asp-controller="Home" asp-action="Varukorg" asp-route-Empty="Remove"> <input class="btn btn-outline-danger" type="button" value="Töm varukorg"> </a>
+    <a asp-controller="Home" asp-action="Varukorg" asp-route-Empty="Empty"> <input class="btn btn-outline-danger" type="button" value="Töm varukorg"> </a>
     <br />
     <br />
 }
