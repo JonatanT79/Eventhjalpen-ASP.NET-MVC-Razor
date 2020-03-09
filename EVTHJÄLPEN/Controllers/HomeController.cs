@@ -50,40 +50,38 @@ namespace EVTHJÄLPEN.Controllers
         }
         public IActionResult Varukorg(int ID, string Empty, int RemoveID)
         {
-            // if cookiestring > varukorg.value
             ViewProducts vp = new ViewProducts();
-
             var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
 
-            using (ApplicationDbContext ctx = new ApplicationDbContext())
+            if (RemoveID == 0)
             {
-                var recipeProductsIds = from e in ctx.RecipeDetails
-                                        where e.RecipeId == ID
-                                        select e.ProductId;
-
-                string cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
-                var productIds = cookieString.Split(",").Select(c => int.Parse(c));
-
-                var products = from e in ctx.Products
-                               where productIds.Contains(e.Id)
-                               select e;
-
-                if (!cookieString.Equals(""))
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    foreach (var item in products)
+                    var recipeProductsIds = from e in ctx.RecipeDetails
+                                            where e.RecipeId == ID
+                                            select e.ProductId;
+
+                    string cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
+                    var productIds = cookieString.Split(",").Select(c => int.Parse(c));
+
+                    var products = from e in ctx.Products
+                                   where productIds.Contains(e.Id)
+                                   select e;
+
+                    if (!cookieString.Equals(""))
                     {
-                        ShowIngrediens si = new ShowIngrediens();
-                        si.ProductID = item.Id;
-                        si.ProductName = item.ProductName;
-                        si.Quantity = item.Quantity;
-                        si.Price = item.Price;
-                        si.Amount = 1;
-                        vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
-                        vp.Productslist.Add(si);
+                        foreach (var item in products)
+                        {
+                            ShowIngrediens si = new ShowIngrediens();
+                            si.ProductID = item.Id;
+                            si.ProductName = item.ProductName;
+                            si.Quantity = item.Quantity;
+                            si.Price = item.Price;
+                            si.Amount = 1;
+                            vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
+                            vp.Productslist.Add(si);
+                        }
                     }
-                }
-                if (RemoveID == 0)
-                {
                     Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
                 }
             }
@@ -99,14 +97,43 @@ namespace EVTHJÄLPEN.Controllers
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    var search = vp.Productslist.SingleOrDefault(c => c.ProductID == RemoveID);
-                    vp.Productslist.Remove(search);
+                    varukorg = Request.Cookies.SingleOrDefault(s => s.Key == "Varukorg");
 
-                    var i = search;
-                    var filter = from e in vp.Productslist
-                                 select e.ProductID;
+                    string value = varukorg.Value;
+                    int index = value.IndexOf(RemoveID.ToString());
+                    string cookieString = "";
 
-                    string cookieString = varukorg.Value.Replace(varukorg.Value, "") + string.Join(",", filter);
+                    if (varukorg.Value.Length == 1 || varukorg.Value.Length == 2)
+                    {
+                        Response.Cookies.Delete("Varukorg");
+                        vp.Productslist.Clear();
+                        vp.TotalSum = 0;
+                        return View(vp);
+                    }
+
+                    if (RemoveID.ToString().Length > 1)
+                    {
+                        if (index == (varukorg.Value.Length - 2))
+                        {
+                            cookieString = varukorg.Value.Remove(index - 1, 3);
+                        }
+                        else
+                        {
+                            cookieString = varukorg.Value.Remove(index, 3);
+                        }
+                    }
+                    else
+                    {
+                        if (index == (varukorg.Value.Length - 1))
+                        {
+                            cookieString = varukorg.Value.Remove(index - 1, 2);
+                        }
+                        else
+                        {
+                            cookieString = varukorg.Value.Remove(index, 2);
+                        }
+                    }
+
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
                     var products = from e in ctx.Products
@@ -122,11 +149,12 @@ namespace EVTHJÄLPEN.Controllers
                         si.Price = item.Price;
                         si.Amount = 1;
                         vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
+                        vp.Productslist.Add(si);
                     }
                     Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
                 }
 
-                return View(vp); 
+                return View(vp);
             }
 
             return View(vp);
