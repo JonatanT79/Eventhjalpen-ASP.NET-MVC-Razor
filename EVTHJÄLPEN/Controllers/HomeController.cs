@@ -15,6 +15,7 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class HomeController : Controller
     {
+        public int i { get; set; }
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -48,20 +49,33 @@ namespace EVTHJÄLPEN.Controllers
         {
             return View();
         }
-        public IActionResult Varukorg(int ID, string Empty, int RemoveID)
+        public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, int Amount = 1)
         {
             ViewProducts vp = new ViewProducts();
             var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
+
+            if(Amount <= 0)
+            {
+                Amount = 0;
+            }
 
             if (RemoveID == 0)
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
+                    string cookieString;
                     var recipeProductsIds = from e in ctx.RecipeDetails
                                             where e.RecipeId == ID
                                             select e.ProductId;
 
-                    string cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
+                    if(varukorg.Value != "" && varukorg.Value != null && ID != 0)
+                    {
+                        cookieString = varukorg.Value + "," + string.Join(",", recipeProductsIds);
+                    }
+                    else
+                    {
+                        cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
+                    }
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
                     var products = from e in ctx.Products
@@ -77,7 +91,17 @@ namespace EVTHJÄLPEN.Controllers
                             si.ProductName = item.ProductName;
                             si.Quantity = item.Quantity;
                             si.Price = item.Price;
-                            si.Amount = 1;
+
+                            if(si.ProductID == ProductID)
+                            {
+                                si.Amount = Amount;
+                                i++;
+                            }
+                            else
+                            {
+                                si.Amount = 5;
+                            }
+
                             vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                             vp.Productslist.Add(si);
                         }
@@ -100,8 +124,14 @@ namespace EVTHJÄLPEN.Controllers
                     varukorg = Request.Cookies.SingleOrDefault(s => s.Key == "Varukorg");
 
                     string value = varukorg.Value;
-                    int index = value.IndexOf(RemoveID.ToString());
                     string cookieString = "";
+
+                    int index = value.IndexOf("," + RemoveID.ToString()+ ","); 
+
+                    if (index == -1)
+                    {
+                        index = varukorg.Value.IndexOf(RemoveID.ToString());
+                    }
 
                     if (varukorg.Value.Length == 1 || varukorg.Value.Length == 2)
                     {
@@ -113,6 +143,7 @@ namespace EVTHJÄLPEN.Controllers
 
                     if (RemoveID.ToString().Length > 1)
                     {
+                        // checks if the 2-number is last on string
                         if (index == (varukorg.Value.Length - 2))
                         {
                             cookieString = varukorg.Value.Remove(index - 1, 3);
@@ -147,7 +178,7 @@ namespace EVTHJÄLPEN.Controllers
                         si.ProductName = item.ProductName;
                         si.Quantity = item.Quantity;
                         si.Price = item.Price;
-                        si.Amount = 1;
+                        si.Amount = Amount;
                         vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                         vp.Productslist.Add(si);
                     }
