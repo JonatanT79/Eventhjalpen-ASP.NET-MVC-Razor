@@ -99,7 +99,7 @@ namespace EVTHJÄLPEN.Controllers
                             }
                             else
                             {
-                                si.Amount = 5;
+                                si.Amount = 1;
                             }
 
                             vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
