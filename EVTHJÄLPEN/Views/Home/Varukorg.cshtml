@@ -13,35 +13,56 @@ else
 {
     <h4>Produkter:</h4>
 
+
     @foreach (var item in Model.Productslist)
     {
+        <div class="table">
+            <p class="text-black-50" style="text-align:left; padding: 10px;">Portioner:</p>
+            @{
+                var parms = new Dictionary<string, string>()
+        {
+                { "ProductId", item.ProductID.ToString() },
+                { "Amount", (item.Amount + 1 ).ToString() }
+            };
+                var lowerparms = new Dictionary<string, string>()
+        {
+                { "ProductId", item.ProductID.ToString() },
+                { "Amount", (item.Amount - 1 ).ToString() }
+            };
+            }
+        </div>
 
         <div class="row" style="padding:15px;">
             <div class="col-md-6">
                 <ul class="list-group w-100">
-                    @item.ProductName
-                    <i>@item.Quantity</i>
-
+                    <p>
+                        @item.ProductName @item.Quantity @item.Price
+                        <b>Antal:</b>
+                        <a type="button" class="btn btn-danger" asp-controller="Home" asp-action="Varukorg" asp-all-route-data="@lowerparms">-</a>
+                        <input type="text" value="@item.Amount" style="text-align: center; width:4%;" />
+                        <a type="button" class="btn btn-success" asp-controller="Home" asp-action="Varukorg" asp-all-route-data="@parms">+</a>
+                    </p>
                 </ul>
 
             </div>
+
+
             <div class="col-md-6">
+
                 <ul class="list-group w-100" style="text-align: right">
                     @item.Price Kr
-
                 </ul>
-                <input class="btn btn-outline-danger" type="button" value="Ta bort" style="float:right; padding-top:2px;">
+                <a class="btn btn-outline-danger" type="button" value="Ta bort" style="float:right; padding-top:2px;" 
+                   asp-controller="Home" asp-action="Varukorg" asp-route-RemoveID="@item.ProductID">Ta bort
+                </a>
 
             </div>
         </div>
-        <p style="border:1px; border-style:solid; border-color:#bcbcbc;">
-
-        </p>
-
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
     }
 
     <br />
-    <a asp-controller="Home" asp-action="Varukorg" asp-route-Empty="Remove"> <input class="btn btn-outline-danger" type="button" value="Töm varukorg"> </a>
+    <a asp-controller="Home" asp-action="Varukorg" asp-route-Empty="Empty"> <input class="btn btn-outline-danger" type="button" value="Töm varukorg"> </a>
     <br />
     <br />
 }

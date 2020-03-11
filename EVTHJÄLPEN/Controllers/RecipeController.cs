@@ -71,7 +71,10 @@ namespace EVTHJÄLPEN.Controllers
         [Route("/[controller]/[action]")]
         public IActionResult ViewRecipe(int id, int portion = 4)
         {
-            if (portion < 1) portion = 1; 
+            if (portion < 1)
+            {
+                portion = 1;
+            }
             ViewProducts vp = new ViewProducts();
 
             using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
@@ -95,12 +98,10 @@ namespace EVTHJÄLPEN.Controllers
                     vp.RecipeID = rdr.GetInt32(5);
                     vp.RecipeName = rdr.GetString(0);
                     vp.EstimatedTime = rdr.GetInt32(1);
-                    SI.ProductID = rdr.GetInt32(6);
                     SI.ProductName = rdr.GetString(2);
                     SI.ProductQuantity = rdr.GetDecimal(3);
                     SI.Measurement = rdr.GetString(4);
                     vp.Productslist.Add(SI);
-                    
                 }
                 con.Close();
 
@@ -125,23 +126,22 @@ namespace EVTHJÄLPEN.Controllers
                 }
                 con.Close();
             }
-            vp.Portion = portion; 
-            if(portion >= 1)
+            vp.Portion = portion;
+            if (portion >= 1)
             {
                 vp.Productslist.ForEach(pl =>
                   {
-
-                      pl.ProductQuantity = portion * pl.ProductQuantity*1/4;
+                      pl.ProductQuantity = portion * (pl.ProductQuantity * 1 / 4);
                   });
-            }; 
-            return View(vp);    
+            };
+            return View(vp);
         }
 
         [HttpPost]
         [Route("/[controller]/[action]")]
         public IActionResult OnPost([Bind("Product")] List<IngredientToCart> ic)
         {
-            
+
 
             return RedirectToAction("ViewCart", "Checkout");
 
