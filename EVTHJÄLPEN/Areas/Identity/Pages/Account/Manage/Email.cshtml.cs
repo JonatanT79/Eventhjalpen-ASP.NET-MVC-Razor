@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Data.SqlClient;
 
 namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 {
@@ -104,7 +105,35 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                     "Bekräfta din e-postadress",
                     $"Bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här.</a>.");
 
-                StatusMessage = "Bekräftelselänk har skickats till din e-postadress.";
+                // insert/update in database
+                var emails = await _userManager.GetEmailAsync(user);
+
+                if (Input.NewEmail != emails)
+                {
+                    var setEmailResult = await _userManager.SetEmailAsync(user, Input.NewEmail);
+                    var setnewUserNameResult = await _userManager.SetUserNameAsync(user, Input.NewEmail);
+
+                    using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
+                    {
+                        con.Open();
+                        SqlCommand cmd = new SqlCommand(@"update[TranbarDB].[dbo].[AspNetUsers]
+                                                            set EmailConfirmed = 1
+                                                            where Email = @Email", con);
+
+                        cmd.Parameters.AddWithValue("@Email", Input.NewEmail);
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+
+                        if (!setEmailResult.Succeeded)
+                        {
+                            var userIds = await _userManager.GetUserIdAsync(user);
+                            throw new InvalidOperationException($"Kunde inte uppdatera lösenord för användare med id '{userIds}'.");
+                        }
+                }
+
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = "E-postadress uppdaterad!";
                 return RedirectToPage();
             }
 
