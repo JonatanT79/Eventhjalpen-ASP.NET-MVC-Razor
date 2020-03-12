@@ -118,9 +118,9 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                         con.Open();
                         SqlCommand cmd = new SqlCommand(@"update[TranbarDB].[dbo].[AspNetUsers]
                                                             set EmailConfirmed = 1
-                                                            where Email = @Email", con);
+                                                            where Email = @ID", con);
 
-                        cmd.Parameters.AddWithValue("@Email", Input.NewEmail);
+                        cmd.Parameters.AddWithValue("@ID", user.Id);
                         cmd.ExecuteNonQuery();
                         con.Close();
                     }

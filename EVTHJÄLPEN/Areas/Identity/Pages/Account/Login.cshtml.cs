@@ -33,6 +33,8 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _logger = logger;
         }
+        [TempData]
+        public string StatusMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -64,6 +66,8 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
+
+            StatusMessage = "Du måste vara inloggad för att bekräfta en order";
 
             returnUrl = returnUrl ?? Url.Content("~/");
 
