@@ -21,7 +21,7 @@ else
     @foreach (var item in Model.Productslist)
     {
         <div class="table">
-            <p class="text-black-50" style="text-align:left; padding: 10px;">Portioner:</p>
+            @*<p class="text-black-50" style="text-align:left; padding: 10px;">Portioner: </p>*@
             @{
                 var parms = new Dictionary<string, string>()
 {
@@ -40,8 +40,10 @@ else
             <div class="col-md-6">
                 <ul class="list-group w-100">
                     <p>
-                        @item.ProductName @item.Quantity @item.Price
-                        <b>Antal:</b>
+                        @item.ProductName
+                        <br /><i>@item.Quantity</i>
+                        <br />
+                        <br />
                         <a type="button" class="btn btn-danger" asp-controller="Home" asp-action="Varukorg" asp-all-route-data="@lowerparms">-</a>
                         <input type="text" value="@item.Amount" style="text-align: center; width:4%;" />
                         <a type="button" class="btn btn-success" asp-controller="Home" asp-action="Varukorg" asp-all-route-data="@parms">+</a>
