@@ -33,6 +33,8 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _logger = logger;
         }
+        [TempData]
+        public string StatusMessage { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -65,6 +67,8 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
+            StatusMessage = "Du måste vara inloggad för att bekräfta en order";
+
             returnUrl = returnUrl ?? Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
@@ -83,6 +87,10 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+
+                //var user = await _userManager.FindByEmailAsync(Input.Email);
+                //var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
