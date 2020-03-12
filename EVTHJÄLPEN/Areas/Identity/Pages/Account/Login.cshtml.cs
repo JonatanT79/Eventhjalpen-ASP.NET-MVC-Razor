@@ -33,6 +33,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _logger = logger;
         }
+
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -40,7 +41,6 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         public string ReturnUrl { get; set; }
 
         [TempData]
@@ -58,16 +58,23 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
 
             [Display(Name = "Håll mig inloggad")]
             public bool RememberMe { get; set; }
+           
         }
-
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(int RouteID, string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            StatusMessage = "Du måste vara inloggad för att bekräfta en order";
+            if (RouteID == -1)
+            {
+                StatusMessage = "Du måste vara inloggad för att bekräfta en order";
+            }
+            else
+            {
+                StatusMessage = "";
+            }
 
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -79,7 +86,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(int PageRouteID, string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -92,11 +99,18 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                 //var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
 
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                if (result.Succeeded)
+
+                if (result.Succeeded && PageRouteID == 1)
+                {
+                    _logger.LogInformation("Inloggad.");
+                    return RedirectToAction("Varukorg", "Home");
+                }
+                else if (result.Succeeded)
                 {
                     _logger.LogInformation("Inloggad.");
                     return LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
