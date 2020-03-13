@@ -49,6 +49,7 @@ namespace EVTHJÄLPEN.Controllers
         {
             return View();
         }
+
         public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, int Amount = 1)
         {
             ViewProducts vp = new ViewProducts();

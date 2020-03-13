@@ -8,17 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.cs" />
     <Compile Remove="Data\Migrations\20200218135301_Identityaddedclasses.cs" />
     <Compile Remove="Data\Migrations\20200218135301_Identityaddedclasses.Designer.cs" />
     <Compile Remove="Data\Migrations\20200225080903_CreateTranbarDB.cs" />
     <Compile Remove="Data\Migrations\20200225080903_CreateTranbarDB.Designer.cs" />
     <Compile Remove="Data\Migrations\20200225130403_CreateTranbarDB.cs" />
     <Compile Remove="Data\Migrations\20200225130403_CreateTranbarDB.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml" />
   </ItemGroup>
 
 

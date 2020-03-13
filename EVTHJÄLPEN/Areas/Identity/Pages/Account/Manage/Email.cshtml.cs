@@ -118,7 +118,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                         con.Open();
                         SqlCommand cmd = new SqlCommand(@"update[TranbarDB].[dbo].[AspNetUsers]
                                                             set EmailConfirmed = 1
-                                                            where Email = @ID", con);
+                                                            where ID = @ID", con);
 
                         cmd.Parameters.AddWithValue("@ID", user.Id);
                         cmd.ExecuteNonQuery();
