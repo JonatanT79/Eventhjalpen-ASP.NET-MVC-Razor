@@ -15,7 +15,6 @@ namespace EVTHJÄLPEN.Controllers
 {
     public class HomeController : Controller
     {
-        public int i { get; set; }
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -96,7 +95,6 @@ namespace EVTHJÄLPEN.Controllers
                             if(si.ProductID == ProductID)
                             {
                                 si.Amount = Amount;
-                                i++;
                             }
                             else
                             {
