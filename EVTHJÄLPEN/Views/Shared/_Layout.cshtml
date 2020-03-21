@@ -9,16 +9,19 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-md" style="background-color: #abadd6;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" style="background-color: #abadd6; line-height: normal;">
             <div class="container" id="header-text">
-                @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Meny</a>*@
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon">Meny
+                    </span>
+                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Startsida</a></li>
                         <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Recipe" asp-action="Recipes">Recept</a></li>
                         <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Om oss</a></li>
-
 
                     </ul>
                 </div>
@@ -33,7 +36,7 @@
 
     <footer class="footer text-light text-center" id="footer" style="background-color: #abadd6;">
         <div class="container" id="footer-text">
-            &copy; 2020 - EventHjälpen || Kontakt: kontakt@eventhjalpen.se 
+            &copy; 2020 - EventHjälpen 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
