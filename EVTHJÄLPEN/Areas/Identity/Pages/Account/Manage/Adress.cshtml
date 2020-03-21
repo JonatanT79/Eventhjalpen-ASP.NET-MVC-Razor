@@ -1,4 +1,5 @@
 ﻿@page
+
 @model EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage.AdressModel
 @{
     ViewData["Title"] = "Lägg till adress";
@@ -9,22 +10,56 @@
     <div class="col-md-6">
         <form id="change-password-form" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label >Gatuadress</label>
-                <input class="form-control" id="Adress" name="Adress"/>
-                <span class="text-danger"></span>
-            </div>
-            <div class="form-group" id="ZipCode">
-                <label >Postnummer</label>
-                <input class="form-control"id="ZipCode" name="ZipCode" />
-                <span  class="text-danger"></span>
-            </div>
-            <div class="form-group" id="City">
-                <label>Stad</label>
-                <input class="form-control" id="City" name="City" />
-                <span  class="text-danger"></span>
-            </div>
+            @if (Model.adressList.Count > 0)
+            {
+
+                @foreach (AdressModel am in Model.adressList)
+
+                {
+                    <div class="form-group">
+
+                        <label>Gatuadress</label>
+                        <input class="form-control" id="Adress" name="Adress" placeholder="@Html.DisplayFor(modelItem => am.Street)">
+
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="ZipCode">
+                        <label>Postnummer</label>
+                        <input class="form-control" id="ZipCode" name="ZipCode" placeholder="@Html.DisplayFor(modelItem => am.ZipCode)" />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="City">
+                        <label>Stad</label>
+                        <input class="form-control" id="City" name="City" placeholder="@Html.DisplayFor(modelItem => am.City)">
+
+                        <span class="text-danger"></span>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="form-group">
+
+                    <label>Gatuadress</label>
+                    <input class="form-control" id="Adress" name="Adress">
+
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group" id="ZipCode">
+                    <label>Postnummer</label>
+                    <input class="form-control" id="ZipCode" name="ZipCode" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group" id="City">
+                    <label>Stad</label>
+                    <input class="form-control" id="City" name="City" />
+
+                    <span class="text-danger"></span>
+                </div>
+            }
             <button type="submit" class="btn btn-outline-dark">Spara</button>
+            <!--<button type="submit" asp-action="UpdateAdress" class="btn btn-outline-dark">Uppdatera</button>-->
         </form>
     </div>
 </div>
+
