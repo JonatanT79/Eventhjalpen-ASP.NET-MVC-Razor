@@ -35,6 +35,11 @@ namespace EVTHJÄLPEN
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSession();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddDefaultUI()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

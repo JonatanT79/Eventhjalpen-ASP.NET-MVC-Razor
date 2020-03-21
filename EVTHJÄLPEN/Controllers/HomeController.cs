@@ -10,16 +10,19 @@ using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
 using System.Data.SqlClient;
 using System.Data.Entity;
+using Microsoft.AspNetCore.Identity;
 
 namespace EVTHJÄLPEN.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]

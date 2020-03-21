@@ -26,12 +26,12 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
         public int ZipCode { get; set; }
         public string City { get; set; }
         public Guid UserID { get; set; }
-        
+
         public List<AdressModel> adressList = new List<AdressModel>();
 
         public IActionResult OnGet()
         {
-            
+
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
             SqlConnection con = new SqlConnection(connectionString);
@@ -58,20 +58,20 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                 }
                 con.Close();
                 return Page();
-                
-                
+
+
             }
-            
+
         }
 
-        
+
 
         public IActionResult OnPost(string Adress, int ZipCode, string City)
         {
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server =(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
             SqlConnection con = new SqlConnection(connectionString);
-            
+
             string query = $@"INSERT INTO
                                 [UserAdress]
                                     (
