@@ -1,38 +1,5 @@
 use TranbarDB 
 
-use TranbarDB 
-
-
-
-insert into UserAdress(Adress,ZipCode,City) 
-
-values
-
-('Hornsgatan 92', '118 21','Stockholm'),
-
-('Vallgatan 21', '411 16','Göteborg'),
-
-('Ymersgata 3', '215 36','Malmö'),
-
-('Lekgatan 7', '724 62','Västerås')
-
-
-
-Insert into Users(Firstname, Lastname, Email, Phonenumber, UserAdressID)
-
-Values 
-
-('Sven', 'Svensson', 'Sven.Svensson@gmail.com', '070876568',3),
-
-('Anders', 'Borg', 'Anders.Borg@gmail.com','0707604923',1),
-
-('Göran', 'Andersson', 'golle@gmail.com', '071212345',2),
-
-('Eva','Lindgren', 'Eva.Lindgren@gmail.com', '070976557',4),
-
-('Kalle', 'Berg', 'kalle121@gmail.com', '0702350455',1)
-
-
 
 Insert into Products(ProductName, Description,Quantity,Price)
 
