@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using EVTHJÄLPEN.Models;
+using System.Net.Mail;
 
 namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
 {
@@ -69,6 +71,31 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        public void SendEmail(Email em)
+        {
+            string to = em.to;
+            string sub = em.subj;
+            string body = em.body;
+            MailMessage mm = new MailMessage();
+            mm.To.Add(to);
+            mm.Subject = sub;
+            mm.Body = body;
+            mm.From = new MailAddress("evthjalpen@gmail.com");
+            mm.IsBodyHtml = true;
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+            };
+
+            //TODO: Gör detta till Environment Variables eller liknande, ingen bra ide att ha hårdkodade lösenord hehe
+            smtp.Credentials = new System.Net.NetworkCredential("evthjalpen@gmail.com", "Event1337");
+            smtp.Send(mm);
+        }
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -89,8 +116,19 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
+                    Email em = new Email()
+                    {
+                        to = Input.Email,
+                        subj = "Välkommen till Eventhjälpen!",
+                        body = $"<h1>Välkommen!</h1><br>Bekräfta mailadress genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här!</a>."
+                    };
+
+                    SendEmail(em);
+
+
                     await _emailSender.SendEmailAsync(Input.Email, "Bekräfta din mailadess",
                         $"Bekräfta mailadress genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här!</a>.");
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -108,8 +146,9 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-            return Page();
+                // If we got this far, something failed, redisplay form
+                return Page();
         }
     }
 }
+
