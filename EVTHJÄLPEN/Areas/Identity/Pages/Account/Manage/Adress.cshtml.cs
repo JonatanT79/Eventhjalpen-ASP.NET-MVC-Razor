@@ -28,7 +28,8 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
         public Guid UserID { get; set; }
 
         public List<AdressModel> adressList = new List<AdressModel>();
-
+        public bool isAdressEmpty;
+        public string query = "";
         public IActionResult OnGet()
         {
 
@@ -55,6 +56,10 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                     adressModel.City = rdr["City"].ToString();
                     adressModel.UserID = (Guid)rdr["UserID"];
                     adressList.Add(adressModel);
+                    if (adressList.Count < 1)
+                    {
+                        isAdressEmpty = true;
+                    }
                 }
                 con.Close();
                 return Page();
@@ -66,13 +71,16 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
 
 
+
         public IActionResult OnPost(string Adress, int ZipCode, string City)
         {
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server =(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
             SqlConnection con = new SqlConnection(connectionString);
 
-            string query = $@"INSERT INTO
+            if (isAdressEmpty == true)
+            {
+                query = $@"INSERT INTO
                                 [UserAdress]
                                     (
 
@@ -89,6 +97,18 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                         @City,
                                         @UserID
                                         )";
+
+            }
+            else
+            {
+                query = $@" UPDATE [UserAdress]
+                                SET Adress = @Adress,
+                                ZipCode = @ZipCode,
+                                City = @City
+                                
+                                Where UserID = @UserID
+                                ";
+            }
 
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.CommandType = CommandType.Text;
