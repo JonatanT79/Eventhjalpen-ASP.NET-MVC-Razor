@@ -24,6 +24,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
         public int ID { get; set; }
         public string Street { get; set; }
         public int ZipCode { get; set; }
+        public string CareOf { get; set; }
         public string City { get; set; }
         public Guid UserID { get; set; }
 
@@ -39,7 +40,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
             {
 
-                SqlCommand cmd = new SqlCommand("SELECT ID, Adress, ZipCode, City, UserID FROM [UserAdress] WHERE UserID = @UserID", con);
+                SqlCommand cmd = new SqlCommand("SELECT ID, Adress, ZipCode, CareOf, City, UserID FROM [UserAdress] WHERE UserID = @UserID", con);
                 cmd.CommandType = CommandType.Text;
 
                 cmd.Parameters.AddWithValue("@UserID", signedInUserID);
@@ -53,6 +54,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                     adressModel.ID = Convert.ToInt32(rdr["ID"]);
                     adressModel.Street = rdr["Adress"].ToString();
                     adressModel.ZipCode = Convert.ToInt32(rdr["ZipCode"]);
+                    adressModel.CareOf = rdr["CareOf"].ToString();
                     adressModel.City = rdr["City"].ToString();
                     adressModel.UserID = (Guid)rdr["UserID"];
                     adressList.Add(adressModel);
@@ -72,7 +74,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
 
 
-        public IActionResult OnPost(string Adress, int ZipCode, string City)
+        public IActionResult OnPost(string Adress, string CareOf, int ZipCode, string City)
         {
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server =(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
@@ -85,6 +87,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                     (
 
                                         Adress,
+                                        CareOf,
                                         ZipCode,
                                         City,
                                         UserID
@@ -93,6 +96,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                     ( 
 
                                         @Adress,
+                                        @CareOf,
                                         @ZipCode,
                                         @City,
                                         @UserID
@@ -103,6 +107,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
             {
                 query = $@" UPDATE [UserAdress]
                                 SET Adress = @Adress,
+                                CareOf = @CareOf,
                                 ZipCode = @ZipCode,
                                 City = @City
                                 
@@ -115,6 +120,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
 
             cmd.Parameters.AddWithValue("@Adress", Adress);
+            cmd.Parameters.AddWithValue("@CareOf", CareOf);
             cmd.Parameters.AddWithValue("@ZipCode", ZipCode);
             cmd.Parameters.AddWithValue("@City", City);
             cmd.Parameters.AddWithValue("@UserID", signedInUserID);
