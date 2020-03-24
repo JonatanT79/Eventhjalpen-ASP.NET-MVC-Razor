@@ -1,22 +1,17 @@
 ﻿@model RecipeVM
 
-@{
-    ViewData["Title"] = "Recept";
-}
-<div class="text-center">
-    <h2 class="display-4"><u>Alla recept</u></h2>
-</div>
+    <center><h1>Recept</h1></center>
+<p><center>
+    Sök Recept: <input a class="btn btn-outline-info" id="searchQuery" type="text" value="" />
+</center></p>
 <br />
 
 <div class="container">
     <div class="row">
-        <br />
-        <br />
-
         <div class="col-sm" style="text-align:center">
             <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="0">Alla recept</a>
         </div>
-
+        <br />
         @foreach (var item in Model.recipeTypes)
         {
             <div class="col-sm" style="text-align: center">
@@ -28,11 +23,7 @@
         }
 
     </div>
-
     <br />
-    <br />
-    <input id="searchQuery" type="text" value="" />
-
     <div class="row row-cols-1 row-cols-md-3" id="dynList">
         @foreach (var item2 in Model.recipes)
         {
