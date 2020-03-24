@@ -27,7 +27,7 @@ namespace EVTHJÄLPEN.Data
         public virtual DbSet<RecipeSteps> RecipeSteps { get; set; }
         public virtual DbSet<RecipeDetails> RecipeDetails { get; set; }
         public virtual DbSet<RecipeType> RecipeType { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        //public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserAdress> UserAdress { get; set; }
         public virtual DbSet<MeasurementUnit> MeasurementUnit { get; set; }
 

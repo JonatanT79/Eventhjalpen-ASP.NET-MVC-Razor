@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Eventhjälpen.Models;
+using EVTHJÄLPEN.Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -47,22 +48,27 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                 con.Open();
                 SqlDataReader rdr = cmd.ExecuteReader();
                 AdressModel adressModel = new AdressModel();
-
-
-                while (rdr.Read())
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    adressModel.ID = Convert.ToInt32(rdr["ID"]);
-                    adressModel.Street = rdr["Adress"].ToString();
-                    adressModel.ZipCode = Convert.ToInt32(rdr["ZipCode"]);
-                    adressModel.CareOf = rdr["CareOf"].ToString();
-                    adressModel.City = rdr["City"].ToString();
-                    adressModel.UserID = (Guid)rdr["UserID"];
-                    adressList.Add(adressModel);
-                    if (adressList.Count < 1)
+                    var query = from e in ctx.UserAdress
+                                select e;
+                    if (query.Count() == 0)
                     {
                         isAdressEmpty = true;
                     }
+                    
                 }
+                        while (rdr.Read())
+                        {
+                            adressModel.ID = Convert.ToInt32(rdr["ID"]);
+                            adressModel.Street = rdr["Adress"].ToString();
+                            adressModel.ZipCode = Convert.ToInt32(rdr["ZipCode"]);
+                            adressModel.City = rdr["City"].ToString();
+                            adressModel.UserID = (Guid)rdr["UserID"];
+                            adressModel.CareOf = rdr["CareOf"].ToString();
+                            adressList.Add(adressModel);
+                        }
+                    
                 con.Close();
                 return Page();
 
@@ -76,6 +82,16 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
         public IActionResult OnPost(string Adress, string CareOf, int ZipCode, string City)
         {
+            using (ApplicationDbContext ctx = new ApplicationDbContext())
+            {
+                var query = from e in ctx.UserAdress
+                            select e;
+                if (query.Count() == 0)
+                {
+                    isAdressEmpty = true;
+                }
+
+            }
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server =(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
             SqlConnection con = new SqlConnection(connectionString);
@@ -87,40 +103,54 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                     (
 
                                         Adress,
-                                        CareOf,
+                                        
                                         ZipCode,
                                         City,
-                                        UserID
+                                        UserID,
+                                        CareOf
                                     )
                                 VALUES
                                     ( 
 
                                         @Adress,
-                                        @CareOf,
+                                       
                                         @ZipCode,
                                         @City,
-                                        @UserID
+                                        @UserID,
+                                        @CareOf
                                         )";
+                
 
             }
             else
             {
                 query = $@" UPDATE [UserAdress]
                                 SET Adress = @Adress,
-                                CareOf = @CareOf,
+                                
                                 ZipCode = @ZipCode,
-                                City = @City
+                                City = @City,
+                                CareOf = @CareOf
                                 
                                 Where UserID = @UserID
                                 ";
+                
             }
+            adressList.Clear();
 
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.CommandType = CommandType.Text;
 
 
             cmd.Parameters.AddWithValue("@Adress", Adress);
+            if(CareOf == null)
+            {
+                CareOf = "c/o";
+                cmd.Parameters.AddWithValue("@CareOf", CareOf);
+            }
+            else { 
             cmd.Parameters.AddWithValue("@CareOf", CareOf);
+            }
+           
             cmd.Parameters.AddWithValue("@ZipCode", ZipCode);
             cmd.Parameters.AddWithValue("@City", City);
             cmd.Parameters.AddWithValue("@UserID", signedInUserID);
