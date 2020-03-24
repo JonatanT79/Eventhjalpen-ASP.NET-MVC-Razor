@@ -31,11 +31,12 @@
 
     <br />
     <br />
+    <input id="searchQuery" type="text" value="" />
 
-    <div class="row row-cols-1 row-cols-md-3">
+    <div class="row row-cols-1 row-cols-md-3" id="dynList">
         @foreach (var item2 in Model.recipes)
         {
-            <div class="col mb-4">
+            <div class="col mb-4" id="card">
                 <div class="card h-100">
                     @*<div class="card">*@
                     @{string s = "/Images/" + @item2.RecipeName + ".jpg";}
@@ -54,5 +55,24 @@
         }
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        //Tar värdet från inputed med id't searchQuery
+        $("#searchQuery").keyup(function () {
+            //Initierar en variabel som tar emot värdet från searchQuery
+            var filter = $(this).val(),
+                count = 0;
+            //För varje #Card element göm eller visa beroende på regex matchning
+            $('#card div').each(function () {
+                if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                    $(this).hide();
+                } else {
+                    //annars får den visa allt
+                    $(this).show();
+                    count++;
+                }
+            });
+        });
+    </script>
 </div>
 
