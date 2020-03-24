@@ -70,7 +70,8 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Adress = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true)
+                    City = table.Column<string>(nullable: true),
+                    CareOf = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,7 +231,8 @@ namespace EVTHJÄLPEN.Data.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrdersID = table.Column<int>(nullable: true),
-                    ProductID = table.Column<int>(nullable: true)
+                    ProductID = table.Column<int>(nullable: true),
+                    Amount = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
