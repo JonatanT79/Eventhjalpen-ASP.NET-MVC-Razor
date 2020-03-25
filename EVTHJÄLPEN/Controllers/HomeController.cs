@@ -77,10 +77,10 @@ namespace EVTHJÄLPEN.Controllers
                     }
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
-                    var u = from e in ctx.Orderdetails
+                    var Check = from e in ctx.Orderdetails
                             select e;
 
-                    if (u.Count() == 0)
+                    if (Check.Count() == 0)
                     {
                         var products = from e in ctx.Products
                                        where productIds.Contains(e.Id)
@@ -97,28 +97,9 @@ namespace EVTHJÄLPEN.Controllers
 
                                 using (ApplicationDbContext c = new ApplicationDbContext())
                                 {
-                                    if (!c.Orderdetails.Any(A => od.ProductId == item.Id))
+                                    if (!c.Orderdetails.Any(A => A.ProductId == item.Id))
                                     {
                                         ctx.Orderdetails.Add(od);
-                                    }
-
-                                    var modify = from m in c.Orderdetails
-                                                 where m.ProductId == ProductID
-                                                 select m;
-
-                                    if (i == 0 && Apply == "Add")
-                                    {
-                                        foreach (var items in modify)
-                                        {
-                                            items.Amount++;
-                                        }
-                                    }
-                                    else if (i == 0 && Apply == "Remove")
-                                    {
-                                        foreach (var items in modify)
-                                        {
-                                            items.Amount--;
-                                        }
                                     }
                                     c.SaveChanges();
                                 }
@@ -169,6 +150,7 @@ namespace EVTHJÄLPEN.Controllers
                                     ctx.SaveChanges();
                                 }
                             }
+
                             var products = from e in ctx.Products
                                            join e2 in ctx.Orderdetails on e.Id equals e2.ProductId
                                            where productIds.Contains(e.Id)
@@ -228,10 +210,9 @@ namespace EVTHJÄLPEN.Controllers
                 {
                     varukorg = Request.Cookies.SingleOrDefault(s => s.Key == "Varukorg");
 
-                    string value = varukorg.Value;
                     string cookieString = "";
 
-                    int index = value.IndexOf("," + RemoveID.ToString() + ",");
+                    int index = varukorg.Value.IndexOf("," + RemoveID.ToString() + ",");
 
                     if (index == -1)
                     {

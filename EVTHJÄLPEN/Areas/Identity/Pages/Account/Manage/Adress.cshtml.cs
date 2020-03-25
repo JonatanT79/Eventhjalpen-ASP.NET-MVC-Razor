@@ -17,8 +17,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 {
-
-
     public class AdressModel : PageModel
     {
 
@@ -34,13 +32,11 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
         public string query = "";
         public IActionResult OnGet()
         {
-
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
             SqlConnection con = new SqlConnection(connectionString);
 
             {
-
                 SqlCommand cmd = new SqlCommand("SELECT ID, Adress, ZipCode, CareOf, City, UserID FROM [UserAdress] WHERE UserID = @UserID", con);
                 cmd.CommandType = CommandType.Text;
 
@@ -56,29 +52,22 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                     {
                         isAdressEmpty = true;
                     }
-                    
                 }
-                        while (rdr.Read())
-                        {
-                            adressModel.ID = Convert.ToInt32(rdr["ID"]);
-                            adressModel.Street = rdr["Adress"].ToString();
-                            adressModel.ZipCode = Convert.ToInt32(rdr["ZipCode"]);
-                            adressModel.City = rdr["City"].ToString();
-                            adressModel.UserID = (Guid)rdr["UserID"];
-                            adressModel.CareOf = rdr["CareOf"].ToString();
-                            adressList.Add(adressModel);
-                        }
-                    
+                while (rdr.Read())
+                {
+                    adressModel.ID = Convert.ToInt32(rdr["ID"]);
+                    adressModel.Street = rdr["Adress"].ToString();
+                    adressModel.ZipCode = Convert.ToInt32(rdr["ZipCode"]);
+                    adressModel.City = rdr["City"].ToString();
+                    adressModel.UserID = (Guid)rdr["UserID"];
+                    adressModel.CareOf = rdr["CareOf"].ToString();
+                    adressList.Add(adressModel);
+                }
+
                 con.Close();
                 return Page();
-
-
             }
-
         }
-
-
-
 
         public IActionResult OnPost(string Adress, string CareOf, int ZipCode, string City)
         {
@@ -90,7 +79,6 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                 {
                     isAdressEmpty = true;
                 }
-
             }
             var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string connectionString = "Server =(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
@@ -101,7 +89,6 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                 query = $@"INSERT INTO
                                 [UserAdress]
                                     (
-
                                         Adress,
                                         
                                         ZipCode,
@@ -111,7 +98,6 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                     )
                                 VALUES
                                     ( 
-
                                         @Adress,
                                        
                                         @ZipCode,
@@ -119,8 +105,6 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                         @UserID,
                                         @CareOf
                                         )";
-                
-
             }
             else
             {
@@ -133,24 +117,23 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                 
                                 Where UserID = @UserID
                                 ";
-                
             }
             adressList.Clear();
 
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.CommandType = CommandType.Text;
-
-
             cmd.Parameters.AddWithValue("@Adress", Adress);
-            if(CareOf == null)
+
+            if (CareOf == null)
             {
                 CareOf = "c/o";
                 cmd.Parameters.AddWithValue("@CareOf", CareOf);
             }
-            else { 
-            cmd.Parameters.AddWithValue("@CareOf", CareOf);
+            else
+            {
+                cmd.Parameters.AddWithValue("@CareOf", CareOf);
             }
-           
+
             cmd.Parameters.AddWithValue("@ZipCode", ZipCode);
             cmd.Parameters.AddWithValue("@City", City);
             cmd.Parameters.AddWithValue("@UserID", signedInUserID);
