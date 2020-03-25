@@ -26,12 +26,12 @@ else
                 var parms = new Dictionary<string, string>()
 {
                 { "ProductId", item.ProductID.ToString() },
-                { "Amount", (item.Amount + 1 ).ToString() }
+                { "Apply", "Add" }
             };
                 var lowerparms = new Dictionary<string, string>()
 {
                 { "ProductId", item.ProductID.ToString() },
-                { "Amount", (item.Amount - 1 ).ToString() }
+                { "Apply","Remove"  }
             };
             }
         </div>
