@@ -34,7 +34,6 @@ namespace EVTHJÄLPEN.Controllers
                             .ToList();
                     }
 
-
                     vm.recipes = _recepies;
                     vm.recipeTypes = _recipeTypes;
 
@@ -141,10 +140,7 @@ namespace EVTHJÄLPEN.Controllers
         [Route("/[controller]/[action]")]
         public IActionResult OnPost([Bind("Product")] List<IngredientToCart> ic)
         {
-
-
             return RedirectToAction("ViewCart", "Checkout");
-
         }
     }
 }

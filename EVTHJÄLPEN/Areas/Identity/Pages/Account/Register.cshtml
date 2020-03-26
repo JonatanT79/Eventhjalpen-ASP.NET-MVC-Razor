@@ -31,6 +31,9 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Registrera</button>
+            <div class="spinner-border" role="status" style="display: none">
+                <span class="sr-only">Loading...</span>
+            </div>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">
@@ -65,6 +68,11 @@
     </div>
 </div>
 
+<script>
+     function showPage() {
+        document.getElementById("loader").style.display = "show";
+    }
+</script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

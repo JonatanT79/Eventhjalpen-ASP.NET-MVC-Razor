@@ -12,6 +12,7 @@ namespace EVTHJÄLPEN.Models
         public string Adress { get; set; }
         public string ZipCode { get; set; }
         public string City { get; set; }
-        public virtual ICollection<Users> Users { get; set; }
+        public string CareOf { get; set; }
+        public Guid UserID { get; set; }
     }
 }

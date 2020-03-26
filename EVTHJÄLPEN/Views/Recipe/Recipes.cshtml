@@ -1,22 +1,17 @@
 ﻿@model RecipeVM
 
-@{
-    ViewData["Title"] = "Recept";
-}
-<div class="text-center">
-    <h2 class="display-4"><u>Alla recept</u></h2>
-</div>
+    <center><h1>Recept</h1></center>
+<p><center>
+    Sök Recept: <input a class="btn btn-outline-info" id="searchQuery" type="text" value="" />
+</center></p>
 <br />
 
 <div class="container">
     <div class="row">
-        <br />
-        <br />
-
         <div class="col-sm" style="text-align:center">
             <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="0">Alla recept</a>
         </div>
-
+        <br />
         @foreach (var item in Model.recipeTypes)
         {
             <div class="col-sm" style="text-align: center">
@@ -28,14 +23,11 @@
         }
 
     </div>
-
     <br />
-    <br />
-
-    <div class="row row-cols-1 row-cols-md-3">
+    <div class="row row-cols-1 row-cols-md-3" id="dynList">
         @foreach (var item2 in Model.recipes)
         {
-            <div class="col mb-4">
+            <div class="col mb-4" id="card">
                 <div class="card h-100">
                     @*<div class="card">*@
                     @{string s = "/Images/" + @item2.RecipeName + ".jpg";}
@@ -54,5 +46,24 @@
         }
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        //Tar värdet från inputed med id't searchQuery
+        $("#searchQuery").keyup(function () {
+            //Initierar en variabel som tar emot värdet från searchQuery
+            var filter = $(this).val(),
+                count = 0;
+            //För varje #Card element göm eller visa beroende på regex matchning
+            $('#card div').each(function () {
+                if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                    $(this).hide();
+                } else {
+                    //annars får den visa allt
+                    $(this).show();
+                    count++;
+                }
+            });
+        });
+    </script>
 </div>
 

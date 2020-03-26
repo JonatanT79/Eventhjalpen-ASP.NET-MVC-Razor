@@ -10,17 +10,19 @@ using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
 using System.Data.SqlClient;
 using System.Data.Entity;
+using Microsoft.AspNetCore.Identity;
 
 namespace EVTHJÄLPEN.Controllers
 {
     public class HomeController : Controller
     {
-        public int i { get; set; }
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -50,15 +52,11 @@ namespace EVTHJÄLPEN.Controllers
             return View();
         }
 
-        public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, int Amount = 1)
+        public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, string Apply)
         {
             ViewProducts vp = new ViewProducts();
-            var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
 
-            if(Amount <= 0)
-            {
-                Amount = 0;
-            }
+            var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
 
             if (RemoveID == 0)
             {
@@ -69,7 +67,7 @@ namespace EVTHJÄLPEN.Controllers
                                             where e.RecipeId == ID
                                             select e.ProductId;
 
-                    if(varukorg.Value != "" && varukorg.Value != null && ID != 0)
+                    if (varukorg.Value != "" && varukorg.Value != null && ID != 0)
                     {
                         cookieString = varukorg.Value + "," + string.Join(",", recipeProductsIds);
                     }
@@ -79,55 +77,142 @@ namespace EVTHJÄLPEN.Controllers
                     }
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
-                    var products = from e in ctx.Products
-                                   where productIds.Contains(e.Id)
-                                   select e;
+                    var Check = from e in ctx.Orderdetails
+                            select e;
 
-                    if (!cookieString.Equals(""))
+                    if (Check.Count() == 0)
                     {
-                        foreach (var item in products)
-                        {
-                            ShowIngrediens si = new ShowIngrediens();
-                            si.ProductID = item.Id;
-                            si.ProductName = item.ProductName;
-                            si.Quantity = item.Quantity;
-                            si.Price = item.Price;
+                        var products = from e in ctx.Products
+                                       where productIds.Contains(e.Id)
+                                       select e;
 
-                            if(si.ProductID == ProductID)
+                        int i = 0;
+                        if (!cookieString.Equals(""))
+                        {
+                            foreach (var item in products)
                             {
-                                si.Amount = Amount;
+                                Orderdetails od = new Orderdetails();
+                                od.ProductId = item.Id;
+                                od.Amount = 1;
+
+                                using (ApplicationDbContext c = new ApplicationDbContext())
+                                {
+                                    if (!c.Orderdetails.Any(A => A.ProductId == item.Id))
+                                    {
+                                        ctx.Orderdetails.Add(od);
+                                    }
+                                    c.SaveChanges();
+                                }
+
+                                ShowIngrediens si = new ShowIngrediens();
+                                si.ProductID = item.Id;
+                                si.ProductName = item.ProductName;
+                                si.Quantity = item.Quantity;
+                                si.Price = item.Price;
+                                si.Amount = 1;
+                                vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
+                                vp.Productslist.Add(si);
                                 i++;
                             }
-                            else
+                        }
+                    }
+                    else
+                    {
+                        using (ApplicationDbContext c = new ApplicationDbContext())
+                        {
+                            int i = 0;
+                            var modify = from m in c.Orderdetails
+                                         where m.ProductId == ProductID
+                                         select m;
+
+                            if (i == 0 && Apply == "Add")
                             {
-                                si.Amount = 1;
+                                foreach (var items in modify)
+                                {
+                                    items.Amount++;
+                                }
+                            }
+                            else if (i == 0 && Apply == "Remove")
+                            {
+                                foreach (var items in modify)
+                                {
+                                    items.Amount--;
+                                }
+                            }
+                            c.SaveChanges();
+
+                            foreach (var additem in productIds)
+                            {
+                                Orderdetails od = new Orderdetails() { ProductId = additem, Amount = 1 };
+                                if (!c.Orderdetails.Any(A => A.ProductId == additem))
+                                {
+                                    ctx.Orderdetails.Add(od);
+                                    ctx.SaveChanges();
+                                }
                             }
 
-                            vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
-                            vp.Productslist.Add(si);
+                            var products = from e in ctx.Products
+                                           join e2 in ctx.Orderdetails on e.Id equals e2.ProductId
+                                           where productIds.Contains(e.Id)
+                                           select new
+                                           {
+                                               PID = e.Id,
+                                               PNA = e.ProductName,
+                                               Qua = e.Quantity,
+                                               Pri = e.Price,
+                                               Amo = e2.Amount
+                                           };
+
+                            if (!cookieString.Equals(""))
+                            {
+                                foreach (var item in products)
+                                {
+                                    ShowIngrediens si = new ShowIngrediens();
+                                    si.ProductID = item.PID;
+                                    si.ProductName = item.PNA;
+                                    si.Quantity = item.Qua;
+                                    si.Price = item.Pri;
+                                    si.Amount = item.Amo;
+                                    vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
+                                    vp.Productslist.Add(si);
+                                    i++;
+                                }
+                            }
                         }
                     }
                     Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
+                    ctx.SaveChanges();
                 }
             }
 
             if (Empty == "Empty")
             {
-                Response.Cookies.Delete("Varukorg");
-                vp.Productslist.Clear();
-                vp.TotalSum = 0;
-                return View(vp);
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                {
+
+                    foreach (var item in ctx.Orderdetails)
+                    {
+                        ctx.Orderdetails.Remove(item);
+                    }
+
+                    ctx.SaveChanges();
+                    Response.Cookies.Delete("Varukorg");
+                    vp.Productslist.Clear();
+                    vp.TotalSum = 0;
+
+                    return View(vp);
+                }
             }
             else if (RemoveID != 0)
             {
+                //om man tar bort en produkt, rensa hela tabellen och lägg till nytt, spara modifierings värderna 
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
                     varukorg = Request.Cookies.SingleOrDefault(s => s.Key == "Varukorg");
 
-                    string value = varukorg.Value;
                     string cookieString = "";
 
-                    int index = value.IndexOf("," + RemoveID.ToString()+ ","); 
+                    int index = varukorg.Value.IndexOf("," + RemoveID.ToString() + ",");
 
                     if (index == -1)
                     {
@@ -179,13 +264,12 @@ namespace EVTHJÄLPEN.Controllers
                         si.ProductName = item.ProductName;
                         si.Quantity = item.Quantity;
                         si.Price = item.Price;
-                        si.Amount = Amount;
+                        //   si.Amount = Amount;
                         vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                         vp.Productslist.Add(si);
                     }
                     Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
                 }
-
                 return View(vp);
             }
 

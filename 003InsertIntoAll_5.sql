@@ -1,43 +1,8 @@
 use TranbarDB 
 
-use TranbarDB 
-
-
-
-insert into UserAdress(Adress,ZipCode,City) 
-
-values
-
-('Hornsgatan 92', '118 21','Stockholm'),
-
-('Vallgatan 21', '411 16','Göteborg'),
-
-('Ymersgata 3', '215 36','Malmö'),
-
-('Lekgatan 7', '724 62','Västerås')
-
-
-
-Insert into Users(Firstname, Lastname, Email, Phonenumber, UserAdressID)
-
-Values 
-
-('Sven', 'Svensson', 'Sven.Svensson@gmail.com', '070876568',3),
-
-('Anders', 'Borg', 'Anders.Borg@gmail.com','0707604923',1),
-
-('Göran', 'Andersson', 'golle@gmail.com', '071212345',2),
-
-('Eva','Lindgren', 'Eva.Lindgren@gmail.com', '070976557',4),
-
-('Kalle', 'Berg', 'kalle121@gmail.com', '0702350455',1)
-
-
-
 Insert into Products(ProductName, Description,Quantity,Price)
 
 Values 
-
 ('Smör', 'Svenskt','500 g',49.90), --1
 
 ('Ägg','','6 Pack', 17.90), --2
@@ -112,8 +77,6 @@ Values
 ('Rödbetor', 'Ekologiska', '1 kg', 21.95), -- 37
 ('Rosmarin', 'Torkad', '20 g', 20.95) --38
 
-
-
 Insert into RecipeType(RecipeTypeName)
 
 Values 
@@ -125,8 +88,6 @@ Values
 ('Middag'), --3
 
 ('Vegetarisk') --4
-
-
 
 ---Ändrade recipeTypeID
 
@@ -145,9 +106,6 @@ Values
 (2, 'Insalata Caprese', 15),
 
 (4, 'Rostade rödbetor', 60)
-
-
-
 
 insert into MeasurementUnit(Measurement) 
 
@@ -180,17 +138,8 @@ values
 ('Skivor'), --13
 ('Kruka') --14
 
-
-
 Insert into RecipeDetails(RecipeID, ProductID, ProductQuantity, MeasurementUnitID)
-
-
-
-
 Values 
-
---
-
 --Kladdkaka
 
 (1, 1, 100, 2),
@@ -208,8 +157,6 @@ Values
 (1, 8, 0, 11),
 
 (1, 7, 2, 5),
-
-
 
 --Jordgubbstårta
 
@@ -245,8 +192,6 @@ Values
 
 (2, 14, 400, 2), --JORDUBBAR, OKLAR MÄNGD
 
-
-
 --Kycklingspett
 
 (3, 15, 2, 5),
@@ -264,8 +209,6 @@ Values
 (3, 29, 1, 11), -- DETTA ÄR PRODUKTEN GRILLSPETT AV TRÄ (INTE MAT ALLTSÅ)
 
 (3, 30, 3, 8), 
-
-
 
 --Ryggbiff
 
@@ -297,9 +240,6 @@ Values
 
 (4, 1, 12.5, 2),
 
-
-
-
 -- Insalata Caprese
 
 (5, 33, 4, 11),
@@ -310,7 +250,6 @@ Values
 (5, 35, 3, 8),
 (5, 36, 1, 14),
 
-
 -- Rostade rödbetor med rosmarin
 
 (6, 37, 1.5, 1),
@@ -318,40 +257,6 @@ Values
 (6, 38, 1, 9),
 (6, 16, 1, 9),
 (6, 17, 2, 10)
-
-
-
-Insert into Orders(UserID, SumToPay, CurrentDate)
-
-Values 
-
-(1, 365, GETDATE()),
-
-(2, 165, GETDATE()),
-
-(3, 233, GETDATE()),
-
-(4, 321, GETDATE())
-
-
-
--- --------------------------
-
-
-
-Insert into OrderDetails(OrdersID, ProductID)
-
-Values 
-
-(1, 5),
-
-(2, 2),
-
-(3, 3),
-
-(4, 4)
-
-
 
 Insert into [Events](EventType)
 
@@ -364,8 +269,6 @@ Values
 ('Bröllop'),
 
 ('Buffé')
-
-
 
 Insert into EventDetails(RecipeID, EventID)
 
@@ -383,13 +286,9 @@ Values
 
 (6, 4)
 
-
-
 Insert into RecipeSteps(RecipeID, Stepnumber,Instructions)
 
 Values 
-
-
 
 -- Kladdkaka
 
@@ -404,8 +303,6 @@ Values
 (1, 5, 'Grädda mitt i ugnen i cirka 15 min. Kakan blir låg med ganska hård yta och lite kladdig i mitten'),
 
 (1, 6, 'Låt kakan kallna, Pudra över florsocker. Servera med grädde eller glass och frukt'),
-
-
 
 --Jordgubbstårta
 
@@ -423,15 +320,11 @@ Values
 
 (2, 7, 'Garnera med grädde och jordgubbar.'),
 
-
-
 --Kycklingspett
 
 (3, 1, 'Rör ihop kokosgrädde, socker, salt och curry. Skär kycklingen i små bitar och blanda ner. Låt marinera i kylen ca 20 minuter.'),
 
 (3, 2, 'Trä kycklingbitarna på spett. Stek spetten i 3–4 msk olja i en het stekpanna ca 5 minuter. Pensla med resten av oljan under stekningen så kycklingen håller sig saftig. Toppa spetten med koriander'),
-
-
 
 --Ryggbiff
 
@@ -448,14 +341,12 @@ Values
 (4, 6, 'Ryggbiff: Krydda köttet med salt och peppar. Stek i omgångar i het panna i olja och smör, 1–2 minuter per sida. Lägg köttet på ett ugnsgaller med plåt under. Sätt in i ugnen, se Innertemperatur för blodigt, medium och välstekt. Låt köttet vila ca 2 minuter innan servering.'),
 (4, 7, 'Skiva köttet och servera med rotselleripurén, vitlöksskyn och toppa med svartkålen.'),
 
-
 -- Insalata Caprese
 
 (5, 1, 'Skölj tomaterna. Skär tomaterna och mozzarellan i tunna skivor.'),
 (5, 2, 'Varva tomater och mozzarellaskivor på ett fat eller 4 tallrikar (för 4 port).'),
 (5, 3, 'Salta och peppra. Droppa olivolja och eventuellt lite balsamvinäger över.'),
 (5, 4, 'Strö över plockad basilika. Servera genast.'),
-
 
 -- Rostade rödbetor med rosmarin
 
