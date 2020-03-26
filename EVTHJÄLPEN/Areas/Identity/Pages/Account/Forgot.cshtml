@@ -1,0 +1,46 @@
+﻿@page
+@model EVTHJÄLPEN.Areas.Identity.Pages.Account.ForgotModel
+@{
+    ViewData["Title"] = "Glömt lösenordet?";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>Skriv in din mailadress.</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4" id="parent">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary" id="sendButton">Skicka återställningsmail</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    is_Not_Created = false;
+
+    document.getElementById("sendButton").onclick = function () { createElement() };
+
+    function createElement() {
+        if (is_Not_Created == false) {
+            var parent = document.getElementById('parent');
+            var mailSent = document.createElement("div");
+            mailSent.innerHTML = "Mail skickat, kolla din inkorg.";
+            mailSent.setAttribute("class", "alert alert-info");
+            document.getElementById("parent").appendChild(mailSent);
+            is_Not_Created = true;
+        } else {
+            return;
+        }    
+    }
+      
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using EVTHJÄLPEN.Services;
+using EVTHJÄLPEN.Models;
 
 namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
 {
@@ -141,6 +143,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
+                
                 ModelState.AddModelError(string.Empty, "Verifieringsmail har skickats.");
             }
 
@@ -151,10 +154,18 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                Input.Email,
-                "Bekräfta din e-postadress",
-                $"Bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här</a>.");
+
+            EmailSender es = new EmailSender(); 
+
+            //Mailet som skall skickas
+            Email em = new Email()
+            {
+                to = Input.Email,
+                subj = "Glömt lösenord",
+                body = $"<h4>Klicka på länken nedan för att byta lösenord.</h4><br><a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Klicka här!</a>."
+            };
+
+            es.SendEmail(em);
 
             ModelState.AddModelError(string.Empty, "Verifieringsmail har skickats.");
             return Page();

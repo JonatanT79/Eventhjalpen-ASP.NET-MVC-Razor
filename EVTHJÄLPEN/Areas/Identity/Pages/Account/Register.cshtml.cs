@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using EVTHJÄLPEN.Models;
-using System.Net.Mail;
+using EVTHJÄLPEN.Services;
 
 namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
 {
@@ -71,33 +71,9 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public void SendEmail(Email em)
-        {
-            string to = em.to;
-            string sub = em.subj;
-            string body = em.body;
-            MailMessage mm = new MailMessage();
-            mm.To.Add(to);
-            mm.Subject = sub;
-            mm.Body = body;
-            mm.From = new MailAddress("evthjalpen@gmail.com");
-            mm.IsBodyHtml = true;
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-            };
-
-            //TODO: Gör detta till Environment Variables eller liknande, ingen bra ide att ha hårdkodade lösenord hehe
-            smtp.Credentials = new System.Net.NetworkCredential("evthjalpen@gmail.com", "Event1337");
-            smtp.Send(mm);
-        }
-
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            EmailSender es = new EmailSender();
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -116,6 +92,8 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
+                    //Här är välkomstmailet, baseras på en modell i Models. To är vem som skall få den, Subj är titel på mail, Body är innehåll. 
+                    //HTML formattering fungerar på detta. 
                     Email em = new Email()
                     {
                         to = Input.Email,
@@ -123,12 +101,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                         body = $"<h1>Välkommen!</h1><br>Bekräfta mailadress genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här!</a>."
                     };
 
-                    SendEmail(em);
-
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Bekräfta din mailadess",
-                        $"Bekräfta mailadress genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här!</a>.");
-
+                    es.SendEmail(em);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
