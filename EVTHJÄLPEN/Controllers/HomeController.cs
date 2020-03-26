@@ -75,10 +75,20 @@ namespace EVTHJÄLPEN.Controllers
                     {
                         cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
                     }
+
+                    if(cookieString == "")
+                    {
+                        foreach (var item in ctx.Orderdetails)
+                        {
+                            ctx.Orderdetails.Remove(item);
+                        }
+                            ctx.SaveChanges();
+                    }
+
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
                     var Check = from e in ctx.Orderdetails
-                            select e;
+                                select e;
 
                     if (Check.Count() == 0)
                     {
@@ -86,7 +96,6 @@ namespace EVTHJÄLPEN.Controllers
                                        where productIds.Contains(e.Id)
                                        select e;
 
-                        int i = 0;
                         if (!cookieString.Equals(""))
                         {
                             foreach (var item in products)
@@ -100,8 +109,8 @@ namespace EVTHJÄLPEN.Controllers
                                     if (!c.Orderdetails.Any(A => A.ProductId == item.Id))
                                     {
                                         ctx.Orderdetails.Add(od);
+                                        c.SaveChanges();
                                     }
-                                    c.SaveChanges();
                                 }
 
                                 ShowIngrediens si = new ShowIngrediens();
@@ -112,7 +121,6 @@ namespace EVTHJÄLPEN.Controllers
                                 si.Amount = 1;
                                 vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                                 vp.Productslist.Add(si);
-                                i++;
                             }
                         }
                     }
@@ -151,7 +159,7 @@ namespace EVTHJÄLPEN.Controllers
                                 }
                             }
 
-                            var products = from e in ctx.Products
+                            var SetValue = from e in ctx.Products
                                            join e2 in ctx.Orderdetails on e.Id equals e2.ProductId
                                            where productIds.Contains(e.Id)
                                            select new
@@ -165,7 +173,7 @@ namespace EVTHJÄLPEN.Controllers
 
                             if (!cookieString.Equals(""))
                             {
-                                foreach (var item in products)
+                                foreach (var item in SetValue)
                                 {
                                     ShowIngrediens si = new ShowIngrediens();
                                     si.ProductID = item.PID;
@@ -180,7 +188,10 @@ namespace EVTHJÄLPEN.Controllers
                             }
                         }
                     }
-                    Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
+                    if (Apply != "Add" && Apply != "Remove")
+                    {
+                        Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
+                    }
                     ctx.SaveChanges();
                 }
             }
@@ -189,7 +200,6 @@ namespace EVTHJÄLPEN.Controllers
             {
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-
                     foreach (var item in ctx.Orderdetails)
                     {
                         ctx.Orderdetails.Remove(item);
@@ -205,9 +215,18 @@ namespace EVTHJÄLPEN.Controllers
             }
             else if (RemoveID != 0)
             {
-                //om man tar bort en produkt, rensa hela tabellen och lägg till nytt, spara modifierings värderna 
                 using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
+                    var DeleteFromDatabase = from e in ctx.Orderdetails
+                                             where e.ProductId == RemoveID
+                                             select e;
+
+                    foreach (var item in DeleteFromDatabase)
+                    {
+                        ctx.Orderdetails.Remove(item);
+                    }
+                    ctx.SaveChanges();
+
                     varukorg = Request.Cookies.SingleOrDefault(s => s.Key == "Varukorg");
 
                     string cookieString = "";
@@ -253,18 +272,26 @@ namespace EVTHJÄLPEN.Controllers
 
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
 
-                    var products = from e in ctx.Products
-                                   where productIds.Contains(e.Id)
-                                   select e;
+                    var Value = from e in ctx.Products
+                                join e2 in ctx.Orderdetails on e.Id equals e2.ProductId
+                                where productIds.Contains(e.Id)
+                                select new
+                                {
+                                    PID = e.Id,
+                                    PNA = e.ProductName,
+                                    QUA = e.Quantity,
+                                    PRI = e.Price,
+                                    AMO = e2.Amount
+                                };
 
-                    foreach (var item in products)
+                    foreach (var item in Value)
                     {
                         ShowIngrediens si = new ShowIngrediens();
-                        si.ProductID = item.Id;
-                        si.ProductName = item.ProductName;
-                        si.Quantity = item.Quantity;
-                        si.Price = item.Price;
-                        //   si.Amount = Amount;
+                        si.ProductID = item.PID;
+                        si.ProductName = item.PNA;
+                        si.Quantity = item.QUA;
+                        si.Price = item.PRI;
+                        si.Amount = item.AMO;
                         vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                         vp.Productslist.Add(si);
                     }
@@ -283,3 +310,5 @@ namespace EVTHJÄLPEN.Controllers
         }
     }
 }
+// bugg; Om dataasen har data och cookiestrignen är tom kmr det bli en krash -- cookiestringen raderas efter 60 min men datan i databasen kvarstår
+// kolla först om cookiestringen är tom, är den tom rensa databasen
