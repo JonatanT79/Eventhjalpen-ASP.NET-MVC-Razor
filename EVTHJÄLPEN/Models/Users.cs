@@ -8,10 +8,6 @@ namespace Eventhjälpen.Models
 {
     public partial class Users
     {
-        public Users()
-        {
-            Orders = new HashSet<Orders>();
-        }
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
@@ -25,6 +21,5 @@ namespace Eventhjälpen.Models
         public string Phonenumber { get; set; }
         public int UserAdressID { get; set; }
         public virtual UserAdress UsersAdress { get; set; }
-        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

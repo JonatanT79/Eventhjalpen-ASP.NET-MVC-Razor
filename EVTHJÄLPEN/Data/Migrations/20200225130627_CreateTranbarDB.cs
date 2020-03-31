@@ -211,17 +211,11 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SumToPay = table.Column<int>(nullable: true),
                     CurrentDate = table.Column<DateTime>(nullable: true),
-                    UserID = table.Column<int>(nullable: true)
+                    AspUserID = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK__Orders__UserID__25869641",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -270,11 +264,6 @@ namespace EVTHJÄLPEN.Data.Migrations
                 name: "IX_Orderdetails_ProductID",
                 table: "Orderdetails",
                 column: "ProductID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserID",
-                table: "Orders",
-                column: "UserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipe_RecipeTypeID",

@@ -17,6 +17,7 @@ else
 {
     <h4>Produkter:</h4>
 
+    <p>@Model.StatusMessage</p>
 
     @foreach (var item in Model.Productslist)
     {
@@ -52,7 +53,6 @@ else
 
             </div>
 
-
             <div class="col-md-6">
 
                 <ul class="list-group w-100" style="text-align: right">
@@ -79,6 +79,7 @@ else
 
 
 <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="default" role="button">Fortsätt handla</a>
+
 
 @if (SignInManager.IsSignedIn(User))
 {
