@@ -66,8 +66,11 @@ namespace EVTHJÄLPEN.Controllers
                     var recipeProductsIds = from e in ctx.RecipeDetails
                                             where e.RecipeId == ID
                                             select e.ProductId;
-
-                    if (varukorg.Value != "" && varukorg.Value != null && ID != 0)
+                    if (Apply == "Add" || Apply == "Remove")
+                    {
+                        cookieString = varukorg.Value;
+                    }
+                    else if (varukorg.Value != "" && varukorg.Value != null && ID != 0)
                     {
                         cookieString = varukorg.Value + "," + string.Join(",", recipeProductsIds);
                     }
@@ -76,13 +79,13 @@ namespace EVTHJÄLPEN.Controllers
                         cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
                     }
 
-                    if(cookieString == "")
+                    if (cookieString == "")
                     {
                         foreach (var item in ctx.Orderdetails)
                         {
                             ctx.Orderdetails.Remove(item);
                         }
-                            ctx.SaveChanges();
+                        ctx.SaveChanges();
                     }
 
                     var productIds = cookieString.Split(",").Select(c => int.Parse(c));
@@ -188,10 +191,7 @@ namespace EVTHJÄLPEN.Controllers
                             }
                         }
                     }
-                    if (Apply != "Add" && Apply != "Remove")
-                    {
-                        Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
-                    }
+                    Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
                     ctx.SaveChanges();
                 }
             }
@@ -312,3 +312,5 @@ namespace EVTHJÄLPEN.Controllers
 }
 // bugg; Om dataasen har data och cookiestrignen är tom kmr det bli en krash -- cookiestringen raderas efter 60 min men datan i databasen kvarstår
 // kolla först om cookiestringen är tom, är den tom rensa databasen
+// ta bort i
+// bugg när man tar bort en produkt och sedan modifiera en annan
