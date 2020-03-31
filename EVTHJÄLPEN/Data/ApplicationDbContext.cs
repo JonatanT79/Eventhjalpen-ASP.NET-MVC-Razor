@@ -27,7 +27,7 @@ namespace EVTHJÄLPEN.Data
         public virtual DbSet<RecipeSteps> RecipeSteps { get; set; }
         public virtual DbSet<RecipeDetails> RecipeDetails { get; set; }
         public virtual DbSet<RecipeType> RecipeType { get; set; }
-        //public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UserAdress> UserAdress { get; set; }
         public virtual DbSet<MeasurementUnit> MeasurementUnit { get; set; }
 
@@ -96,12 +96,12 @@ namespace EVTHJÄLPEN.Data
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+               // entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Orders__UserID__25869641");
+                //entity.HasOne(d => d.User)
+                //    .WithMany(p => p.Orders)
+                //    .HasForeignKey(d => d.UserId)
+                //    .HasConstraintName("FK__Orders__UserID__25869641");
             });
 
             modelBuilder.Entity<Products>(entity =>

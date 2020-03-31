@@ -1,0 +1,34 @@
+﻿@page
+@model OrderhistoryModel
+@{
+
+}
+<b>Tidigare beställningar:</b>
+<p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+
+<div class="row" style="padding: 15px;">
+
+    <div class="col-md-6">
+        @foreach (var item in Model.OrderDetailsList)
+        {
+            <b>OrderID: @item.OrderID</b>
+            <br />
+            <br />
+            <b>Datum: @item.Date</b>
+            <br />
+            <br />
+            <b>Summa: @item.SumToPay kr</b>
+            break;
+        }
+    </div>
+
+        <div class="col-md-6">
+            <li class="list-group-item">
+                @foreach (var item in Model.OrderProductList)
+                {
+                    <p>@item.ProductName @item.Quantity <b style="float:right">Antal: @item.Amount</b> </p>
+                }
+            </li>
+        </div>
+
+    </div>
