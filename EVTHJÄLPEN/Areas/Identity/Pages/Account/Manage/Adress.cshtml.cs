@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Eventhjälpen.Models;
 using EVTHJÄLPEN.Data;
+using EVTHJÄLPEN.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -29,118 +30,82 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
         public List<AdressModel> adressList = new List<AdressModel>();
         public bool isAdressEmpty;
-        public string query = "";
+
         public IActionResult OnGet()
         {
-            var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
-            SqlConnection con = new SqlConnection(connectionString);
 
+            var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+            using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
-                SqlCommand cmd = new SqlCommand("SELECT ID, Adress, ZipCode, CareOf, City, UserID FROM [UserAdress] WHERE UserID = @UserID", con);
-                cmd.CommandType = CommandType.Text;
+                // If userID don't excist site will not load any userdata
+                var getAdressinfo = from a in ctx.UserAdress
+                                    where a.UserID == Guid.Parse(signedInUserID)
+                                    select a;
 
-                cmd.Parameters.AddWithValue("@UserID", signedInUserID);
-                con.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
-                AdressModel adressModel = new AdressModel();
-                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                foreach (var item in getAdressinfo)
                 {
-                    var query = from e in ctx.UserAdress
-                                select e;
-                    if (query.Count() == 0)
-                    {
-                        isAdressEmpty = true;
-                    }
-                }
-                while (rdr.Read())
-                {
-                    adressModel.ID = Convert.ToInt32(rdr["ID"]);
-                    adressModel.Street = rdr["Adress"].ToString();
-                    adressModel.ZipCode = Convert.ToInt32(rdr["ZipCode"]);
-                    adressModel.City = rdr["City"].ToString();
-                    adressModel.UserID = (Guid)rdr["UserID"];
-                    adressModel.CareOf = rdr["CareOf"].ToString();
-                    adressList.Add(adressModel);
-                }
+                    AdressModel adress = new AdressModel();
 
-                con.Close();
+                    adress.ID = item.ID;
+                    adress.Street = item.Adress;
+                    adress.ZipCode = Convert.ToInt32(item.ZipCode);
+                    adress.City = item.City;
+                    adress.CareOf = item.CareOf;
+                    adress.UserID = item.UserID;
+                    adressList.Add(adress);
+                }
                 return Page();
             }
         }
-
         public IActionResult OnPost(string Adress, string CareOf, int ZipCode, string City)
         {
+
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
-                var query = from e in ctx.UserAdress
-                            select e;
-                if (query.Count() == 0)
+                AdressModel adressModel = new AdressModel();
+                var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier).ToString();
+
+                var checkEmptyAdress = from e in ctx.UserAdress
+                                       select e;
+                if (checkEmptyAdress.Count() == 0)
                 {
                     isAdressEmpty = true;
                 }
-            }
-            var signedInUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string connectionString = "Server =(localdb)\\MSSQLLocalDB;Database=TranbarDB;Trusted_Connection=True;";
-            SqlConnection con = new SqlConnection(connectionString);
 
-            if (isAdressEmpty == true)
-            {
-                query = $@"INSERT INTO
-                                [UserAdress]
-                                    (
-                                        Adress,
-                                        
-                                        ZipCode,
-                                        City,
-                                        UserID,
-                                        CareOf
-                                    )
-                                VALUES
-                                    ( 
-                                        @Adress,
-                                       
-                                        @ZipCode,
-                                        @City,
-                                        @UserID,
-                                        @CareOf
-                                        )";
-            }
-            else
-            {
-                query = $@" UPDATE [UserAdress]
-                                SET Adress = @Adress,
-                                
-                                ZipCode = @ZipCode,
-                                City = @City,
-                                CareOf = @CareOf
-                                
-                                Where UserID = @UserID
-                                ";
-            }
-            adressList.Clear();
+                if (isAdressEmpty == true)
+                {
+                    var query = from user in ctx.UserAdress
+                                where user.UserID == Guid.Parse(signedInUserID)
+                                select user;
 
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.CommandType = CommandType.Text;
-            cmd.Parameters.AddWithValue("@Adress", Adress);
+                    UserAdress ua = new UserAdress();
+                    ua.Adress = Adress;
+                    ua.CareOf = CareOf;
+                    ua.ZipCode = ZipCode.ToString();
+                    ua.City = City;
+                    ua.UserID = Guid.Parse(signedInUserID);
+                    ctx.UserAdress.Add(ua);
+                    ctx.SaveChanges();
+                }
+                else
+                {
+                    var query = from user in ctx.UserAdress
+                                where user.UserID == Guid.Parse(signedInUserID)
+                                select user;
 
-            if (CareOf == null)
-            {
-                CareOf = "c/o";
-                cmd.Parameters.AddWithValue("@CareOf", CareOf);
+                    foreach (var adress in query)
+                    {
+                        adress.Adress = Adress;
+                        adress.CareOf = CareOf;
+                        adress.ZipCode = ZipCode.ToString();
+                        adress.City = City;
+                        adress.UserID = Guid.Parse(signedInUserID);
+                    }
+                    ctx.SaveChanges();
+                }
+
+
             }
-            else
-            {
-                cmd.Parameters.AddWithValue("@CareOf", CareOf);
-            }
-
-            cmd.Parameters.AddWithValue("@ZipCode", ZipCode);
-            cmd.Parameters.AddWithValue("@City", City);
-            cmd.Parameters.AddWithValue("@UserID", signedInUserID);
-
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
             return Page();
         }
     }
