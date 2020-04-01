@@ -98,7 +98,22 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
                     {
                         to = Input.Email,
                         subj = "Välkommen till Eventhjälpen!",
-                        body = $"<h1>Välkommen!</h1><br>Bekräfta mailadress genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här!</a>."
+                        body = $"<h1>Välkommen!</h1><br>Bekräfta mailadress genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här!</a>." +
+                        $"<br>" +
+                        $"<br>Hej och välkommen till Eventhjälpen, vad kul att du har blivit vår nya kund!" +
+                        $"<br>" +
+                        $"<br>Eventhjälpen skapades år 2020 och vår affärsidé är underlätta din planering inför ditt event. På vår hemsida kan du filtrera dig fram till det event du har tänkt skapa, samtidigt som du kan välja recept och få ingredienser hemlevererat. Vår hemsida går ut på att vara enkel och smidig!" +
+                        $"<br>" + 
+                        $"<br>Har du ytterligare frågor eller undrar över något? " +
+                        $"<br>" +
+                        $"<br>Vi finns tillgänglig på vardagar mellan klockan 09-17, övriga tider nås vi via mejl. Observera att vi har en svarstid på upp till tre arbetsdagar. " +
+                        $"<br>" +
+                        $"Våra kontaktuppgifter är följande:" +
+                        $"<br>Mail: evthjalpen@gmail.com" +
+                        $"<br>Telefon: 08-123 45 67" +
+                        $"<br>" +
+                        $"<br>Lycka till med ditt event! " +
+                        $"<br>Vänliga hälsningar, Eventhjälpen"
                     };
 
                     es.SendEmail(em);

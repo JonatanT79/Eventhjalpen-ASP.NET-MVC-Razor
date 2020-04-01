@@ -4,9 +4,15 @@
     ViewData["Title"] = "ReceptInformation";
 }
 <br />
+
+
 <div class="container">
     <h1 class="display-4">@Model.RecipeName</h1>
     <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
+
+    <input type="button" value="Skriv ut recept"
+           onclick="window.print()" />
+
     <hr class="my-4">
 
     <div class="card" style="padding: 15px;">
@@ -43,12 +49,12 @@
             <p class="text-black-50" style="text-align:left; padding: 10px;">Portioner:</p>
             @{
                 var parms = new Dictionary<string, string>
-                    {
+                            {
                 { "id", Model.RecipeID.ToString() },
                 { "portion", (Model.Portion + 1).ToString() }
             };
                 var lowerparms = new Dictionary<string, string>
-                    {
+                            {
                 { "id", Model.RecipeID.ToString() },
                 { "portion", (Model.Portion - 1 ).ToString() }
             };
@@ -67,6 +73,8 @@
             <br />
             <br />
             <br />
+            <input type="button" value="Print"
+                   onclick="window.print()" />
         </div>
     </div>
     <br />
