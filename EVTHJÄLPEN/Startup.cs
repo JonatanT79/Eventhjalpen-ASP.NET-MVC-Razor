@@ -12,6 +12,7 @@ using EVTHJÄLPEN.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 
 namespace EVTHJÄLPEN
@@ -36,6 +37,8 @@ namespace EVTHJÄLPEN
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSession();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddIdentity<IdentityUser, IdentityRole>()
             .AddDefaultUI()
@@ -74,5 +77,7 @@ namespace EVTHJÄLPEN
                 endpoints.MapRazorPages();
             });
         }
+
+
     }
 }

@@ -36,21 +36,24 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                                        AMO = e2.Amount
                                    };
 
-                foreach (var item in Orderhistory)
+                if(Orderhistory != null)
                 {
-                    Orderhistory oh = new Orderhistory();
-                    ShowIngrediens si = new ShowIngrediens();
+                    foreach (var item in Orderhistory)
+                    {
+                        Orderhistory oh = new Orderhistory();
+                        ShowIngrediens si = new ShowIngrediens();
 
-                    oh.OrderID = item.OID;
-                    oh.SumToPay = item.Sum;
-                    oh.Date = item.Date;
-                    si.ProductName = item.PNA;
-                    si.Quantity = item.QUA;
-                    si.Price = item.PRI;
-                    si.Amount = item.AMO;
+                        oh.OrderID = item.OID;
+                        oh.SumToPay = item.Sum;
+                        oh.Date = item.Date;
+                        si.ProductName = item.PNA;
+                        si.Quantity = item.QUA;
+                        si.Price = item.PRI;
+                        si.Amount = item.AMO;
 
-                    OrderProductList.Add(si);
-                    OrderDetailsList.Add(oh);
+                        OrderProductList.Add(si);
+                        OrderDetailsList.Add(oh);
+                    }
                 }
             }
         }
