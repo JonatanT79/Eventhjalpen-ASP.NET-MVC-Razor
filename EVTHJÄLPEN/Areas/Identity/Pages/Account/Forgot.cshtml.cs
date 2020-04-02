@@ -44,30 +44,42 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            EmailSender es = new EmailSender();
-            returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
+            var users = _userManager.Users;
+
+            var getAllEmails = from u in users
+                               select u.Email;
+
+            if (getAllEmails.Contains(Input.Email))
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                var result = await _userManager.GetUserIdAsync(user);
-                if (result != null)
+                EmailSender es = new EmailSender();
+                returnUrl = returnUrl ?? Url.Content("~/");
+                if (ModelState.IsValid)
                 {
-                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/Reset",
-                        pageHandler: null,
-                        values: new { code },
-                        protocol: Request.Scheme);
-
-                    Email em = new Email()
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var result = await _userManager.GetUserIdAsync(user);
+                    if (result != null)
                     {
-                        to = Input.Email,
-                        subj = "Glömt lösenord",
-                        body = $"<h1>Har du glömt ditt lösenord?</h1><br>Klicka <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>här</a> för att återställa ditt lösenord."
-                    };
+                        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        var callbackUrl = Url.Page(
+                            "/Account/Reset",
+                            pageHandler: null,
+                            values: new { code },
+                            protocol: Request.Scheme);
 
-                    es.SendEmail(em);
+                        Email em = new Email()
+                        {
+                            to = Input.Email,
+                            subj = "Glömt lösenord",
+                            body = $"<h1>Har du glömt ditt lösenord?</h1><br>Klicka <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>här</a> för att återställa ditt lösenord."
+                        };
+
+                        es.SendEmail(em);
+                    }
                 }
+            }
+            else
+            {
+                return Page();
             }
             return Page();
         }
