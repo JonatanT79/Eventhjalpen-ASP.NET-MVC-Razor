@@ -19,13 +19,16 @@ namespace EVTHJÄLPEN.Controllers
         {
             ViewProducts vp = new ViewProducts();
             AddListValue(vp);
-
+            
             return View(vp);
+            
         }
         public IActionResult DoneOrder(string UserID, int SumToPay)
         {
+
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
+                ViewProducts vp = new ViewProducts();
                 Orders o = new Orders();
                 o.AspUserId = UserID;
                 o.CurrentDate = DateTime.Now;
@@ -34,7 +37,14 @@ namespace EVTHJÄLPEN.Controllers
                 ctx.Orders.Add(o);
                 ctx.SaveChanges();
                 OrderID = o.Id;
+
+
+                ctx.SaveChanges();
+                Response.Cookies.Delete("Varukorg");
+                vp.Productslist.Clear();
+                vp.TotalSum = 0;
             }
+        
 
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
@@ -74,9 +84,11 @@ namespace EVTHJÄLPEN.Controllers
                     si.Amount = item.Amo;
                     vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
                     vp.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    vp.Email = User.FindFirstValue(ClaimTypes.Name);
+
                     vp.Productslist.Add(si);
                 }
-            }
+            }  
         }
     }
 }
