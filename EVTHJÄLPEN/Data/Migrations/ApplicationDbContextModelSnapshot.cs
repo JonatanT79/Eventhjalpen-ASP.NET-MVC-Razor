@@ -70,6 +70,9 @@ namespace EVTHJÄLPEN.Data.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -112,11 +115,6 @@ namespace EVTHJÄLPEN.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("EventName")
-                        .HasColumnType("varchar(255)")
-                        .HasMaxLength(255)
-                        .IsUnicode(false);
-
-                    b.Property<string>("EventType")
                         .HasColumnType("varchar(255)")
                         .HasMaxLength(255)
                         .IsUnicode(false);
@@ -598,7 +596,7 @@ namespace EVTHJÄLPEN.Data.Migrations
             modelBuilder.Entity("Eventhjälpen.Models.Users", b =>
                 {
                     b.HasOne("EVTHJÄLPEN.Models.UserAdress", "UsersAdress")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("UserAdressID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

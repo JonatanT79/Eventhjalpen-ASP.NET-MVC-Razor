@@ -14,6 +14,10 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
         public static string ChangePassword => "ChangePassword";
 
+        public static string Adress => "Adress";
+
+        public static string Orderhistory => "Orderhistory";
+
         public static string ExternalLogins => "ExternalLogins";
 
         public static string PersonalData => "PersonalData";
@@ -25,6 +29,10 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
+
+        public static string AdressNavClass(ViewContext viewContext) => PageNavClass(viewContext, Adress);
+        //här
+        public static string OrderhistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, Orderhistory);
 
         public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
 

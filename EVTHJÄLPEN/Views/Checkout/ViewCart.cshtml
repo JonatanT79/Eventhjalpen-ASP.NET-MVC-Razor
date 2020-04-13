@@ -1,0 +1,80 @@
+﻿@model ViewProducts
+@{
+    ViewData["Title"] = "Varukorg";
+}
+
+<h1>Din Order</h1>
+
+<div class="row" style="padding:15px;">
+
+    <div class="col-md-6">
+        <b style="float:left">Produkt </b>
+        <b style="float:right">Antal X Styckpris</b>
+        <br />
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+
+        @foreach (var item in Model.Productslist)
+        {
+            <ul class="list-group w-100">
+
+                <p style="float:right">@item.ProductName @item.Quantity @item.Amount st * @item.Price kr</p>
+            </ul>
+            <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+        }
+        <br />
+        <b>
+            Totalsumma: @Math.Round(Model.TotalSum) kr
+            <a class="btn btn-outline-dark" style="float:right" asp-controller="Home" asp-action="Varukorg">Ändra innehåll</a>
+        </b>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <B>FRAKTSÄTT</B>
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+
+        <li class="list-group-item">
+
+            <label><input type="checkbox"> HÄMTA I BUTIK </label>
+            <br />
+            <label><input type="checkbox"> SKICKA TILL MIG </label>
+        </li>
+
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+
+        <B>BETALSÄTT</B>
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+        <li class="list-group-item">
+            <label><input type="checkbox"> BETALA I BUTIK</label>
+            <br />
+            <label><input type="checkbox"> SWISH</label>
+        </li>
+
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+
+        <B>INFORMATION</B>
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+        <li class="list-group-item">
+
+            <label>AnvändarID: @Model.UserID</label>
+            <br />
+            <label>E-postadress:</label>
+        </li>
+        <br />
+
+        @{var SendParam = new Dictionary<string, string>()
+          {
+              {"SumToPay", @Math.Round(Model.TotalSum).ToString() },
+              {"UserID", Model.UserID },
+          };
+        }
+
+        <center>
+            <a class="btn btn-outline-success" asp-controller="Checkout" asp-action="DoneOrder" asp-all-route-data="@SendParam">Slutför</a>
+        </center>
+
+    </div>
+
+</div>
+

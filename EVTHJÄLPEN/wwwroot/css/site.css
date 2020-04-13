@@ -1,36 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #747474;
-  
-}
-    a:hover {
-        color: black;
-    }
-
-
-.btn-primary {
-  color: #fff;
-  background-color: #747474;
-  border-color: #000000;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #747474;
-  border-color: #000000;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
 html {
   font-size: 14px;
 }
@@ -56,7 +26,7 @@ button.accept-policy {
   line-height: inherit;
 }
 
-/* Sticky footer styles
+/* LAYOUT
 -------------------------------------------------- */
 html {
   position: relative;
@@ -64,13 +34,74 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 10px;
 }
+
+main {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    border-right: 1px;
+    border-left: 1px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-style: solid;
+    border-color: #b2b2b2;
+    padding: 1em;
+    min-height: 100vh;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    background-color: #abadd6;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: normal;
 }
+
+#footer-text {
+    
+}
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+  text-decoration-color: #000000;
+}
+
+a.nav-link {
+    text-decoration-color: #000;
+}
+
+ Provide sufficient contrast against white background 
+a {
+  color: #747474;
+  
+}
+    a:hover {
+        color: black;
+    }
+
+
+.btn-primary {
+  color: #000;
+  background-color: #fff;
+  border-color: #000000;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #abadd6;
+    border-color: #000000;
+    border: solid;
+    border-width: thin;
+}

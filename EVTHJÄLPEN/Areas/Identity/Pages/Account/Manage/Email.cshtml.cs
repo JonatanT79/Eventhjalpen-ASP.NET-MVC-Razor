@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Data.SqlClient;
+using EVTHJÄLPEN.Data;
 
 namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 {
@@ -77,41 +79,75 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
-                return NotFound($"Kan inte ladda användare med id '{_userManager.GetUserId(User)}'.");
-            }
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound($"Kan inte ladda användare med id '{_userManager.GetUserId(User)}'.");
+                }
 
-            if (!ModelState.IsValid)
-            {
-                await LoadAsync(user);
-                return Page();
-            }
+                if (!ModelState.IsValid)
+                {
+                    await LoadAsync(user);
+                    return Page();
+                }
 
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.NewEmail != email)
-            {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new { userId = userId, email = Input.NewEmail, code = code },
-                    protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Bekräfta din e-postadress",
-                    $"Bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                var users = _userManager.Users;
 
-                StatusMessage = "Bekräftelselänk har skickats till din e-postadress.";
+                var getAllEmails = from u in users
+                                   select u.Email;
+                //if (Input.NewEmail != email)
+                if(!getAllEmails.Contains(Input.NewEmail))
+                {
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmailChange",
+                        pageHandler: null,
+                        values: new { userId = userId, email = Input.NewEmail, code = code },
+                        protocol: Request.Scheme);
+                    await _emailSender.SendEmailAsync(
+                        Input.NewEmail,
+                        "Bekräfta din e-postadress",
+                        $"Bekräfta ditt konto genom att <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klicka här.</a>.");
+
+                    // insert/update in database
+                    var emails = await _userManager.GetEmailAsync(user);
+
+                    if (Input.NewEmail != emails)
+                    {
+                        var setEmailResult = await _userManager.SetEmailAsync(user, Input.NewEmail);
+                        var setnewUserNameResult = await _userManager.SetUserNameAsync(user, Input.NewEmail);
+
+                        using (SqlConnection con = new SqlConnection("Server=(localdb)\\Mssqllocaldb; Database= TranbarDB; MultipleActiveResultSets=true"))
+                        {
+                            con.Open();
+                            SqlCommand cmd = new SqlCommand(@"update[TranbarDB].[dbo].[AspNetUsers]
+                                                            set EmailConfirmed = 1
+                                                            where ID = @ID", con);
+
+                            cmd.Parameters.AddWithValue("@ID", user.Id);
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                        }
+
+                        if (!setEmailResult.Succeeded)
+                        {
+                            var userIds = await _userManager.GetUserIdAsync(user);
+                            throw new InvalidOperationException($"Kunde inte uppdatera lösenord för användare med id '{userIds}'.");
+                        }
+                    }
+
+                    await _signInManager.RefreshSignInAsync(user);
+                    StatusMessage = "E-postadress uppdaterad!";
+                    return RedirectToPage();
+                }
+
+                StatusMessage = "Kunde inte uppdatera e-postadress.";
                 return RedirectToPage();
             }
-
-            StatusMessage = "Kunde inte uppdatera e-postadress.";
-            return RedirectToPage();
         }
-
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);

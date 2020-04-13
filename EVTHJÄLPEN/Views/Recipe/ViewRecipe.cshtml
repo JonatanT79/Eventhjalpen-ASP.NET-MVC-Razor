@@ -1,34 +1,82 @@
-﻿@model Eventhjälpen.Models.Recipe
+﻿@model ViewProducts
+
 @{
     ViewData["Title"] = "ReceptInformation";
 }
+<br />
 
-    <div class="jumbotron">
-        <h1 class="display-4">@Model.RecipeName</h1>
-        <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
-        <hr class="my-4">
-        <nav aria-label="...">
-            <ul class="pagination pagination-sm">
-                <li class="page-item"><a class="page-link" href="#">Ingredienser</a></li>
-                <li class="page-item"><a class="page-link" href="#">Instruktioner</a></li>
-            </ul>
-        </nav>
-        <div class="d-flex flex-row">
-            <img src="//placehold.it/500x400" class="p-2" />
-            <ul class="list-group w-100">
-                <li class="list-group-item">
-                    <label><input type="checkbox" checked="checked"> Ingrediens 1</label>
-                </li>
-                <li class="list-group-item">
-                    <label><input type="checkbox" checked="checked"> Ingrediens 2</label>
-                </li>
-                <li class="list-group-item">
-                    <label><input type="checkbox" checked="checked"> Ingrediens 3</label>
-                </li>
-            </ul>
-        </div><p class="text-black-50">Hur många ska äta?</p>
-        <button type="button" class="btn btn-success">+</button><button type="button" class="btn btn-danger">-</button>
 
+<div class="container">
+    <h1 class="display-4">@Model.RecipeName</h1>
+    <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
+
+    <input type="button" value="Skriv ut recept"
+           onclick="window.print()" />
+
+    <hr class="my-4">
+
+    <div class="card" style="padding: 15px;">
+        @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
+        <img src="@s" class="p-2" style="width: 100%; height: 50%;" />
+        <br />
+        <br />
+
+        <div class="row" style="padding:15px;">
+            <div class="col-md-6">
+                <h4>Ingredienser:</h4>
+                <br />
+                <ul class="list-group w-100">
+
+                    @foreach (var item in Model.Productslist)
+                    {
+                        <li class="list-group-item">
+                            <label><input type="checkbox" checked="checked"> @item.ProductName  @item.ProductQuantity  @item.Measurement </label>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Gör så här:</h4>
+                <br />
+                @foreach (var step in Model.StepList)
+                {
+                    <p class="display-10"> @step.Stepnumber: @step.Instructions</p>
+                }
+            </div>
+        </div>
+        <div class="table">
+            <p class="text-black-50" style="text-align:left; padding: 10px;">Portioner:</p>
+            @{
+                var parms = new Dictionary<string, string>
+                            {
+                { "id", Model.RecipeID.ToString() },
+                { "portion", (Model.Portion + 1).ToString() }
+            };
+                var lowerparms = new Dictionary<string, string>
+                            {
+                { "id", Model.RecipeID.ToString() },
+                { "portion", (Model.Portion - 1 ).ToString() }
+            };
+            }
+
+            <a class="btn btn-dark" style="float: right" asp-controller="Home" asp-action="Varukorg" asp-route-id="@Model.RecipeID">Lägg i Varukorg</a>
+
+            <input type="text" value="@Model.Portion" style="text-align: center; float:left; width:3%;" />
+            <br />
+            <br />
+            <a type="button" class="btn btn-danger" style=" text-align: right; float: left; margin-right: 1px;" asp-controller="Recipe" asp-action="ViewRecipe" asp-all-route-data="@lowerparms">-</a>
+            <a type="button" class="btn btn-success" style="text-align: right; float: left;" asp-controller="Recipe" asp-action="ViewRecipe" asp-all-route-data="@parms">+</a>
+            <br />
+            <br />
+            <a asp-controller="Recipe" asp-action="Recipes" style=" text-align: left; float: left; padding:10px;">Tillbaka</a>
+            <br />
+            <br />
+            <br />
+        </div>
     </div>
+    <br />
+    <br />
+</div>
 
-<a asp-controller="Recipe" asp-action="Recipes">Tillbaka</a>
+

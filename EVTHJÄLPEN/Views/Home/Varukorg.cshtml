@@ -1,7 +1,96 @@
-﻿
+﻿@model ViewProducts
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 @{
     ViewData["Title"] = "Varukorg";
 }
+<h1>@ViewData["Title"]</h1>
+<br />
 
-<h1>Varukorg</h1>
+@if (Model.Productslist.Count == 0)
+{
+    <p>Varukorgen är tom</p>
+}
+else
+{
+    <h4>Produkter:</h4>
+
+    <p>@Model.StatusMessage</p>
+
+    @foreach (var item in Model.Productslist)
+    {
+        <div class="table">
+            @*<p class="text-black-50" style="text-align:left; padding: 10px;">Portioner: </p>*@
+            @{
+                var parms = new Dictionary<string, string>()
+{
+                { "ProductId", item.ProductID.ToString() },
+                { "Apply", "Add" }
+            };
+                var lowerparms = new Dictionary<string, string>()
+{
+                { "ProductId", item.ProductID.ToString() },
+                { "Apply","Remove"  }
+            };
+            }
+        </div>
+
+        <div class="row" style="padding:15px;">
+            <div class="col-md-6">
+                <ul class="list-group w-100">
+                    <p>
+                        @item.ProductName
+                        <br /><i>@item.Quantity</i>
+                        <br />
+                        <br />
+                        <a type="button" class="btn btn-danger" asp-controller="Home" asp-action="Varukorg" asp-all-route-data="@lowerparms">-</a>
+                        <input type="text" value="@item.Amount" style="text-align: center; width:4%;" />
+                        <a type="button" class="btn btn-success" asp-controller="Home" asp-action="Varukorg" asp-all-route-data="@parms">+</a>
+                    </p>
+                </ul>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <ul class="list-group w-100" style="text-align: right">
+                    @item.Price Kr
+                </ul>
+                <a class="btn btn-outline-danger" type="button" value="Ta bort" style="float:right; padding-top:2px;"
+                   asp-controller="Home" asp-action="Varukorg" asp-route-RemoveID="@item.ProductID">
+                    Ta bort
+                </a>
+
+            </div>
+        </div>
+        <p style="border:1px; border-style:solid; border-color:#bcbcbc;"> </p>
+    }
+
+    <br />
+    <a asp-controller="Home" asp-action="Varukorg" asp-route-Empty="Empty"> <input class="btn btn-outline-danger" type="button" value="Töm varukorg"> </a>
+    <br />
+    <br />
+}
+<p><b>TotalSumma:</b> @Math.Round(@Model.TotalSum, 2) Kr</p>
+
+<br />
+
+
+<a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="default" role="button">Fortsätt handla</a>
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a class="btn btn-outline-success" asp-controller="Checkout" asp-action="ViewCart" role="button">Bekräfta order</a>
+}
+else
+{
+    <a class="btn btn-outline-success" asp-area="Identity" asp-page="/Account/Login" asp-route-RouteID="-1">Bekräfta order</a>
+}
+
+
+
+
 

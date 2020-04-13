@@ -71,9 +71,6 @@ namespace EVTHJÄLPEN.Data
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.EventType)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Orderdetails>(entity =>
@@ -99,12 +96,12 @@ namespace EVTHJÄLPEN.Data
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+               // entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Orders__UserID__25869641");
+                //entity.HasOne(d => d.User)
+                //    .WithMany(p => p.Orders)
+                //    .HasForeignKey(d => d.UserId)
+                //    .HasConstraintName("FK__Orders__UserID__25869641");
             });
 
             modelBuilder.Entity<Products>(entity =>
