@@ -1,5 +1,4 @@
-﻿@model EVTHJÄLPEN.Models.PrivacyVM
-@{
+﻿@{
     ViewData["Title"] = "Om oss";
 }
 @*<h1>@ViewData["Title"]</h1>*@
@@ -86,26 +85,16 @@
 </p>
 <br />
 <br />
-
-<form class="form-group" asp-action="Privacy" asp-controller="Home" method="post">
-    <h3><text class="font-weight-bold">Kontaktformulär:</text></h3>
-    <br />
-    <label>Namn:</label>
-    <input class="form-control input-sm" id="Name" type="text" asp-for="Name" />
-    <br />
-    <label>Email:</label>
-    <input class="form-control input-sm" id="Email" type="text" asp-for="Email" />
-    <br />
-    <label>Ärende:</label>
-    <br />
-    <textarea class="form-control" rows="3" id="SubmitQuestion" asp-for="Message"></textarea>
-    <small id="count" class="form-text text-muted"></small>
-    <br />
-    <input type="submit" class="btn btn-primary" value="Skicka Meddelande" />
-</form>
-
-<script>
-    document.getElementById("SubmitQuestion").onkeyup = function () {
-        document.getElementById("count").innerHTML = "Bokstäver kvar: " + (500 - this.value.length);
-    };
-</script>
+<h3><text class="font-weight-bold">Kontaktformulär:</text></h3>
+<br />
+<p>Namn:</p>
+<input class="form-control input-sm" id="Name" type="text" />
+<br />
+<p>Email:</p>
+<input class="form-control input-sm" id="Email" type="text" />
+<br />
+<p>Ärende:</p>
+<input class="form-control input-lg" id="Question" type="text" />
+<br />
+<br />
+<input id="SubmitQuestion" type="submit" value="Skicka" />

@@ -24,13 +24,13 @@
             @{string s = Model.RecipeName + ".jpg"; }
             <h5><b>Dagens recept:</b></h5>
             <p class="lead">@Model.RecipeName</p>
-            <img src="~/Images/@s" alt="Bilden kunde inte visas" title="@Model.RecipeName" style="width:80%" class="m-3 rounded" />
+            <img src="~/Images/@s" alt="Bilden kunde inte visas" title="Kladdkaka" style="width:80%" class="m-3 rounded" />
             <a class="btn btn-primary" asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id="@Model.Id">Gå till recept</a>
         </center>
     </div>
     <div class="col-md-5">
         <center>
-            <h5><text class="font-weight-bold">Kundomdömen</text></h5>
+            <h5><text class="font-weight-bold">Kundomdömmen</text></h5>
             <blockquote class="blockquote">
                 <p class="mb-0">Tack vare Eventhjälpen kunde jag klicka hem allt till 60-års firandet med några enkla knapptryck. Super bra!</p>
                 <footer class="blockquote-footer">skrivet av <cite>Elin Svensson</cite></footer>
