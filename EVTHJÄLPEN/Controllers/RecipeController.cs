@@ -147,5 +147,47 @@ namespace EVTHJÄLPEN.Controllers
         {
             return RedirectToAction("ViewCart", "Checkout");
         }
+
+        [HttpGet("{id}")]
+        [Route("/[controller]/[action]")]
+        public IActionResult RecipesByEvents(int id)
+        {
+            List<Recipe> _recepies = new List<Recipe>();
+            List<RecipeType> _recipeTypes = new List<RecipeType>();
+
+            RecipeVM vm = new RecipeVM();
+
+            if (id <= 0)
+            {
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
+                {
+                    _recepies = ctx.Recipe
+                          .ToList();
+                    _recipeTypes = ctx.RecipeType
+                        .ToList();
+                }
+            }
+            else
+            {
+
+                using (ApplicationDbContext ctx1 = new ApplicationDbContext())
+                {
+                    _recepies = ctx1.Recipe
+                        .Where(e => e.EventDetails
+                        .Any(r => r.EventId == id))
+                        .ToList();
+                    _recipeTypes = ctx1.RecipeType
+                          .ToList();
+                }
+            }
+
+            vm.recipes = _recepies;
+            vm.recipeTypes = _recipeTypes;
+
+
+            return View("~/Views/Recipe/Recipes.cshtml", vm);
+
+
+        }
     }
 }
