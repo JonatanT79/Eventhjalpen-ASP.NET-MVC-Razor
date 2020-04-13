@@ -116,10 +116,11 @@ namespace EVTHJÄLPEN.Controllers
                     {
                         RemoveFromOrderdetails();
                     }
-                   
-                    
+
+                    if (cookieString.Length > 0)
+                    {
                         var productIds = cookieString.Split(",").Select(c => int.Parse(c));
-                    
+
                         var Check = from e in ctx.Orderdetails
                                     select e;
 
@@ -162,6 +163,7 @@ namespace EVTHJÄLPEN.Controllers
 
                         else
                         {
+
                             using (ApplicationDbContext c = new ApplicationDbContext())
                             {
                                 var modify = from m in c.Orderdetails
@@ -210,7 +212,7 @@ namespace EVTHJÄLPEN.Controllers
                             Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
                             ctx.SaveChanges();
                         }
-                    
+                    }
                 }
                 if (Empty == "Empty")
                 {
