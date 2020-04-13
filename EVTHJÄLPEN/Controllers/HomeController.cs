@@ -12,7 +12,11 @@ using System.Data.SqlClient;
 using System.Data.Entity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+<<<<<<< HEAD
 using Microsoft.EntityFrameworkCore;
+=======
+using EVTHJÄLPEN.Services;
+>>>>>>> parent of bfb6354... commited changedB
 
 namespace EVTHJÄLPEN.Controllers
 {
@@ -49,9 +53,36 @@ namespace EVTHJÄLPEN.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Privacy(PrivacyVM vm)
+        {
+            if (ModelState.IsValid)
+            {
+                EmailSender es = new EmailSender(); 
+                Email mailToSend = new Email
+                {
+                    subj = "Nytt kundmeddelande",
+                    to = "evthjalpen@gmail.com",
+                    body = $"<br><b>Kundnamn</b>: " + vm.Name +
+                        $"<br><b>Kundmail</b>: " + vm.Email +
+                        $"<br>" +
+                        $"<br><b>Meddelande</b>" + 
+                        $"<br>" + vm.Message
+                };
+                es.SendEmail(mailToSend); 
+
+                return RedirectToAction("Privacy");
+            }
+            else
+            {
+                return Index();
+            }
         }
 
         public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, string Apply)
