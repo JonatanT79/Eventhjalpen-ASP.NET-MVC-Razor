@@ -12,11 +12,8 @@ using System.Data.SqlClient;
 using System.Data.Entity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-<<<<<<< HEAD
 using Microsoft.EntityFrameworkCore;
-=======
 using EVTHJÄLPEN.Services;
->>>>>>> parent of bfb6354... commited changedB
 
 namespace EVTHJÄLPEN.Controllers
 {
