@@ -24,7 +24,7 @@
             @{string s = Model.RecipeName + ".jpg"; }
             <h5><b>Dagens recept:</b></h5>
             <p class="lead">@Model.RecipeName</p>
-            <img src="~/Images/@s" alt="Bilden kunde inte visas" title="Kladdkaka" style="width:80%" class="m-3 rounded" />
+            <img src="~/Images/@s" alt="Bilden kunde inte visas" title="@Model.RecipeName" style="width:80%" class="m-3 rounded" />
             <a class="btn btn-primary" asp-controller="Recipe" asp-action="ViewRecipe" asp-route-id="@Model.Id">Gå till recept</a>
         </center>
     </div>

@@ -143,6 +143,7 @@ namespace EVTHJÄLPEN.Controllers
             return RedirectToAction("ViewCart", "Checkout");
         }
 
+
         [HttpGet("{id}")]
         [Route("/[controller]/[action]")]
         public IActionResult RecipesByEvents(int id)
