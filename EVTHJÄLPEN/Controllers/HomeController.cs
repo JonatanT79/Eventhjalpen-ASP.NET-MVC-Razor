@@ -85,10 +85,7 @@ namespace EVTHJÄLPEN.Controllers
         public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, string Apply)
         {
             var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
-            Response.Cookies.Delete("Varukorg");
             ViewProducts vp = new ViewProducts();
-            vp.Productslist.Clear();
-            vp.TotalSum = 0;
 
             if (RemoveID == 0)
             {
