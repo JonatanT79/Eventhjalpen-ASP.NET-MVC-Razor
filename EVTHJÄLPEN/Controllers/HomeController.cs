@@ -107,7 +107,7 @@ namespace EVTHJÄLPEN.Controllers
                     }
                     else
                     {
-                        cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
+                         cookieString = varukorg.Value + string.Join(",", recipeProductsIds);
                     }
 
                     if (cookieString == "")
@@ -333,7 +333,7 @@ namespace EVTHJÄLPEN.Controllers
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
                 var delete = from e in ctx.Orderdetails
-                             where e.OrdersId == null
+                             where e.OrdersId == null 
                              select e;
 
                 foreach (var item in delete)
@@ -345,19 +345,3 @@ namespace EVTHJÄLPEN.Controllers
         }
     }
 }
-// bugg; Om dataasen har data och cookiestrignen är tom kmr det bli en krash -- cookiestringen raderas efter 60 min men datan i databasen kvarstår
-// kolla först om cookiestringen är tom, är den tom rensa databasen
-// ta bort i
-// bugg när man tar bort en produkt och sedan modifiera en annan
-// om amount = 0, ta bort varan
-//börja med att kolla på t.ex att initiera orderid i databasen
-
-//where userid = id i delete???
-
-//Kanske bara visa själva ordern utan produkter istället?
-// bugg om man t.ex lägger rödbeter 2 ggr och tar bort alla produkter kommer cookiestringen att innehålla värden(dubbel) medans db är tom
-// lösning: nånting med foreach träff på indexet remove???
-
-
-// göra så att man ser vilka produkter som tillhör vilket recept
-//ha en checkbox lista i ordersidan som t.ex säger "saker du inte har med men som finns i receptet" (senare)

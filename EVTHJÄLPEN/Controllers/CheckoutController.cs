@@ -22,9 +22,9 @@ namespace EVTHJÄLPEN.Controllers
             
             return View(vp);
         }
-
         public IActionResult DoneOrder(string UserID, int SumToPay)
         {
+            Response.Cookies.Delete("Varukorg");
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
                 Orders o = new Orders();
