@@ -81,14 +81,14 @@ else
 <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="default" role="button">Fortsätt handla</a>
 
 
-@if (SignInManager.IsSignedIn(User))
-{
-    <a class="btn btn-outline-success" asp-controller="Checkout" asp-action="ViewCart" role="button">Bekräfta order</a>
-}
-else
-{
-    <a class="btn btn-outline-success" asp-area="Identity" asp-page="/Account/Login" asp-route-RouteID="-1">Bekräfta order</a>
-}
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a class="btn btn-outline-success" asp-controller="Checkout" asp-action="ViewCart" role="button">Bekräfta order</a>
+    }
+    else
+    {
+        <a class="btn btn-outline-success" asp-area="Identity" asp-page="/Account/Login" asp-route-RouteID="-1">Bekräfta order</a>
+    }
 
 
 

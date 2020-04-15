@@ -333,7 +333,6 @@ namespace EVTHJÄLPEN.Controllers
             using (ApplicationDbContext ctx = new ApplicationDbContext())
             {
                 var delete = from e in ctx.Orderdetails
-                             where e.OrdersId == null 
                              select e;
 
                 foreach (var item in delete)
