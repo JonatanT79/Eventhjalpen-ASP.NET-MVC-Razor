@@ -84,8 +84,9 @@ namespace EVTHJÄLPEN.Controllers
 
         public IActionResult Varukorg(int ID, string Empty, int RemoveID, int ProductID, string Apply)
         {
-            var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
             ViewProducts vp = new ViewProducts();
+
+            var varukorg = Request.Cookies.SingleOrDefault(c => c.Key == "Varukorg");
 
             if (RemoveID == 0)
             {
@@ -114,129 +115,115 @@ namespace EVTHJÄLPEN.Controllers
                         RemoveFromOrderdetails();
                     }
 
-                    if (cookieString.Length > 0)
+                    var productIds = cookieString.Split(",").Select(c => int.Parse(c));
+
+                    var Check = from e in ctx.Orderdetails
+                                select e;
+
+                    if (Check.Count() == 0)
                     {
-                        var productIds = cookieString.Split(",").Select(c => int.Parse(c));
+                        var products = from e in ctx.Products
+                                       where productIds.Contains(e.Id)
+                                       select e;
 
-                        var Check = from e in ctx.Orderdetails
-                                    select e;
-
-                        if (Check.Count() == 0)
-
+                        if (!cookieString.Equals(""))
                         {
-                            var products = from e in ctx.Products
-                                           where productIds.Contains(e.Id)
-                                           select e;
-
-                            if (!cookieString.Equals(""))
+                            foreach (var item in products)
                             {
-                                foreach (var item in products)
+                                Orderdetails od = new Orderdetails();
+                                od.ProductId = item.Id;
+                                od.Amount = 1;
+
+                                using (ApplicationDbContext c = new ApplicationDbContext())
                                 {
-                                    Orderdetails od = new Orderdetails();
-                                    od.ProductId = item.Id;
-                                    od.Amount = 1;
-
-                                    using (ApplicationDbContext c = new ApplicationDbContext())
-                                    {
-                                        if (!c.Orderdetails.Any(A => A.ProductId == item.Id))
-                                        {
-                                            c.Orderdetails.Add(od);
-                                            c.SaveChanges();
-                                        }
-                                    }
-
-                                    ShowIngrediens si = new ShowIngrediens();
-                                    si.ProductID = item.Id;
-                                    si.ProductName = item.ProductName;
-                                    si.Quantity = item.Quantity;
-                                    si.Price = item.Price;
-                                    si.Amount = 1;
-                                    vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
-                                    vp.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                                    vp.Productslist.Add(si);
-                                }
-                            }
-                        }
-
-                        else
-                        {
-
-                            using (ApplicationDbContext c = new ApplicationDbContext())
-                            {
-                                var modify = from m in c.Orderdetails
-                                             where m.ProductId == ProductID
-                                             select m;
-
-                                if (Apply == "Add")
-                                {
-                                    foreach (var items in modify)
-                                    {
-                                        items.Amount++;
-                                    }
-                                }
-                                else if (Apply == "Remove")
-                                {
-                                    foreach (var items in modify)
-                                    {
-                                        items.Amount--;
-
-                                        if (items.Amount == 0)
-                                        {
-                                            RemoveItem(ProductID, vp);
-                                            vp.StatusMessage = "Produkten har tagits bort";
-                                            return View(vp);
-                                        }
-                                    }
-                                }
-                                c.SaveChanges();
-
-
-                                foreach (var additem in productIds)
-                                {
-                                    Orderdetails od = new Orderdetails() { ProductId = additem, Amount = 1 };
-                                    if (!c.Orderdetails.Any(A => A.ProductId == additem))
+                                    if (!c.Orderdetails.Any(A => A.ProductId == item.Id))
                                     {
                                         c.Orderdetails.Add(od);
                                         c.SaveChanges();
                                     }
                                 }
 
+                                ShowIngrediens si = new ShowIngrediens();
+                                si.ProductID = item.Id;
+                                si.ProductName = item.ProductName;
+                                si.Quantity = item.Quantity;
+                                si.Price = item.Price;
+                                si.Amount = 1;
+                                vp.TotalSum += (decimal.ToDouble(si.Price) * si.Amount);
+                                vp.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                                vp.Productslist.Add(si);
                             }
-
-                            AddListValue(vp);
-
-
-                            Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
-                            ctx.SaveChanges();
                         }
                     }
-                }
-                if (Empty == "Empty")
-                {
-                    using (ApplicationDbContext ctx = new ApplicationDbContext())
+                    else
                     {
-
-                        var delete = from e in ctx.Orderdetails
-                                     where e.OrdersId == null
-                                     select e;
-
-                        foreach (var item in delete)
+                        using (ApplicationDbContext c = new ApplicationDbContext())
                         {
-                            ctx.Orderdetails.Remove(item);
+                            var modify = from m in c.Orderdetails
+                                         where m.ProductId == ProductID
+                                         select m;
+
+                            if (Apply == "Add")
+                            {
+                                foreach (var items in modify)
+                                {
+                                    items.Amount++;
+                                }
+                            }
+                            else if (Apply == "Remove")
+                            {
+                                foreach (var items in modify)
+                                {
+                                    items.Amount--;
+
+                                    if (items.Amount == 0)
+                                    {
+                                        RemoveItem(ProductID, vp);
+                                        vp.StatusMessage = "Produkten har tagits bort";
+                                        return View(vp);
+                                    }
+                                }
+                            }
+                            c.SaveChanges();
+
+                            foreach (var additem in productIds)
+                            {
+                                Orderdetails od = new Orderdetails() { ProductId = additem, Amount = 1 };
+                                if (!c.Orderdetails.Any(A => A.ProductId == additem))
+                                {
+                                    c.Orderdetails.Add(od);
+                                    c.SaveChanges();
+                                }
+                            }
                         }
 
-                        ctx.SaveChanges();
-                        Response.Cookies.Delete("Varukorg");
-                        vp.Productslist.Clear();
-                        vp.TotalSum = 0;
-                        return View(vp);
+                        AddListValue(vp);
                     }
+
+                    Response.Cookies.Append("Varukorg", cookieString, new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddMinutes(60.0) });
+                    ctx.SaveChanges();
                 }
-                else if (RemoveID != 0)
+            }
+
+            if (Empty == "Empty")
+            {
+                using (ApplicationDbContext ctx = new ApplicationDbContext())
                 {
-                    RemoveItem(RemoveID, vp);
+                    foreach (var item in ctx.Orderdetails)
+                    {
+                        ctx.Orderdetails.Remove(item);
+                    }
+
+                    ctx.SaveChanges();
+                    Response.Cookies.Delete("Varukorg");
+                    vp.Productslist.Clear();
+                    vp.TotalSum = 0;
+                    return View(vp);
                 }
-                
+            }
+            else if (RemoveID != 0)
+            {
+                RemoveItem(RemoveID, vp);
             }
             return View(vp);
         }
@@ -245,8 +232,6 @@ namespace EVTHJÄLPEN.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
 
 
         // Methods ---------------------------------------------------------------------------------------------------------
