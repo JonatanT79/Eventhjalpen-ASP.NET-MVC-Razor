@@ -22,7 +22,6 @@ else
     @foreach (var item in Model.Productslist)
     {
         <div class="table">
-            @*<p class="text-black-50" style="text-align:left; padding: 10px;">Portioner: </p>*@
             @{
                 var parms = new Dictionary<string, string>()
 {
@@ -80,6 +79,8 @@ else
 
 <a class="btn btn-outline-dark" asp-controller="Recipe" asp-action="Recipes" asp-route-id="default" role="button">Fortsätt handla</a>
 
+@if (Model.Productslist.Count != 0)
+{
 
     @if (SignInManager.IsSignedIn(User))
     {
@@ -89,6 +90,7 @@ else
     {
         <a class="btn btn-outline-success" asp-area="Identity" asp-page="/Account/Login" asp-route-RouteID="-1">Bekräfta order</a>
     }
+}
 
 
 
