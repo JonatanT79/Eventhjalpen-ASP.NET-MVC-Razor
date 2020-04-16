@@ -98,6 +98,10 @@ a {
   border-color: #000000;
 }
 
+.btn-outline-dark {
+    margin: 5px;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: #abadd6;
