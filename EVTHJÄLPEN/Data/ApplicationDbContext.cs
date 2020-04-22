@@ -67,7 +67,7 @@ namespace EVTHJÄLPEN.Data
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.EventName)
+                entity.Property(e => e.EventType)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 

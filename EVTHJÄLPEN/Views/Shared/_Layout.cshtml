@@ -13,14 +13,15 @@
             <div class="container" id="header-text">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon">Meny
+                    <span class="navbar-toggler-icon">
+                        Meny
                     </span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Startsida</a></li>
-                        <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Recipe" asp-action="Recipes">Recept</a></li>
+                        @await Component.InvokeAsync("EventMenu")
                         <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Om oss</a></li>
 
                     </ul>
@@ -36,7 +37,7 @@
 
     <footer class="footer text-light text-center" id="footer" style="background-color: #abadd6;">
         <div class="container" id="footer-text">
-            &copy; 2020 - EventHjälpen 
+            &copy; 2020 - EventHjälpen
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

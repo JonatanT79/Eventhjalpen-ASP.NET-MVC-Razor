@@ -130,7 +130,7 @@ namespace EVTHJÄLPEN.Areas.Identity.Pages.Account.Manage
                             cmd.Parameters.AddWithValue("@ID", user.Id);
                             cmd.ExecuteNonQuery();
                             con.Close();
-                        }
+                        }   
 
                         if (!setEmailResult.Succeeded)
                         {

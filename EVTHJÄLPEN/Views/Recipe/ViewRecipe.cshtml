@@ -10,12 +10,12 @@
     <h1 class="display-4">@Model.RecipeName</h1>
     <p class="lead">Tillagningstid: @Model.EstimatedTime minuter</p>
 
-    <input type="button" value="Skriv ut recept"
+    <input type="button" value="Skriv ut recept" id="RecipeButton"
            onclick="window.print()" />
 
     <hr class="my-4">
 
-    <div class="card" style="padding: 15px;">
+    <div class="card" style="padding: 15px">
         @{string s = "/Images/" + @Model.RecipeName + ".jpg";}
         <img src="@s" class="p-2" style="width: 100%; height: 50%;" />
         <br />
@@ -62,7 +62,7 @@
 
             <a class="btn btn-dark" style="float: right" asp-controller="Home" asp-action="Varukorg" asp-route-id="@Model.RecipeID">Lägg i Varukorg</a>
 
-            <input type="text" value="@Model.Portion" style="text-align: center; float:left; width:3%;" />
+            <input type="text" value="@Model.Portion" style="text-align: center; float:left; width:15px;" />
             <br />
             <br />
             <a type="button" class="btn btn-danger" style=" text-align: right; float: left; margin-right: 1px;" asp-controller="Recipe" asp-action="ViewRecipe" asp-all-route-data="@lowerparms">-</a>

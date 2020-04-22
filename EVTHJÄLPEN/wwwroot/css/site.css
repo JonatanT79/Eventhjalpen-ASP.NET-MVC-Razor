@@ -98,10 +98,64 @@ a {
   border-color: #000000;
 }
 
+.btn-outline-dark {
+    margin: 5px;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: #abadd6;
     border-color: #000000;
     border: solid;
     border-width: thin;
-}
+}
+
+
+@media print {
+    /* Setting content width, unsetting floats and margins */
+    /* Attention: the classes and IDs vary from theme to theme. Thus, set own classes here */
+    #content, #page {
+        width: 80%;
+        margin: 0;
+        float: none;
+        border: hidden;
+        margin-right:auto;
+    }
+
+    /** Setting margins */
+    @page {
+        margin: 2cm
+    }
+
+    /* Or: */
+    @page :left {
+        margin: 1cm;
+    }
+
+    @page :right {
+        margin: 1cm;
+    }
+
+    /* The first page of a print can be manipulated as well */
+    @page :first {
+        margin: 1cm 2cm;
+    }
+    /* Hiding unnecessary elements for the print */
+
+    #page.border-bottom, #page.border-top{
+        display: none;
+    }
+    main {
+        border-right: 0px;
+        border-left: 0px;
+    }
+    .table{
+        display: none;
+    }
+    #RecipeButton{
+        display: none;
+    }
+}
+
+
+

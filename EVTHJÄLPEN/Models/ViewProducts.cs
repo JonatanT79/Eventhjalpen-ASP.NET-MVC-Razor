@@ -15,6 +15,7 @@ namespace EVTHJÄLPEN.Models
         public double TotalSum { get; set; }
         public string StatusMessage { get; set; }
         public string UserID { get; set; }
+        public string Email { get; set; }
 
         public List<ShowIngrediens> Productslist = new List<ShowIngrediens>();
 
