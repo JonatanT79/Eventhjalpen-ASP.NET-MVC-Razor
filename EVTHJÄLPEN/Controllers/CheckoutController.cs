@@ -19,7 +19,7 @@ namespace EVTHJÄLPEN.Controllers
         {
             ViewProducts vp = new ViewProducts();
             AddListValue(vp);
-            
+
             return View(vp);
         }
         public IActionResult DoneOrder(string UserID, int SumToPay)
@@ -79,7 +79,7 @@ namespace EVTHJÄLPEN.Controllers
 
                     vp.Productslist.Add(si);
                 }
-            }  
+            }
         }
     }
 }
