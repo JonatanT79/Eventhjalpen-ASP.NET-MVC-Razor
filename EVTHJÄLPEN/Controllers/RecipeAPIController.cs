@@ -19,7 +19,7 @@ namespace EVTHJÄLPEN.Controllers
         public ActionResult<string> Get(int id)
         {
             var result = new APIFormattedRecipe(id);
-            if (result != null)
+            if (result != null && id < 7)
             {
                 string json = JsonConvert.SerializeObject(result, Formatting.None);
                 json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -27,7 +27,7 @@ namespace EVTHJÄLPEN.Controllers
             }
             else 
             {
-                return NotFound(new {Error = "Receptet finns inte" });
+                return "Receptet med det ID finns inte";
             }
             
         }
