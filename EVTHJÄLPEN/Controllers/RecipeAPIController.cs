@@ -25,9 +25,11 @@ namespace EVTHJÄLPEN.Controllers
                 json = JsonConvert.SerializeObject(result, Formatting.Indented);
                 return json;
             }
-                
+            else 
+            {
+                return NotFound(new {Error = "Receptet finns inte" });
+            }
             
-            return NotFound();
         }
     }
 }

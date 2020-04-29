@@ -22,10 +22,12 @@ namespace EVTHJÄLPEN.Models
                 RecipeName = ctx.Recipe.Where(x => x.Id == id).Select(x => x.RecipeName).FirstOrDefault();
                 EstimatedTime = ctx.Recipe.Where(x => x.Id == id).Select(x => x.EstimatedTime).FirstOrDefault();
 
-                Ingredients = new APIFormattedIngredient() {
-                    Name = ctx.RecipeDetails.Where(x => x.RecipeId == id).Select(x => x.Product.ProductName).ToArray(),
-                    Unit = ctx.RecipeDetails.Where(x => x.RecipeId == id).Select(x => x.MeasurementUnit.Measurement).ToArray(),
-                    Amount = ctx.RecipeDetails.Where(x => x.RecipeId == id).Select(x => x.ProductQuantity).ToArray()
+
+                Ingredients = new APIFormattedIngredient()
+                {
+                    Name = ctx.RecipeDetails.Where( x => x.RecipeId == id ).Select(x => x.Product.ProductName).ToArray(),
+                    Unit = ctx.RecipeDetails.Where( x => x.RecipeId == id ).Select(x => x.MeasurementUnit.Measurement).ToArray(),
+                    Amount = ctx.RecipeDetails.Where( x => x.RecipeId == id ).Select(x => x.ProductQuantity).ToArray()
                 };
             }
         }            
